@@ -84,7 +84,6 @@ export default {
             type: 'success',
           });
           sessionStorage.setItem("user", JSON.stringify(res.data));
-          this.reload();
         } else {
           ElMessage.error(res.msg);
         }

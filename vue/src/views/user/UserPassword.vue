@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {reactive, ref} from "vue";
+import {reactive} from "vue";
 import {ElMessage} from "element-plus";
 import request from "@/utils/request";
 
