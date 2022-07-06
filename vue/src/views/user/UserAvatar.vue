@@ -1,17 +1,18 @@
 <template>
   <div
-      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 1200px;height: 100%">
+      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 600px;height: 100%">
     <h1>头像</h1>
-    <div style="width: 120px;height: 120px;margin: 20px auto">
-      <el-image style="width: 120px; height: 120px;" :src="url" :fit="'cover'">
+    <div style="width: 120px;height: 120px;margin: 50px auto">
+      <el-image style="width: 120px; height: 120px;margin-bottom: 40px" :src="url" :fit="'cover'">
         <template #error>
           <div class="image-slot">暂无头像</div>
         </template>
       </el-image>
     </div>
-    <div>
+    <div style="width: 88px; margin: 50px auto">
       <el-upload
           action="/api/file/avatar"
+          :accept="['.png','.jpeg']"
           :limit="1"
           :on-success="uploadSuccess"
           :on-error="uploadError"

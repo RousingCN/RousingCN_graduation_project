@@ -1,17 +1,18 @@
 <template>
   <div
-      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 1200px;height: 100%">
-    <el-form :model="form" label-width="120px" style="">
-      <el-form-item label="用户ID" style="width: 40%">
+      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 800px;height: 100%">
+    <h1>信息</h1>
+    <el-form :model="form" label-width="120px" style="margin: 50px auto">
+      <el-form-item label="用户ID" style="width: 60%;margin-bottom: 20px">
         <el-input v-model="form.userid" disabled/>
       </el-form-item>
-      <el-form-item label="用户名" style="width: 40%">
+      <el-form-item label="用户名" style="width: 60%;margin-bottom: 20px">
         <el-input v-model="form.username" disabled/>
       </el-form-item>
-      <el-form-item label="手机号" style="width: 40%">
+      <el-form-item label="手机号" style="width: 60%;margin-bottom: 20px">
         <el-input v-model="form.userPhone"/>
       </el-form-item>
-      <el-form-item label="邮箱" style="width: 40%">
+      <el-form-item label="邮箱" style="width: 80%;margin-bottom: 20px">
         <el-input v-model="form.userMail"/>
       </el-form-item>
       <el-form-item label="生日">
@@ -42,7 +43,7 @@
           <el-radio label="女"/>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="个人签名">
+      <el-form-item label="个人签名" style="width: 90%">
         <el-input v-model="form.userinfo" type="textarea"/>
       </el-form-item>
       <el-form-item>

@@ -6,7 +6,7 @@
       :ellipsis="false"
       router
   >
-    <span style="line-height: 58px;margin-left: 20px">
+    <span style="line-height: 59px;margin-left: 20px">
       <el-icon><Sunny/></el-icon>
       午时论坛
     </span>
@@ -16,9 +16,15 @@
     <el-menu-item index="/article" style="width: 8%">帖子</el-menu-item>
     <el-menu-item index="/about" style="width: 8%">关于</el-menu-item>
     <div style="width: 10%;"/>
-    <el-sub-menu index="">
-      <template #title >
-        <el-avatar> user</el-avatar>
+    <el-sub-menu index="" >
+      <template #title>
+        <el-avatar v-if="user.userImg===null"> user</el-avatar>
+        <el-image style="width: 59px;height: 59px;border-radius: 50%" v-if="user.userImg!==null" :src="user.userImg"
+                  :fit="'contain'">
+          <template #error >
+            <div class="image-slot">{{user.username}}</div>
+          </template>
+        </el-image>
       </template>
       <el-menu-item index="/userCenter">个人中心</el-menu-item>
       <el-menu-item index="/login" @click="loginOut">注销</el-menu-item>
@@ -33,6 +39,7 @@ import {ElMessage} from "element-plus";
 import router from "@/router";
 
 const activeIndex = ref('1')
+const user = JSON.parse(sessionStorage.getItem("user"))
 
 const loginOut = function () {
   request.delete("/user/loginOut").then(res => {
