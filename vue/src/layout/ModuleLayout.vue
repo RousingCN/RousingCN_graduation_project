@@ -1,9 +1,10 @@
 <template>
   <el-scrollbar height="100vh">
-    <Header />
+    <Header/>
     <div style="display: flex;">
-      <ModuleAside />
-      <router-view style="flex: 1"/>
+      <ModuleAside/>
+          <router-view/>
+          <UserShow/>
     </div>
   </el-scrollbar>
 </template>
@@ -11,10 +12,11 @@
 <script>
 import Header from "@/components/Header";
 import ModuleAside from "@/components/ModuleAside";
+import UserShow from "@/components/UserShow";
 
 export default {
   name: "ModuleLayout",
-  components: {Header, ModuleAside}
+  components: {UserShow, Header, ModuleAside}
 }
 </script>
 

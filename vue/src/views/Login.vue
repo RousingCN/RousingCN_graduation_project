@@ -1,6 +1,7 @@
 <template>
   <div style="margin: 156px auto;width: 400px;border: 1px solid #ccc;padding: 50px;border-radius: 20px">
     <h1>用户登录</h1>
+    <el-divider />
     <el-form :model="form" label-width="60px" style="margin-top: 50px">
       <el-form-item label="用户名" prop="name" style="margin-bottom: 40px">
         <el-input v-model="form.username" clearable/>

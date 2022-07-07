@@ -2,6 +2,7 @@
   <div
       style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 800px;height: 100%">
     <h1>信息</h1>
+    <el-divider/>
     <el-form :model="form" label-width="120px" style="margin: 50px auto">
       <el-form-item label="用户ID" style="width: 60%;margin-bottom: 20px">
         <el-input v-model="form.userid" disabled/>
@@ -57,25 +58,26 @@
 import {ElMessage} from "element-plus";
 import request from "@/utils/request";
 
-const user = JSON.parse(sessionStorage.getItem("user"));
 
 export default {
   name: 'UserInfo',
   data() {
     return {
-      form: {
-        userid: user.userid === null ? "" : user.userid,
-        username: user.username === null ? "" : user.username,
-        userPhone: user.userPhone === null ? "" : user.userPhone,
-        userMail: user.userMail === null ? "" : user.userMail,
-        userBirth: user.userBirth === null ? "" : user.userBirth,
-        userCreate: user.userCreate === null ? "" : user.userCreate,
-        userSex: user.userSex === null ? "" : user.userSex,
-        userinfo: user.userinfo === null ? "" : user.userinfo
-      }
+      form: {}
     }
   },
   methods: {
+    load() {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      this.form.userid = user.userid === null ? "" : user.userid;
+      this.form.username = user.username === null ? "" : user.username;
+      this.form.userPhone = user.userPhone === null ? "" : user.userPhone;
+      this.form.userMail = user.userMail === null ? "" : user.userMail;
+      this.form.userBirth = user.userBirth === null ? "" : user.userBirth;
+      this.form.userCreate = user.userCreate === null ? "" : user.userCreate;
+      this.form.userSex = user.userSex === null ? "" : user.userSex;
+      this.form.userinfo = user.userinfo === null ? "" : user.userinfo;
+    },
     onSubmit() {
       request.put("/user/update", this.form).then(res => {
         if (res.code === "1") {
@@ -88,8 +90,11 @@ export default {
           ElMessage.error(res.msg);
         }
       })
-    }
+    },
   },
+  created() {
+    this.load();
+  }
 }
 
 </script>

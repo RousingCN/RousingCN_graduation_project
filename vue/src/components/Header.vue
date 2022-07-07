@@ -13,7 +13,7 @@
     <div class="flex-grow"/>
     <el-menu-item index="/index" style="width: 8%">首页</el-menu-item>
     <el-menu-item index="/module" style="width: 8%">板块</el-menu-item>
-    <el-menu-item index="/article" style="width: 8%">帖子</el-menu-item>
+    <el-menu-item index="/article" style="width: 8%">娱乐</el-menu-item>
     <el-menu-item index="/about" style="width: 8%">关于</el-menu-item>
     <div style="width: 10%;"/>
     <el-sub-menu index="" >

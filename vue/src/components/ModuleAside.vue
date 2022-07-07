@@ -10,7 +10,7 @@
       <el-icon><EditPen /></el-icon>
       <template #title>创建板块</template>
     </el-menu-item>
-    <el-menu-item index="/recommendModule">
+    <el-menu-item index="/randomModule">
       <el-icon><StarFilled /></el-icon>
       <template #title>推荐板块</template>
     </el-menu-item>

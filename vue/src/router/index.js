@@ -68,7 +68,7 @@ const routes = [
     {
         path: '/module',
         name: 'Module',
-        redirect: '/recommendModule',
+        redirect: '/randomModule',
         component: ModuleLayout,
         children: [
             {
@@ -77,9 +77,9 @@ const routes = [
                 component: () => import('../views/module/CreateModule')
             },
             {
-                path: '/recommendModule',
-                name: 'RecommendModule',
-                component: () => import('../views/module/RecommendModule')
+                path: '/randomModule',
+                name: 'RandomModule',
+                component: () => import('../views/module/RandomModule')
             },
             {
                 path: '/allModule',

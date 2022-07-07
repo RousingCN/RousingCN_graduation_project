@@ -2,6 +2,7 @@
   <div
       style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 600px;height: 100%">
     <h1>头像</h1>
+    <el-divider />
     <div style="width: 120px;height: 120px;margin: 50px auto">
       <el-image style="width: 120px; height: 120px;margin-bottom: 40px" :src="url" :fit="'cover'">
         <template #error>
@@ -11,7 +12,7 @@
     </div>
     <div style="width: 88px; margin: 50px auto">
       <el-upload
-          action="/api/file/avatar"
+          action="/api/file/avatar/save"
           :accept="['.png','.jpeg']"
           :limit="1"
           :on-success="uploadSuccess"
@@ -39,7 +40,6 @@ export default {
   },
   methods: {
     uploadSuccess(res) {
-      console.log(res)
       if (res.code === "1") {
         ElMessage({
           message: '信息修改成功',

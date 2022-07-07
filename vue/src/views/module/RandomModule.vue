@@ -1,6 +1,6 @@
 <template>
   <div style="flex: 1;margin: 20px;border: 1px solid var(--el-border-color);padding: 50px;border-radius: 20px">
-    <h1>全部板块</h1>
+    <h1>推荐板块</h1>
     <el-divider/>
     <div>
       <el-table :data="tableData" :table-layout="'fixed'">
@@ -17,7 +17,7 @@
 import request from "@/utils/request";
 
 export default {
-  name: "Module",
+  name: "RecommendModule",
   data() {
     return {
       tableData: [],
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     load() {
-      request.get("/module/all").then(res => {
+      request.get("/module/random").then(res => {
         let rows = [];
         // 从时间截取日期
         for (let i = 0; i < res.data.length; i++) {
