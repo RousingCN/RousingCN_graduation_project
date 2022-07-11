@@ -86,8 +86,12 @@ const routes = [
                 name: 'AllModule',
                 component: () => import('../views/module/AllModule')
             },
+            {
+                path: '/moduleInfo',
+                name: 'ModuleInfo',
+                component: () => import('../views/module/ModuleInfo')
+            }
         ]
-
     }
 ]
 

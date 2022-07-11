@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 156px auto;width: 400px;border: 1px solid #ccc;padding: 50px;border-radius: 20px">
     <h1>用户登录</h1>
-    <el-divider />
+    <el-divider/>
     <el-form :model="form" label-width="60px" style="margin-top: 50px">
       <el-form-item label="用户名" prop="name" style="margin-bottom: 40px">
         <el-input v-model="form.username" clearable/>
@@ -42,6 +42,24 @@ export default {
             type: 'success',
           })
           sessionStorage.setItem("user", JSON.stringify(res.data));
+
+          request.get("/Achievement/user", {userid: res.data.userid}).then(re => {
+            console.log(re)
+            if (re.code === "1") {
+              sessionStorage.setItem("userAchievement", JSON.stringify(re.data));
+            } else {
+              sessionStorage.setItem("userAchievement", JSON.stringify({
+                fans: 0,
+                attention: 0,
+                collect: 0,
+                like: 0,
+                view: 0,
+                userid: -1
+              }))
+            }
+          })
+
+
           this.$router.push("/")
         } else {
           ElMessage.error(res.msg);

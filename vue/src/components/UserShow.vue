@@ -20,19 +20,19 @@
             <el-col :span="8">
               <div style="text-align: center">
                 <div>关注</div>
-                {{ user.userid }}
+                {{ userAchievement.attention }}
               </div>
             </el-col>
             <el-col :span="8">
               <div style="text-align: center">
                 <div>粉丝</div>
-                {{ user.userid }}
+                {{ userAchievement.fans }}
               </div>
             </el-col>
             <el-col :span="8">
               <div style="text-align: center">
                 <div>点赞</div>
-                {{ user.userid }}
+                {{ userAchievement.like }}
               </div>
             </el-col>
           </el-row>
@@ -55,6 +55,7 @@ export default {
   data() {
     return {
       user: JSON.parse(sessionStorage.getItem("user")),
+      userAchievement: JSON.parse(sessionStorage.getItem("userAchievement")),
     }
   }
 
