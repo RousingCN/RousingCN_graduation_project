@@ -55,9 +55,8 @@ export default {
       this.load(pageNum)
     },
     click(a) {
-      console.log(a.moduleId)
-
-      this.$router.push("/module/" + a.moduleId)
+      sessionStorage.setItem("module", JSON.stringify(a));
+      this.$router.push("/moduleInfo");
     },
   }
 }

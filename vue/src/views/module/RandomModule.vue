@@ -3,7 +3,7 @@
     <h1>发现板块</h1>
     <el-divider/>
     <div>
-      <el-table :data="tableData" :table-layout="'fixed'">
+      <el-table :data="tableData" :table-layout="'fixed'" @cell-click="click">
         <el-table-column prop="moduleName" label="名称" width="300px"/>
         <el-table-column prop="moduleInfo" label="介绍" width=""/>
         <el-table-column prop="moduleAuthor.username" label="创建者" width="150px"/>
@@ -43,6 +43,10 @@ export default {
         }
         this.tableData = rows;
       })
+    },
+    click(a) {
+      sessionStorage.setItem("module", JSON.stringify(a));
+      this.$router.push("/moduleInfo");
     },
   }
 }
