@@ -8,7 +8,7 @@
       <el-button type="primary" @click="createArticle">发帖</el-button>
     </div>
     <div style="padding: 20px">
-      <el-table :data="articles" :table-layout="'fixed'" @cell-click="click" :show-header="false" :stripe="true">
+      <el-table :data="articles" :table-layout="'fixed'" @cell-click="click" :stripe="true">
         <el-table-column prop="artTitle" label="标题" width="200px" :fixed="'left'" :show-overflow-tooltip="true"/>
         <el-table-column prop="artContext" label="内容" :show-overflow-tooltip="true"/>
         <el-table-column prop="artCreate" label="创建时间" width="200px" :fixed="'right'" :align="'right'"/>
