@@ -58,7 +58,6 @@ export default {
       userAchievement: JSON.parse(sessionStorage.getItem("userAchievement")),
     }
   }
-
 }
 </script>
 

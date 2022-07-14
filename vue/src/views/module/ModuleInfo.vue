@@ -4,14 +4,18 @@
     <el-divider border-style="dashed" style="margin: 10px"/>
     <p style="color: #494949">{{ module.moduleInfo }}</p>
     <el-divider/>
+    <div>
+      <el-button type="primary" @click="createArticle">发帖</el-button>
+    </div>
     <div style="padding: 20px">
-      <div v-for="item in 15" :key="item">
-        {{ articles[item] }}
-      </div>
-      <div v-if="articles.length===0" style="text-align: center;color: #9d9d9d"><h3>暂无帖子</h3></div>
+      <el-table :data="articles" :table-layout="'fixed'" @cell-click="click" :show-header="false" :stripe="true">
+        <el-table-column prop="artTitle" label="标题" width="200px" :fixed="'left'" :show-overflow-tooltip="true"/>
+        <el-table-column prop="artContext" label="内容" :show-overflow-tooltip="true"/>
+        <el-table-column prop="artCreate" label="创建时间" width="200px" :fixed="'right'" :align="'right'"/>
+      </el-table>
       <div>
         <el-pagination style="margin-top: 20px" background hide-on-single-page layout="prev, pager, next"
-                       :total="moduleCount" @current-change="changPage"/>
+                       :total="articleCount" @current-change="changPage"/>
       </div>
     </div>
   </div>
@@ -27,7 +31,7 @@ export default {
     return {
       module: module,
       articles: [],
-      moduleCount: 0,
+      articleCount: 0,
     };
   },
   created() {
@@ -39,18 +43,32 @@ export default {
     },
     load(pageNum) {
       this.module = JSON.parse(sessionStorage.getItem("module"));
-      request.post("/article", {
-        pageNum: pageNum,
-        moduleId: this.module.moduleId
+      let module_id = this.module.moduleId
+      request.post("/module/articles/" + pageNum, {
+        moduleId: module_id
       }).then(res => {
         if (res.code === '1') {
-          this.articles = res.data;
-          console.log(this.articles)
+          let rows = [];
+          // 从时间截取日期
+          for (let i = 0; i < (res.data.list.length <= 10 ? res.data.list.length : 10); i++) {
+            const row = res.data.list[i];
+            row.artCreate = row.artCreate.substring(0, 10);
+            rows[i] = row;
+          }
+          this.articles = rows;
+          this.articleCount=res.data.count
         } else {
           ElMessage.error(res.data);
         }
       });
     },
+    click(a) {
+      sessionStorage.setItem("module", JSON.stringify(a));
+      this.$router.push("/moduleInfo");
+    },
+    createArticle(){
+      this.$router.push("/createArticle")
+    }
   }
 }
 </script>

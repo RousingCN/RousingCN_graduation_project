@@ -44,7 +44,6 @@ export default {
           sessionStorage.setItem("user", JSON.stringify(res.data));
 
           request.get("/Achievement/user", {userid: res.data.userid}).then(re => {
-            console.log(re)
             if (re.code === "1") {
               sessionStorage.setItem("userAchievement", JSON.stringify(re.data));
             } else {
