@@ -1,9 +1,8 @@
 <template>
   <div style="flex: 1;margin: 20px;border: 1px solid var(--el-border-color);padding: 50px;border-radius: 20px">
-    <h1>{{ module.moduleName }}</h1>
-    <el-divider border-style="dashed" style="margin: 10px"/>
-    <p style="color: #494949">{{ module.moduleInfo }}</p>
-    <el-divider/>
+    <el-page-header :content="module.moduleName" @back="this.$router.back()" style="margin-bottom: 30px;"/>
+    <p style="color: #a1a1a1">{{ module.moduleInfo }}</p>
+    <el-divider />
     <div>
       <el-button type="primary" @click="createArticle">发帖</el-button>
     </div>
@@ -56,17 +55,18 @@ export default {
             rows[i] = row;
           }
           this.articles = rows;
-          this.articleCount=res.data.count
+          this.articleCount = res.data.count
         } else {
           ElMessage.error(res.data);
         }
       });
     },
-    click(a) {
-      sessionStorage.setItem("module", JSON.stringify(a));
-      this.$router.push("/moduleInfo");
+    click(data) {
+      sessionStorage.setItem("article", JSON.stringify(data));
+      console.log(data)
+      this.$router.push("/articleInfo");
     },
-    createArticle(){
+    createArticle() {
       this.$router.push("/createArticle")
     }
   }

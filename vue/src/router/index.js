@@ -11,19 +11,19 @@ const routes = [
         redirect: "/index",
         children: [
             {
+                path: '/about',
+                name: 'About',
+                component: () => import('../views/About')
+            },
+            {
                 path: '/index',
                 name: 'Index',
                 component: () => import('../views/Index')
             },
             {
-                path: '/article',
-                name: 'Article',
-                component: () => import('../views/article/Article')
-            },
-            {
-                path: '/about',
-                name: 'About',
-                component: () => import('../views/About')
+                path: '/articleInfo',
+                name: 'ArticleInfo',
+                component: () => import('../views/article/ArticleInfo')
             },
             {
                 path: '/createArticle',
