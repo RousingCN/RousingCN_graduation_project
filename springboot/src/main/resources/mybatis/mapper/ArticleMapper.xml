@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rousing.mapper.ArticleMapper">
+
+    <resultMap id="ArticleResultMap" type="com.rousing.pojo.Article">
+        <result property="artId" column="art_id"/>
+        <result property="artTitle" column="art_title"/>
+        <result property="artContext" column="art_context"/>
+        <result property="artModule" column="art_module"/>
+        <result property="artCreate" column="art_create"/>
+        <result property="artStatus" column="art_status"/>
+        <association property="artAuthor" javaType="com.rousing.pojo.User">
+            <result property="userid" column="userid"/>
+            <result property="username" column="username"/>
+            <result property="userPassword" column="user_password"/>
+            <result property="userPhone" column="user_phone"/>
+            <result property="userMail" column="user_mail"/>
+            <result property="userSex" column="user_sex"/>
+            <result property="userBirth" column="user_birth"/>
+            <result property="userCreate" column="user_create"/>
+            <result property="userImg" column="user_img"/>
+            <result property="userinfo" column="userinfo"/>
+            <result property="userStatus" column="user_status"/>
+        </association>
+    </resultMap>
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <select id="selectArticleList" parameterType="map" resultMap="ArticleResultMap">
+        select a.*, u.*
+        from article a,
+             user u
+        where a.art_author = u.userid
+          and a.art_module = #{moduleId}
+          and a.art_status = 1
+        order by a.art_id
+        limit #{startNum},#{endNum}
+    </select>
+
+    <select id="selectAllCount" resultType="Integer">
+        select count(*)
+        from article
+        where art_status = 1;
+    </select>
+
+    <insert id="insertArticle" parameterType="com.rousing.pojo.Article">
+        insert into article(art_title, art_context, art_module, art_author, art_create)
+        values (#{artTitle}, #{artContext}, #{artModule}, #{artAuthor.userid}, now());
+    </insert>
+
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rousing.mapper.UserAchievementMapper">
+
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <select id="selectFans" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from graduation_design.attention
+        where att_author = #{authorId}
+          and att_status = 1
+    </select>
+
+    <select id="selectAttention" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from graduation_design.attention
+        where att_user = #{userid}
+          and att_status = 1;
+    </select>
+
+    <select id="selectArticle" parameterType="Integer" resultType="Integer">
+        select art_id
+        from article
+        where art_author = #{authorId}
+          and art_status in (1, 2)
+    </select>
+
+    <select id="selectCollect" parameterType="java.util.List" resultType="Integer">
+        select count(*) from collect where col_status = 1 and
+        <choose>
+            <when test="art_id_list.size!=0">
+                col_article in
+                <foreach collection="art_id_list" item="art_id" separator="," open="(" close=")" index="item">
+                    #{item, jdbcType=INTEGER}
+                </foreach>
+            </when>
+            <otherwise>
+                col_article = -1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectView" parameterType="java.util.List" resultType="Integer">
+        select count(*) from view where 1=1 and
+        <choose>
+            <when test="art_id_list.size()!=0">
+                view_article in
+                <foreach collection="art_id_list" item="art_id" separator="," open="(" close=")" index="item">
+                    #{item, jdbcType=INTEGER}
+                </foreach>
+            </when>
+            <otherwise>
+                view_article = -1
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectLike" parameterType="java.util.List" resultType="Integer">
+        select count(*) from like_it where
+        like_status = 1 and
+        <choose>
+            <when test="art_id_list.size()!=0">
+                like_article in
+                <foreach collection="art_id_list" item="art_id" separator="," open="(" close=")" index="item">
+                    #{item, jdbcType=INTEGER}
+                </foreach>
+            </when>
+            <otherwise>
+                like_article = -1
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

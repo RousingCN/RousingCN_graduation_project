@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rousing.mapper.ModuleMapper">
+
+    <resultMap id="ModuleResultMap" type="com.rousing.pojo.Module">
+        <result property="moduleId" column="module_id"/>
+        <result property="moduleName" column="module_name"/>
+        <result property="moduleInfo" column="module_info"/>
+        <result property="moduleStatus" column="module_status"/>
+        <result property="moduleCreate" column="module_create"/>
+        <association property="moduleAuthor" javaType="com.rousing.pojo.User">
+            <result property="userid" column="userid"/>
+            <result property="username" column="username"/>
+            <result property="userPassword" column="user_password"/>
+            <result property="userPhone" column="user_phone"/>
+            <result property="userMail" column="user_mail"/>
+            <result property="userSex" column="user_sex"/>
+            <result property="userBirth" column="user_birth"/>
+            <result property="userCreate" column="user_create"/>
+            <result property="userImg" column="user_img"/>
+            <result property="userinfo" column="userinfo"/>
+            <result property="userStatus" column="user_status"/>
+        </association>
+    </resultMap>
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <select id="selectModule" parameterType="Module" resultMap="ModuleResultMap">
+        select m.*,u.* from graduation_design.module m,graduation_design.user u
+        where
+        m.module_author = u.userid
+        <if test="moduleId!=null">
+            and module_id = #{moduleId}
+        </if>
+        <if test="moduleName!=null">
+            and module_name = #{moduleName}
+        </if>
+        <if test="moduleInfo!=null">
+            and module_info = #{moduleInfo}
+        </if>
+        <if test="moduleCreate!=null">
+            and module_create = #{moduleCreate}
+        </if>
+        <if test="moduleStatus!=null">
+            and module_status = #{moduleStatus}
+        </if>
+        <if test="moduleAuthor!=null">
+            and module_author = #{moduleAuthor.userid}
+        </if>
+    </select>
+
+    <select id="selectModulesCount" resultType="Integer">
+        select count(*)
+        from module;
+    </select>
+
+    <select id="selectModulePage" parameterType="map" resultMap="ModuleResultMap">
+        select m.*, u.*
+        from graduation_design.module m,
+             graduation_design.user u
+        where m.module_author = u.userid
+        order by m.module_id
+        limit #{startLimit},#{endLimit}
+    </select>
+
+    <insert id="insertModule" parameterType="Module">
+        insert into graduation_design.module (module_name, module_info, module_author, module_create)
+        values (#{moduleName}, #{moduleInfo}, #{moduleAuthor.userid}, now());
+    </insert>
+
+    <update id="updateModule" parameterType="Module">
+
+    </update>
+</mapper>
