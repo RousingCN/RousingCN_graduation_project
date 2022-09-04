@@ -18,8 +18,8 @@
     <div style="width: 10%;"/>
     <el-sub-menu index="" >
       <template #title>
-        <el-avatar v-if="user.userImg===null"> user</el-avatar>
-        <el-image style="width: 59px;height: 59px;border-radius: 50%" v-if="user.userImg!==null" :src="user.userImg"
+        <el-avatar v-if="user.userAvatar===null"> user</el-avatar>
+        <el-image style="width: 59px;height: 59px;border-radius: 50%" v-if="user.userAvatar!==null" :src="user.userAvatar"
                   :fit="'contain'">
           <template #error >
             <div class="image-slot">{{user.username}}</div>

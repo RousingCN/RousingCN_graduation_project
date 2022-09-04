@@ -28,7 +28,7 @@
 
 import {ElMessage} from "element-plus";
 
-let url = JSON.parse(sessionStorage.getItem("user")).userImg
+let url = JSON.parse(sessionStorage.getItem("user")).userAvatar
 console.log(url)
 
 export default {

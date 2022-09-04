@@ -41,8 +41,8 @@
             <if test="userCreate!=null">
                 and user_create = #{userCreate}
             </if>
-            <if test="userImg!=null">
-                and user_img = #{userImg}
+            <if test="userAvatar!=null">
+                and user_img = #{userAvatar}
             </if>
             <if test="userinfo!=null">
                 and userinfo = #{userinfo}
@@ -76,8 +76,8 @@
             <if test="userBirth!=null">
                 user_birth = #{userBirth},
             </if>
-            <if test="userImg!=null">
-                user_img = #{userImg},
+            <if test="userAvatar!=null">
+                user_img = #{userAvatar},
             </if>
             <if test="userinfo!=null">
                 userinfo = #{userinfo},

@@ -4,7 +4,7 @@
       <el-card :body-style="{ padding: '0px' }">
         <div style="font-size: 18px;color: #656565;text-align: center;margin: 10px">{{ user.username }}</div>
         <div style="text-align: center;">
-          <el-image style="width: 100px; height: 100px;border-radius: 50%;" :src="user.userImg" :fit="'contain'">
+          <el-image style="width: 100px; height: 100px;border-radius: 50%;" :src="user.userAvatar" :fit="'contain'">
             <template #placeholder>
               <div style="text-align: center">
                 <el-icon>

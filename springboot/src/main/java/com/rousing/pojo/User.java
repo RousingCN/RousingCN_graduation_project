@@ -18,7 +18,7 @@ public class User {
     private String userSex;
     private Date userBirth;
     private Date userCreate;
-    private String userImg;
+    private String userAvatar;
     private String userinfo;
     private Integer userStatus;
 }

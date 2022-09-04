@@ -40,7 +40,7 @@ public class FileController {
         }
         //更新保存的信息
         User user = (User) session.getAttribute("user");
-        user.setUserImg(ip + ":" + port + "/avatar/" + uuid + "_" + originalFilename);
+        user.setUserAvatar(ip + ":" + port + "/avatar/" + uuid + "_" + originalFilename);
         if (userService.updateUser(user)) {
             return Result.success(userService.getOne(user));
         }
