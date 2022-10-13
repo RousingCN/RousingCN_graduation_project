@@ -59,7 +59,7 @@ export default {
           })
 
 
-          this.$router.push("/")
+          this.$router.push("/index")
         } else {
           ElMessage.error(res.msg);
         }

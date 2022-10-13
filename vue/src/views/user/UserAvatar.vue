@@ -1,6 +1,6 @@
 <template>
   <div
-      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 600px;height: 100%">
+      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 800px;height: 100%">
     <h1>头像</h1>
     <el-divider />
     <div style="width: 120px;height: 120px;margin: 50px auto">

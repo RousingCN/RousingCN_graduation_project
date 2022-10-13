@@ -55,7 +55,7 @@ export default {
             message: '注册成功',
             type: 'success',
           })
-          this.$router.push("/login");
+          this.$router.push("/");
         } else {
           ElMessage.error(res.msg);
         }
@@ -63,7 +63,7 @@ export default {
       })
     },
     toLogin() {
-      this.$router.push("/login");
+      this.$router.push("/");
     }
   }
 }

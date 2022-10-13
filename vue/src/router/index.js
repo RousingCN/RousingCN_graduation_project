@@ -6,9 +6,13 @@ import ModuleLayout from "@/layout/ModuleLayout";
 const routes = [
     {
         path: '/',
+        name: 'Login',
+        component: () => import('../views/Login.vue')
+    },
+    {
+        path: "/index",
         name: 'Layout',
         component: IndexLayout,
-        redirect: "/index",
         children: [
             {
                 path: '/about',
@@ -31,11 +35,6 @@ const routes = [
                 component: () => import('../views/article/CreateArticle')
             }
         ]
-    },
-    {
-        path: '/login',
-        name: 'Login',
-        component: () => import('../views/Login.vue')
     },
     {
         path: '/register',
