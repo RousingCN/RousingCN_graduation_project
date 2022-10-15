@@ -18,7 +18,7 @@
             <result property="userSex" column="user_sex"/>
             <result property="userBirth" column="user_birth"/>
             <result property="userCreate" column="user_create"/>
-            <result property="userImg" column="user_img"/>
+            <result property="userAvatar" column="user_img"/>
             <result property="userinfo" column="userinfo"/>
             <result property="userStatus" column="user_status"/>
         </association>
