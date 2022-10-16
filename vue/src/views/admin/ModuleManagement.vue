@@ -11,8 +11,8 @@
         <el-form-item label="模块名称">
           <el-input v-model="formInline.moduleName" placeholder="官方公告"/>
         </el-form-item>
-        <el-form-item label="模块作者id">
-          <el-input v-model="formInline.moduleName" placeholder="0"/>
+        <el-form-item label="创建者id">
+          <el-input v-model="formInline.moduleAuthor" placeholder="0"/>
         </el-form-item>
         <el-form-item label="模块状态">
           <el-select v-model="formInline.moduleStatus" clearable placeholder="所有类型">
@@ -22,21 +22,21 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="queryUser">查询模块</el-button>
+          <el-button type="primary" @click="queryModule">查询模块</el-button>
         </el-form-item>
       </el-form>
     </div>
-    <div style="margin: 100px auto;text-align: center;max-width: 1000px">
+    <div style="margin: 100px auto;text-align: center;max-width: 1300px">
       <el-table v-loading="tableLoading" :data="tableData" max-height="350" style="width: 100%" border :stripe="true"
                 @cell-mouse-enter="getRowData">
         <el-table-column prop="moduleId" label="模块id"/>
         <el-table-column prop="moduleName" label="模块名称"/>
-        <el-table-column prop="moduleAuthor" label="创建者"/>
+        <el-table-column prop="moduleAuthor.username" label="创建者"/>
         <el-table-column prop="moduleCreate" label="创建时间"/>
         <el-table-column prop="moduleStatus" label="模块状态"/>
         <el-table-column fixed="right" label="操作" width="120">
           <template #default>
-            <el-button link type="primary" size="small" @click="updateUserStatus">
+            <el-button link type="primary" size="small" @click="updateModuleStatus">
               修改状态
             </el-button>
           </template>
@@ -63,13 +63,20 @@ export default {
     }
   },
   methods: {
-    queryUser() {
+    queryModule() {
       this.tableLoading = ref(true);
-      request.post("/api/admin/selectModule", this.formInline).then(res => {
+      request.post("/api/admin/selectModule", {
+        moduleId: this.formInline.userid,
+        moduleName: this.formInline.moduleName,
+        moduleAuthor: {
+          userid: this.formInline.moduleAuthor
+        },
+        moduleStatus:this.formInline.moduleStatus
+      }).then(res => {
         if (res.code === '1') {
           const resData = res.data;
           for (let i = 0; i < resData.length; i++) {
-            resData[i].userCreate = resData[i].userCreate.substring(0, 10) + " " + resData[i].userCreate.substring(11, 19)
+            resData[i].moduleCreate = resData[i].moduleCreate.substring(0, 10) + " " + resData[i].moduleCreate.substring(11, 19)
           }
           this.tableData = resData;
 
@@ -86,8 +93,8 @@ export default {
     getRowData(rowData) {
       selectRowData = rowData;
     },
-    updateUserStatus: function () {
-      ElMessageBox.prompt('1：普通用户   \n2：封禁用户   \n3：管理员', selectRowData.userid + '号用户状态修改', {
+    updateModuleStatus: function () {
+      ElMessageBox.prompt('1：正常   2：禁用   3：官方', selectRowData.moduleId + '号板块状态修改', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputPattern:
@@ -96,17 +103,17 @@ export default {
       })
           .then(({value}) => {
             request.put("/api/admin/updateModule", {
-              userid: selectRowData.userid,
-              username: selectRowData.username,
-              userStatus: parseInt({value}.value)
+              moduleId: selectRowData.moduleId,
+              moduleName: selectRowData.moduleName,
+              moduleStatus: parseInt({value}.value)
             }).then(res => {
               console.log(res)
               if (res.code === '1') {
                 ElMessage({
                   type: 'success',
-                  message: selectRowData.userid + `号用户的状态已经修改成功`,
+                  message: selectRowData.moduleId + `号模块的状态已经修改成功`,
                 });
-                this.queryUser()
+                this.queryModule()
               } else {
                 ElMessage.error(res.msg)
               }

@@ -83,7 +83,7 @@ export default {
       selectRowData = rowData;
     },
     updateUserStatus: function () {
-      ElMessageBox.prompt('1：普通用户   \n2：封禁用户   \n3：管理员', selectRowData.userid + '号用户状态修改', {
+      ElMessageBox.prompt('1：普通用户   2：封禁用户   3：管理员', selectRowData.userid + '号用户状态修改', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputPattern:
