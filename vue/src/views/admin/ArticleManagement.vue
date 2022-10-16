@@ -1,40 +1,132 @@
 <template>
-  <div>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="筛选方式">
-        <el-select v-model="formInline.type" placeholder="">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="用户id">
-        <el-input v-model="formInline.userid" placeholder="Approved by"/>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="queryUser">Query</el-button>
-      </el-form-item>
-    </el-form>
+  <div
+      style="flex: 1;margin: 20px auto;border: 1px solid var(--el-border-color);padding: 50px;border-radius: 20px;max-width: 1500px">
+    <h1>帖子管理</h1>
+    <el-divider/>
+    <div style="margin: 100px auto;text-align: center;">
+      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item label="帖子id">
+          <el-input v-model="formInline.artId" placeholder="0"/>
+        </el-form-item>
+        <el-form-item label="帖子标题">
+          <el-input v-model="formInline.artTitle" placeholder="官方贴"/>
+        </el-form-item>
+        <el-form-item label="创建者id">
+          <el-input v-model="formInline.artAuthor" placeholder="0"/>
+        </el-form-item>
+        <el-form-item label="帖子状态">
+          <el-select v-model="formInline.artStatus" clearable placeholder="所有类型">
+            <el-option label="正常" value="1"/>
+            <el-option label="禁用" value="2"/>
+            <el-option label="置顶" value="3"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="queryArticle">查询帖子</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div style="margin: 100px auto;text-align: center;max-width: 1300px">
+      <el-table v-loading="tableLoading" :data="tableData" max-height="350" style="width: 100%" border :stripe="true"
+                @cell-mouse-enter="getRowData">
+        <el-table-column prop="artId" label="帖子id"/>
+        <el-table-column prop="artTitle" label="帖子标题"/>
+        <el-table-column prop="artAuthor.username" label="创建者"/>
+        <el-table-column prop="artCreate" label="创建时间"/>
+        <el-table-column prop="artStatus" label="帖子状态"/>
+        <el-table-column fixed="right" label="操作" width="120">
+          <template #default>
+            <el-button link type="primary" size="small" @click="updateArticleStatus">
+              修改状态
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
-<script >
+<script>
 import request from "@/utils/request";
+import {ref} from "vue";
+import {ElMessage, ElMessageBox} from "element-plus";
+
+let selectRowData = null;
 
 export default {
   name: "ArticleManagement",
   data() {
     return {
-      formInline: {
-        userid: ''
-      }
+      formInline: {},
+      tableData: [],
+      tableLoading: ref(false)
     }
   },
   methods: {
-    queryUser() {
-      request.post("/user/login", this.formInline).then(res => {
+    queryArticle() {
+      this.tableLoading = ref(true);
+      request.post("/api/admin/selectArticle", {
+        artId: this.formInline.artId,
+        artTitle: this.formInline.artTitle,
+        artAuthor: {
+          userid: this.formInline.artAuthor
+        },
+        artStatus: this.formInline.artStatus
+      }).then(res => {
+        if (res.code === '1') {
+          const resData = res.data;
+          for (let i = 0; i < resData.length; i++) {
+            resData[i].artCreate = resData[i].artCreate.substring(0, 10) + " " + resData[i].artCreate.substring(11, 19)
+          }
+          this.tableData = resData;
 
+          ElMessage({
+            message: '帖子列表已更新',
+            type: 'success',
+          })
+        } else {
+          ElMessage.error(res.msg);
+        }
+        this.tableLoading = ref(false)
       })
-    }
+    },
+    getRowData(rowData) {
+      selectRowData = rowData;
+    },
+    updateArticleStatus: function () {
+      ElMessageBox.prompt('1：正常   2：禁用   3：置顶', selectRowData.artId + '号帖子状态修改', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern:
+            /^([1-3][1]*)$/,
+        inputErrorMessage: '请输入数字1、2、3',
+      })
+          .then(({value}) => {
+            request.put("/api/admin/updateArticle", {
+              artId: selectRowData.artId,
+              artTitle: selectRowData.artTitle,
+              artStatus: parseInt({value}.value)
+            }).then(res => {
+              console.log(res)
+              if (res.code === '1') {
+                ElMessage({
+                  type: 'success',
+                  message: selectRowData.artId + `号帖子的状态已经修改成功`,
+                });
+                this.queryArticle()
+              } else {
+                ElMessage.error(res.msg)
+              }
+            })
+
+          })
+          .catch(() => {
+            ElMessage({
+              type: 'info',
+              message: '取消',
+            })
+          })
+    },
   }
 }
 

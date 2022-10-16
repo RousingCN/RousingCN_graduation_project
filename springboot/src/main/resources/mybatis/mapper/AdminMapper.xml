@@ -143,8 +143,8 @@
         <if test="artModule!=null">
             and a.art_module = #{artModule}
         </if>
-        <if test="artAuthor!=null">
-            and a.art_author = #{artAuthor}
+        <if test="artAuthor.userid!=null">
+            and a.art_author = #{artAuthor.userid}
         </if>
         <if test="artCreate!=null">
             and a.art_create = #{artCreate}
@@ -163,48 +163,33 @@
 
     <select id="selectComment" parameterType="Comment" resultType="Comment">
         select * from comment
-        where
-        <if test="comId!=null">
-            com_id=#{comId}
-        </if>
-        <if test="comUser!=null">
-            and com_user=#{comUser}
-        </if>
-        <if test="comContext!=null">
-            and com_context=#{comContext}
-        </if>
-        <if test="comArticle!=null">
-            and com_article=#{comArticle}
-        </if>
-        <if test="comCreate!=null">
-            and com_create=#{comCreate}
-        </if>
-        <if test="comStatus!=null">
-            and com_status=#{comStatus}
-        </if>
+        <where>
+            <if test="comId!=null">
+                com_id=#{comId}
+            </if>
+            <if test="comUser!=null">
+                and com_user=#{comUser}
+            </if>
+            <if test="comContext!=null">
+                and com_context=#{comContext}
+            </if>
+            <if test="comArticle!=null">
+                and com_article=#{comArticle}
+            </if>
+            <if test="comCreate!=null">
+                and com_create=#{comCreate}
+            </if>
+            <if test="comStatus!=null">
+                and com_status=#{comStatus}
+            </if>
+        </where>
     </select>
 
     <update id="updateComment" parameterType="Comment">
         update comment
         set com_status = #{comStatus}
-        where
-        <if test="comId!=null">
-            com_id=#{comId}
-        </if>
-        <if test="comUser!=null">
-            and com_user=#{comUser}
-        </if>
-        <if test="comContext!=null">
-            and com_context=#{comContext}
-        </if>
-        <if test="comArticle!=null">
-            and com_article=#{comArticle}
-        </if>
-        <if test="comCreate!=null">
-            and com_create=#{comCreate}
-        </if>
-        <if test="comStatus!=null">
-            and com_status=#{comStatus}
-        </if>
+        where com_id = #{comId}
+          and com_user = #{comUser}
+          and com_article = #{comArticle}
     </update>
 </mapper>

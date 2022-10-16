@@ -66,7 +66,7 @@ export default {
     queryModule() {
       this.tableLoading = ref(true);
       request.post("/api/admin/selectModule", {
-        moduleId: this.formInline.userid,
+        moduleId: this.formInline.moduleId,
         moduleName: this.formInline.moduleName,
         moduleAuthor: {
           userid: this.formInline.moduleAuthor
@@ -81,7 +81,7 @@ export default {
           this.tableData = resData;
 
           ElMessage({
-            message: '用户列表已更新',
+            message: '模块列表已更新',
             type: 'success',
           })
         } else {
@@ -94,7 +94,7 @@ export default {
       selectRowData = rowData;
     },
     updateModuleStatus: function () {
-      ElMessageBox.prompt('1：正常   2：禁用   3：官方', selectRowData.moduleId + '号板块状态修改', {
+      ElMessageBox.prompt('1：正常   2：禁用   3：官方', selectRowData.moduleId + '号模块状态修改', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputPattern:
