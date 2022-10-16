@@ -33,7 +33,7 @@
         <el-table-column fixed="right" label="操作" width="120">
           <template #default>
             <el-button link type="primary" size="small" @click="updateUserStatus">
-              修改用户状态
+              修改状态
             </el-button>
           </template>
         </el-table-column>
