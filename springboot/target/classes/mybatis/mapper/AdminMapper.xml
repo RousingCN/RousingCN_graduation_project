@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rousing.mapper.AdminMapper">
+    <resultMap id="ModuleResultMap" type="com.rousing.pojo.Module">
+        <result property="moduleId" column="module_id"/>
+        <result property="moduleName" column="module_name"/>
+        <result property="moduleInfo" column="module_info"/>
+        <result property="moduleStatus" column="module_status"/>
+        <result property="moduleCreate" column="module_create"/>
+        <association property="moduleAuthor" javaType="com.rousing.pojo.User">
+            <result property="userid" column="userid"/>
+            <result property="username" column="username"/>
+            <result property="userPassword" column="user_password"/>
+            <result property="userPhone" column="user_phone"/>
+            <result property="userMail" column="user_mail"/>
+            <result property="userSex" column="user_sex"/>
+            <result property="userBirth" column="user_birth"/>
+            <result property="userCreate" column="user_create"/>
+            <result property="userAvatar" column="user_img"/>
+            <result property="userinfo" column="userinfo"/>
+            <result property="userStatus" column="user_status"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="ArticleResultMap" type="com.rousing.pojo.Article">
+        <result property="artId" column="art_id"/>
+        <result property="artTitle" column="art_title"/>
+        <result property="artContext" column="art_context"/>
+        <result property="artModule" column="art_module"/>
+        <result property="artCreate" column="art_create"/>
+        <result property="artStatus" column="art_status"/>
+        <association property="artAuthor" javaType="com.rousing.pojo.User">
+            <result property="userid" column="userid"/>
+            <result property="username" column="username"/>
+            <result property="userPassword" column="user_password"/>
+            <result property="userPhone" column="user_phone"/>
+            <result property="userMail" column="user_mail"/>
+            <result property="userSex" column="user_sex"/>
+            <result property="userBirth" column="user_birth"/>
+            <result property="userCreate" column="user_create"/>
+            <result property="userAvatar" column="user_img"/>
+            <result property="userinfo" column="userinfo"/>
+            <result property="userStatus" column="user_status"/>
+        </association>
+    </resultMap>
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <select id="selectUser" parameterType="User" resultType="com.rousing.pojo.User">
+        select * from graduation_design.user
+        <where>
+            <if test="userid!=null">
+                userid = #{userid}
+            </if>
+            <if test="username!=null">
+                and username = #{username}
+            </if>
+            <if test="userPassword!=null">
+                and user_password = #{userPassword}
+            </if>
+            <if test="userPhone!=null">
+                and user_phone = #{userPhone}
+            </if>
+            <if test="userMail!=null">
+                and user_mail = #{userMail}
+            </if>
+            <if test="userSex!=null">
+                and user_sex = #{userSex}
+            </if>
+            <if test="userBirth!=null">
+                and user_birth = #{userBirth}
+            </if>
+            <if test="userCreate!=null">
+                and user_create = #{userCreate}
+            </if>
+            <if test="userAvatar!=null">
+                and user_img = #{userAvatar}
+            </if>
+            <if test="userinfo!=null">
+                and userinfo = #{userinfo}
+            </if>
+            <if test="userStatus!=null">
+                and user_status = #{userStatus}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        update graduation_design.user
+        set user_status = #{userStatus}
+        where userid = #{userid}
+          and username = #{username}
+    </update>
+
+    <select id="selectModule" parameterType="Module" resultMap="ModuleResultMap">
+        select m.*,u.* from graduation_design.module m,graduation_design.user u
+        where
+        m.module_author = u.userid
+        <if test="moduleId!=null">
+            and m.module_id = #{moduleId}
+        </if>
+        <if test="moduleName!=null">
+            and m.module_name = #{moduleName}
+        </if>
+        <if test="moduleInfo!=null">
+            and m.module_info = #{moduleInfo}
+        </if>
+        <if test="moduleCreate!=null">
+            and m.module_create = #{moduleCreate}
+        </if>
+        <if test="moduleStatus!=null">
+            and m.module_status = #{moduleStatus}
+        </if>
+        <if test="moduleAuthor!=null">
+            and m.module_author = #{moduleAuthor.userid}
+        </if>
+    </select>
+
+    <update id="updateModule" parameterType="Module">
+        update module
+        set module_status = #{moduleStatus}
+        where
+        <if test="moduleId!=null">
+            module_id = #{moduleId}
+        </if>
+        <if test="moduleName!=null">
+            and module_name = #{moduleName}
+        </if>
+        <if test="moduleCreate!=null">
+            and module_create = #{moduleCreate}
+        </if>
+        <if test="moduleStatus!=null">
+            and module_status = #{moduleStatus}
+        </if>
+        <if test="moduleAuthor!=null">
+            and module_author = #{moduleAuthor.userid}
+        </if>
+    </update>
+
+
+    <select id="selectArticle" parameterType="Article" resultMap="ArticleResultMap">
+        select a.*, u.*
+        from article a, user u
+        where a.art_author = u.userid
+        <if test="artId!=null">
+            and a.art_id = #{artId}
+        </if>
+        <if test="artTitle!=null">
+            and a.art_title = #{artTitle}
+        </if>
+        <if test="artContext!=null">
+            and a.art_context = #{artContext}
+        </if>
+        <if test="artModule!=null">
+            and a.art_module = #{artModule}
+        </if>
+        <if test="artAuthor!=null">
+            and a.art_author = #{artAuthor}
+        </if>
+        <if test="artCreate!=null">
+            and a.art_create = #{artCreate}
+        </if>
+        <if test="artStatus!=null">
+            and a.art_status = #{artStatus}
+        </if>
+    </select>
+
+    <update id="updateArticle" parameterType="Article">
+        update article
+        set art_status = #{artStatus}
+        where
+        <if test="artId!=null">
+            art_id = #{artId}
+        </if>
+        <if test="artTitle!=null">
+            and art_title = #{artTitle}
+        </if>
+        <if test="artContext!=null">
+            and art_context = #{artContext}
+        </if>
+        <if test="artModule!=null">
+            and art_module = #{artModule}
+        </if>
+        <if test="artAuthor!=null">
+            and art_author = #{artAuthor.userid}
+        </if>
+        <if test="artCreate!=null">
+            and art_create = #{artCreate}
+        </if>
+        <if test="artStatus!=null">
+            and art_status = #{artStatus}
+        </if>
+    </update>
+
+    <select id="selectComment" parameterType="Comment" resultType="Comment">
+        select * from comment
+        where
+        <if test="comId!=null">
+            com_id=#{comId}
+        </if>
+        <if test="comUser!=null">
+            and com_user=#{comUser}
+        </if>
+        <if test="comContext!=null">
+            and com_context=#{comContext}
+        </if>
+        <if test="comArticle!=null">
+            and com_article=#{comArticle}
+        </if>
+        <if test="comCreate!=null">
+            and com_create=#{comCreate}
+        </if>
+        <if test="comStatus!=null">
+            and com_status=#{comStatus}
+        </if>
+    </select>
+
+    <update id="updateComment" parameterType="Comment">
+        update comment
+        set com_status = #{comStatus}
+        where
+        <if test="comId!=null">
+            com_id=#{comId}
+        </if>
+        <if test="comUser!=null">
+            and com_user=#{comUser}
+        </if>
+        <if test="comContext!=null">
+            and com_context=#{comContext}
+        </if>
+        <if test="comArticle!=null">
+            and com_article=#{comArticle}
+        </if>
+        <if test="comCreate!=null">
+            and com_create=#{comCreate}
+        </if>
+        <if test="comStatus!=null">
+            and com_status=#{comStatus}
+        </if>
+    </update>
+</mapper>
