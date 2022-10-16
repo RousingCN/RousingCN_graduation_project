@@ -24,7 +24,7 @@
       </el-form>
     </div>
     <div style="margin: 100px auto;text-align: center;max-width: 1000px">
-      <el-table v-loading="tableLoading" :data="tableData" height="250" style="width: 100%"
+      <el-table v-loading="tableLoading" :data="tableData" max-height="350" style="width: 100%" border :stripe="true"
                 @cell-mouse-enter="getRowData">
         <el-table-column prop="userid" label="用户id"/>
         <el-table-column prop="username" label="用户名"/>
@@ -70,7 +70,7 @@ export default {
           this.tableData = resData;
 
           ElMessage({
-            message: '获取成功',
+            message: '用户列表已更新',
             type: 'success',
           })
         } else {
@@ -94,7 +94,7 @@ export default {
             request.put("/api/admin/updateUser", {
               userid: selectRowData.userid,
               username: selectRowData.username,
-              userStatus: parseInt({value})
+              userStatus: parseInt({value}.value)
             }).then(res => {
               console.log(res)
               if (res.code === '1') {

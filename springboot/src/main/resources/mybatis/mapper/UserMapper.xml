@@ -54,8 +54,8 @@
     </select>
 
     <insert id="insertUser" parameterType="User">
-        insert into graduation_design.user (username, user_password, user_phone, user_mail, user_create)
-        values (#{username}, #{userPassword}, #{userPhone}, #{userMail}, now());
+        insert into graduation_design.user (username, user_password, user_phone, user_mail, user_create, user_status)
+        values (#{username}, #{userPassword}, #{userPhone}, #{userMail}, now(), 1);
     </insert>
 
     <update id="updateUser" parameterType="User">

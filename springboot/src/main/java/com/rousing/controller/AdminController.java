@@ -27,11 +27,12 @@ public class AdminController {
 
     @PutMapping("/updateUser")
     public Result<?> updateUser(@RequestBody User user, HttpSession session) {
+        System.out.println(user);
         User requestUser = (User) session.getAttribute("user");
         if (requestUser.getUserStatus() != 3) {
             return Result.error("-3", "该操作需要管理员权限");
         }
-        if (user.getUsername() == null && user.getUserid() == null) {
+        if (user.getUsername() == null || user.getUserid() == null || user.getUserStatus() == null) {
             return Result.error("-2", "无修改目标，请刷新页面后尝试");
         }
         if (adminService.updateUserStatus(user)) {

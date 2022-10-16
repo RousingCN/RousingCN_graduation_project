@@ -65,6 +65,8 @@ export default {
           } else if (res.data.userStatus === 3) {
             sessionStorage.setItem("user", JSON.stringify(res.data));
             this.$router.push("/admin/userManagement");
+          } else {
+            ElMessage.error("该账户状态异常，请尝试联系管理员");
           }
         } else {
           ElMessage.error(res.msg);

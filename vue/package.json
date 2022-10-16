@@ -16,8 +16,7 @@
     "lodash.clonedeep": "^4.5.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
-    "vuex": "^4.0.0",
-    "wangeditor": "^4.7.15"
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
