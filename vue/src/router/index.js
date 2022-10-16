@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import IndexLayout from "@/layout/IndexLayout";
 import UserLayout from "@/layout/UserLayout";
 import ModuleLayout from "@/layout/ModuleLayout";
+import AdminLayout from "@/layout/AdminLayout";
 
 const routes = [
     {
@@ -10,15 +11,37 @@ const routes = [
         component: () => import('../views/Login.vue')
     },
     {
+        path: '/admin',
+        name: 'Admin',
+        component: AdminLayout,
+        children: [
+            {
+                path: '/admin/userManagement',
+                name: 'UserManagement',
+                component: () => import('../views/admin/UserManagement')
+            },
+            {
+                path: '/admin/moduleManagement',
+                name: 'ModuleManagement',
+                component: () => import('../views/admin/ModuleManagement')
+            },
+            {
+                path: '/admin/articleManagement',
+                name: 'ArticleManagement',
+                component: () => import('../views/admin/ArticleManagement')
+            },
+            {
+                path: '/admin/commentManagement',
+                name: 'CommentManagement',
+                component: () => import('../views/admin/CommentManagement')
+            },
+        ]
+    },
+    {
         path: "/index",
         name: 'Layout',
         component: IndexLayout,
         children: [
-            {
-                path: '/about',
-                name: 'About',
-                component: () => import('../views/About')
-            },
             {
                 path: '/index',
                 name: 'Index',
@@ -33,6 +56,11 @@ const routes = [
                 path: '/createArticle',
                 name: 'CreateArticle',
                 component: () => import('../views/article/CreateArticle')
+            },
+            {
+                path: '/about',
+                name: 'About',
+                component: () => import('../views/About')
             }
         ]
     },
@@ -44,7 +72,7 @@ const routes = [
     {
         path: '/userCenter',
         name: 'UserLayout',
-        redirect: '/userInfo',
+        redirect: '/userAvatar',
         component: UserLayout,
         children: [
             {

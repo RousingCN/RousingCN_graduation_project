@@ -10,7 +10,7 @@ public class LoginHandleInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         Object user = request.getSession().getAttribute("user");
         if (user == null) {
-            response.encodeRedirectURL("http://localhost:9876/login");
+            response.encodeRedirectURL("http://localhost:9876/");
             return false;
         } else {
             return true;

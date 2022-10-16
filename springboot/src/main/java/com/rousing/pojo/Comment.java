@@ -17,5 +17,5 @@ public class Comment {
     private Integer comArticle;
     private Date comCreate;
     private Integer comStatus;
-    private List<CommentMulti> comMulti;
+//    private List<CommentMulti> comMulti;
 }

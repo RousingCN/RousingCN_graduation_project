@@ -15,7 +15,7 @@ request.interceptors.request.use(config => {
     // config.headers['token'] = user.token;  // 设置请求头
     const userJson = sessionStorage.getItem("user");
     if (!userJson) {
-        router.push("/login");
+        router.push("/");
     }
 
 

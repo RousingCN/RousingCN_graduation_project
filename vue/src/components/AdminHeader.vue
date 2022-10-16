@@ -8,13 +8,13 @@
   >
     <span style="line-height: 59px;margin-left: 20px">
       <el-icon><Sunny/></el-icon>
-      午时论坛
+      午时论坛(管理员)
     </span>
     <div class="flex-grow"/>
-    <el-menu-item index="/index" style="width: 8%">首页</el-menu-item>
-    <el-menu-item index="/module" style="width: 8%">板块</el-menu-item>
-    <el-menu-item index="/article" style="width: 8%">娱乐</el-menu-item>
-    <el-menu-item index="/about" style="width: 8%">关于</el-menu-item>
+    <el-menu-item index="/admin/userManagement" style="width: 8%">用户管理</el-menu-item>
+    <el-menu-item index="/admin/moduleManagement" style="width: 8%">模块管理</el-menu-item>
+    <el-menu-item index="/admin/articleManagement" style="width: 8%">帖子管理</el-menu-item>
+    <el-menu-item index="/admin/commentManagement" style="width: 8%">评论管理</el-menu-item>
     <div style="width: 10%;"/>
     <el-sub-menu index="" >
       <template #title>
