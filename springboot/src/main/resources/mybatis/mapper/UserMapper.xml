@@ -54,8 +54,9 @@
     </select>
 
     <insert id="insertUser" parameterType="User">
-        insert into graduation_design.user (username, user_password, user_phone, user_mail, user_create, user_status)
-        values (#{username}, #{userPassword}, #{userPhone}, #{userMail}, now(), 1);
+        insert into graduation_design.user (username, user_password, user_phone, user_mail, user_sex, user_create,
+                                            user_status)
+        values (#{username}, #{userPassword}, #{userPhone}, #{userMail}, '保密', now(), 1);
     </insert>
 
     <update id="updateUser" parameterType="User">
@@ -81,9 +82,6 @@
             </if>
             <if test="userinfo!=null">
                 userinfo = #{userinfo},
-            </if>
-            <if test="userStatus!=0">
-                user_status = #{userStatus}
             </if>
         </set>
         where userid = #{userid}

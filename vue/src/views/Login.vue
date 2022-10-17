@@ -40,7 +40,7 @@ export default {
           if (res.data.userStatus === 1) {
             sessionStorage.setItem("user", JSON.stringify(res.data));
 
-            request.get("/Achievement/user", {userid: res.data.userid}).then(re => {
+            request.post("/Achievement/user", {userid: res.data.userid}).then(re => {
               if (re.code === "1") {
                 sessionStorage.setItem("userAchievement", JSON.stringify(re.data));
               } else {
