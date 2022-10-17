@@ -124,6 +124,10 @@ const routes = [
                 component: () => import('../views/module/ModuleInfo')
             }
         ]
+    }, {
+        path: '/test',
+        name: 'Test',
+        component: () => import('../views/Test')
     }
 ]
 
