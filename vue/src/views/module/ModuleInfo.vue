@@ -63,8 +63,11 @@ export default {
     },
     click(data) {
       sessionStorage.setItem("article", JSON.stringify(data));
-      console.log(data)
-      this.$router.push("/articleInfo");
+      // this.$router.push("/articleInfo");
+      const routerUrl = this.$router.resolve({
+        path: '/articleInfo'
+      });
+      window.open(routerUrl.href, '_blank')
     },
     createArticle() {
       this.$router.push("/createArticle")

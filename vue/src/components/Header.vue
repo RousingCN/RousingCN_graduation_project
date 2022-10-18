@@ -20,7 +20,7 @@
       <template #title>
         <el-avatar v-if="user.userAvatar===null"> user</el-avatar>
         <el-image style="width: 59px;height: 59px;border-radius: 50%" v-if="user.userAvatar!==null" :src="user.userAvatar"
-                  :fit="'contain'">
+                  :fit="'cover'">
           <template #error >
             <div class="image-slot">{{user.username}}</div>
           </template>

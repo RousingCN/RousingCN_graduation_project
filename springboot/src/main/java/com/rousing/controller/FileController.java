@@ -42,7 +42,7 @@ public class FileController {
         User user = (User) session.getAttribute("user");
         user.setUserAvatar(ip + ":" + port + "/avatar/" + uuid + "_" + originalFilename);
         if (userService.updateUser(user)) {
-            return Result.success(userService.getOne(user));
+            return Result.success();
         }
         return Result.error("0", "更新用户信息失败");
     }
@@ -55,10 +55,11 @@ public class FileController {
         String file = fileNames.stream().filter(Name -> Name.contains(fileName)).findAny().orElse("");
         try {
             if (StrUtil.isNotEmpty(file)) {
-                response.addHeader("Content-Disposition","attachment;filename="+ URLEncoder.encode(file,"UTF-8"));
-                System.out.println(file);
-                if (file.endsWith(".jpeg") || file.endsWith(".jpg")) {
+                response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(file, "UTF-8"));
+                if (file.endsWith(".jpeg")) {
                     response.setContentType("image/jpeg");
+                } else if (file.endsWith(".jpg")) {
+                    response.setContentType("image/jpg");
                 } else if (file.endsWith(".png")) {
                     response.setContentType("image/png");
                 }

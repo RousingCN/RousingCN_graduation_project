@@ -15,6 +15,8 @@
         @onCreated="handleCreated"
     />
   </div>
+  <div class="test"></div>
+  <button @click="jump">新建标签页</button>
 </template>
 
 <script>
@@ -23,6 +25,9 @@ import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {onBeforeUnmount, ref, shallowRef, onMounted} from 'vue'
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 import {DomEditor} from '@wangeditor/editor'
+import Router from "@/router";
+import router from "@/router";
+import {useRoute} from "vue-router";
 
 export default {
   name: "Test",
@@ -61,6 +66,12 @@ export default {
       editorRef.value = editor // 记录 editor 实例，重要！
     }
 
+    //接收query方式传来的参数
+    const Route = useRoute();
+    onMounted(()=>{
+      console.log(Route.query)
+    })
+
     return {
       editorRef,
       valueHtml,
@@ -72,9 +83,22 @@ export default {
   },
   methods: {
     clickBtn() {
-      const toolbar = DomEditor.getToolbar(this.editorRef)
-      console.log(toolbar.getConfig().toolbarKeys)
-    }
+      // const toolbar = DomEditor.getToolbar(this.editorRef)
+      // console.log(toolbar.getConfig().toolbarKeys)
+      console.log(this.editorRef.getHtml())
+      document.getElementsByClassName("test")[0].innerHTML = this.editorRef.getHtml()
+      console.log(useRoute())
+    },
+    jump() {
+      //通过query方式传递请求
+      const routerUrl = this.$router.resolve({
+        path: '/test',
+        query: {
+          valueHtml: '跳转测试'
+        },
+      });
+      window.open(routerUrl.href, '_blank')
+    },
   }
 }
 </script>

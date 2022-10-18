@@ -13,7 +13,7 @@
     <div style="width: 88px; margin: 50px auto">
       <el-upload
           action="/api/file/avatar/save"
-          :accept="['.png','.jpeg']"
+          :accept="['.png','.jpeg','.jpg']"
           :limit="1"
           :on-success="uploadSuccess"
           :on-error="uploadError"
@@ -29,7 +29,6 @@
 import {ElMessage} from "element-plus";
 
 let url = JSON.parse(sessionStorage.getItem("user")).userAvatar
-console.log(url)
 
 export default {
   name: "UserCenter",
@@ -42,11 +41,9 @@ export default {
     uploadSuccess(res) {
       if (res.code === "1") {
         ElMessage({
-          message: '信息修改成功',
+          message: '头像修改成功',
           type: 'success',
         });
-        sessionStorage.setItem("user", res.data)
-
       } else {
         ElMessage.error(res.msg);
       }

@@ -42,7 +42,7 @@
                 and user_create = #{userCreate}
             </if>
             <if test="userAvatar!=null">
-                and user_img = #{userAvatar}
+                and user_avatar = #{userAvatar}
             </if>
             <if test="userinfo!=null">
                 and userinfo = #{userinfo}
@@ -78,7 +78,7 @@
                 user_birth = #{userBirth},
             </if>
             <if test="userAvatar!=null">
-                user_img = #{userAvatar},
+                user_avatar = #{userAvatar},
             </if>
             <if test="userinfo!=null">
                 userinfo = #{userinfo},
