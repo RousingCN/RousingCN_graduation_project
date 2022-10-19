@@ -3,6 +3,7 @@ import IndexLayout from "@/layout/IndexLayout";
 import UserLayout from "@/layout/UserLayout";
 import ModuleLayout from "@/layout/ModuleLayout";
 import AdminLayout from "@/layout/AdminLayout";
+import ArticleLayout from "@/layout/ArticleLayout";
 
 const routes = [
     {
@@ -46,11 +47,6 @@ const routes = [
                 path: '/index',
                 name: 'Index',
                 component: () => import('../views/Index')
-            },
-            {
-                path: '/articleInfo',
-                name: 'ArticleInfo',
-                component: () => import('../views/article/ArticleInfo')
             },
             {
                 path: '/createArticle',
@@ -124,12 +120,24 @@ const routes = [
                 component: () => import('../views/module/ModuleInfo')
             }
         ]
-    }, {
+    },{
+        path: '/article',
+        name: 'Article',
+        component: ArticleLayout,
+        children: [
+            {
+                path: '/articleInfo',
+                name: 'ArticleInfo',
+                component: () => import('../views/article/ArticleInfo')
+            }
+        ]
+    },
+    {
         path: '/test',
         name: 'Test',
         component: () => import('../views/Test')
     }
-]
+];
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),

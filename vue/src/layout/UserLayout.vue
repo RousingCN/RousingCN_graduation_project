@@ -1,11 +1,11 @@
 <template>
-    <el-scrollbar height="100vh">
-      <Header />
-      <div style="display: flex;">
-        <UserAside />
-        <router-view style="flex: 1"/>
-      </div>
-    </el-scrollbar>
+  <el-scrollbar height="100vh">
+    <Header/>
+    <div style="display: flex;">
+      <UserAside/>
+      <router-view style="flex: 1"/>
+    </div>
+  </el-scrollbar>
 </template>
 
 <script>

@@ -1,17 +1,17 @@
 <template>
   <div
-      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 1200px;height: 100%;flex: 1">
+      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;width: 1600px;height: 100%;flex: 1">
     <h1>创建帖子</h1>
     <el-divider/>
-    <el-form label-width="80px" style="margin-top: 50px">
+    <el-form label-width="80px" style="margin-top: 50px;width: 1600px;">
       <el-form-item label="所属板块" prop="name" style="width: 30%;margin-bottom: 30px">
         <el-input v-model="moduleName" disabled/>
       </el-form-item>
       <el-form-item label="帖子标题" prop="name" style="width: 50%;margin-bottom: 30px">
         <el-input v-model="artTitle" clearable/>
       </el-form-item>
-      <el-form-item label="帖子内容" prop="name" style="width: 100%;margin-bottom: 30px">
-        <div style="border: 1px solid var(--el-border-color);border-radius: 2px;">
+      <el-form-item label="帖子内容" prop="name" style="width: 1600px;margin-bottom: 30px">
+        <div style="border: 1px solid var(--el-border-color);border-radius: 2px;width: 1200px;">
           <Toolbar
               style="border-bottom: 1px solid #ccc"
               :editor="editorRef"

@@ -13,6 +13,7 @@
         from collect
         where col_status = 1
           and col_article = #{artId}
+          and col_status = 1;
     </select>
 
     <select id="selectView" parameterType="Integer" resultType="Integer">
@@ -26,5 +27,78 @@
         from like_it
         where like_status = 1
           and like_article = #{artId}
+          and like_status = 1;
     </select>
+
+    <select id="selectComment" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from comment
+        where com_status = 1
+          and com_article = #{artId}
+          and com_status = 1;
+    </select>
+
+    <select id="selectUserLikeIt" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from like_it
+        where like_article = #{artId}
+          and like_user = #{userid}
+          and like_status = 1;
+    </select>
+    <select id="selectUserCommentIt" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from comment
+        where com_article = #{artId}
+          and com_user = #{userid}
+          and com_status = 1;
+    </select>
+    <select id="selectUserCollectIt" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from collect
+        where col_article = #{artId}
+          and col_user = #{userid}
+          and col_status = 1;
+    </select>
+
+    <update id="userLikeIt" parameterType="Integer">
+        update like_it
+        set like_status = 1
+        where like_article = #{artId}
+          and like_user = #{userid}
+          and like_status = 2
+    </update>
+
+    <insert id="newUserLikeIt" parameterType="Integer">
+        insert into like_it (like_article, like_user, like_status)
+        values (#{artId}, #{userid}, 1);
+    </insert>
+
+    <update id="userUnlikeIt" parameterType="Integer">
+        update like_it
+        set like_status = 2
+        where like_article = #{artId}
+          and like_user = #{userid}
+          and like_status = 1
+    </update>
+
+    <update id="userCollectIt" parameterType="Integer">
+        update collect
+        set col_status = 1
+        where col_article = #{artId}
+          and col_user = #{userid}
+          and col_status = 2
+    </update>
+
+    <insert id="newUserCollectIt" parameterType="Integer">
+        insert into collect (col_article, col_user, col_status)
+        values (#{artId}, #{userid}, 1);
+    </insert>
+
+    <update id="userUnCollectIt" parameterType="Integer">
+        update collect
+        set col_status = 2
+        where col_article = #{artId}
+          and col_user = #{userid}
+          and col_status = 1
+    </update>
 </mapper>

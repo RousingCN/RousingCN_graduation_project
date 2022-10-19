@@ -3,8 +3,8 @@
     <Header/>
     <div style="display: flex;">
       <ModuleAside/>
-          <router-view/>
-          <UserShow/>
+      <router-view/>
+      <UserShow/>
     </div>
   </el-scrollbar>
 </template>
