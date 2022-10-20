@@ -46,6 +46,10 @@ export default {
       request.post("/module/articles/" + pageNum, {
         moduleId: module_id
       }).then(res => {
+        if (res.code === undefined) {
+          ElMessage.error("登录已过期，请重新登录后再试");
+          this.$router.push('/')
+        }
         if (res.code === '1') {
           let rows = [];
           // 从时间截取日期
@@ -63,7 +67,6 @@ export default {
     },
     click(data) {
       sessionStorage.setItem("article", JSON.stringify(data));
-      // this.$router.push("/articleInfo");
       const routerUrl = this.$router.resolve({
         path: '/articleInfo'
       });

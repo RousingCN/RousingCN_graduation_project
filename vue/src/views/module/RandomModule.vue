@@ -15,6 +15,7 @@
 
 <script>
 import request from "@/utils/request";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "RandomModule",
@@ -31,17 +32,25 @@ export default {
   methods: {
     load() {
       request.get("/module/random").then(res => {
-        let rows = [];
-        // 从时间截取日期
-        for (let i = 0; i < res.data.length; i++) {
-          if (res.data[i] === null) {
-            continue;
-          }
-          const row = res.data[i];
-          row.moduleCreate = row.moduleCreate.substring(0, 10);
-          rows[i] = row;
+        if (res.code === undefined) {
+          ElMessage.error("登录已过期，请重新登录后再试");
+          this.$router.push('/')
         }
-        this.tableData = rows;
+        if (res.code === '1') {
+          let rows = [];
+          // 从时间截取日期
+          for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i] === null) {
+              continue;
+            }
+            const row = res.data[i];
+            row.moduleCreate = row.moduleCreate.substring(0, 10);
+            rows[i] = row;
+          }
+          this.tableData = rows;
+        } else {
+          ElMessage.error(res.msg)
+        }
       })
     },
     click(a) {

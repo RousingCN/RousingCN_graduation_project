@@ -168,7 +168,7 @@
                 com_id=#{comId}
             </if>
             <if test="comUser!=null">
-                and com_user=#{comUser}
+                and com_user=#{comUser.userid}
             </if>
             <if test="comContext!=null">
                 and com_context=#{comContext}
@@ -189,7 +189,7 @@
         update comment
         set com_status = #{comStatus}
         where com_id = #{comId}
-          and com_user = #{comUser}
+          and com_user = #{comUser.userid}
           and com_article = #{comArticle}
     </update>
 </mapper>

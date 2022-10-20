@@ -102,6 +102,10 @@ export default {
           newPassword: this.form.newPassword,
           userid: JSON.parse(sessionStorage.getItem("user")).userid
         }).then(res => {
+          if (res.code === undefined) {
+            ElMessage.error("登录已过期，请重新登录后再试");
+            this.$router.push('/')
+          }
           if (res.code === '1') {
             ElMessage({
               message: '密码修改成功,请重新登录',

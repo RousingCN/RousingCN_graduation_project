@@ -6,7 +6,7 @@
     <div style="width: 120px;height: 120px;margin: 50px auto">
       <el-image style="width: 120px; height: 120px;margin-bottom: 40px" :src="url" :fit="'cover'">
         <template #error>
-          <div class="image-slot">暂无头像</div>
+          <div class="image-slot" style="color: #a1a1a1">暂无头像</div>
         </template>
       </el-image>
     </div>
@@ -39,6 +39,10 @@ export default {
   },
   methods: {
     uploadSuccess(res) {
+      if (res.code === undefined) {
+        ElMessage.error("登录已过期，请重新登录后再试");
+        this.$router.push('/')
+      }
       if (res.code === "1") {
         ElMessage({
           message: '头像修改成功',

@@ -95,6 +95,10 @@ export default {
         artAuthor: JSON.parse(sessionStorage.getItem("user")),
         artModule: JSON.parse(sessionStorage.getItem('module')).moduleId
       }).then(res => {
+        if (res.code === undefined) {
+          ElMessage.error("登录已过期，请重新登录后再试");
+          this.$router.push('/')
+        }
         if (res.code === '1') {
           ElMessage({
             message: '发帖成功',

@@ -35,6 +35,10 @@ export default {
         moduleInfo: this.form.moduleInfo,
         moduleAuthor: JSON.parse(sessionStorage.getItem("user")),
       }).then(res => {
+        if (res.code === undefined) {
+          ElMessage.error("登录已过期，请重新登录后再试");
+          this.$router.push('/')
+        }
         if (res.code === "1") {
           ElMessage({
             message: '板块创建成功',

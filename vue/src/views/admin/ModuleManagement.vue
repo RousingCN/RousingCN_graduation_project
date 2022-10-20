@@ -73,6 +73,10 @@ export default {
         },
         moduleStatus:this.formInline.moduleStatus
       }).then(res => {
+        if (res.code === undefined) {
+          ElMessage.error("登录已过期，请重新登录后再试");
+          this.$router.push('/')
+        }
         if (res.code === '1') {
           const resData = res.data;
           for (let i = 0; i < resData.length; i++) {
@@ -107,7 +111,10 @@ export default {
               moduleName: selectRowData.moduleName,
               moduleStatus: parseInt({value}.value)
             }).then(res => {
-              console.log(res)
+              if (res.code === undefined) {
+                ElMessage.error("登录已过期，请重新登录后再试");
+                this.$router.push('/')
+              }
               if (res.code === '1') {
                 ElMessage({
                   type: 'success',

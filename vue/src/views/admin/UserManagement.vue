@@ -62,6 +62,10 @@ export default {
     queryUser() {
       this.tableLoading = ref(true);
       request.post("/api/admin/selectUser", this.formInline).then(res => {
+        if (res.code === undefined) {
+          ElMessage.error("登录已过期，请重新登录后再试");
+          this.$router.push('/')
+        }
         if (res.code === '1') {
           const resData = res.data;
           for (let i = 0; i < resData.length; i++) {
@@ -96,7 +100,10 @@ export default {
               username: selectRowData.username,
               userStatus: parseInt({value}.value)
             }).then(res => {
-              console.log(res)
+              if (res.code === undefined) {
+                ElMessage.error("登录已过期，请重新登录后再试");
+                this.$router.push('/')
+              }
               if (res.code === '1') {
                 ElMessage({
                   type: 'success',

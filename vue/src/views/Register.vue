@@ -50,6 +50,10 @@ export default {
     register() {
       console.log(this.form)
       request.post("/user/register", this.form).then(res => {
+        if (res.code === undefined) {
+          ElMessage.error("页面停留时间过长，请刷新页面后再试");
+          this.$router.push('/register')
+        }
         if (res.code === "1") {
           ElMessage({
             message: '注册成功',
