@@ -67,8 +67,8 @@
     </select>
 
     <insert id="insertModule" parameterType="Module">
-        insert into graduation_design.module (module_name, module_info, module_author, module_create)
-        values (#{moduleName}, #{moduleInfo}, #{moduleAuthor.userid}, now());
+        insert into graduation_design.module (module_name, module_info, module_author, module_create, module_status)
+        values (#{moduleName}, #{moduleInfo}, #{moduleAuthor.userid}, now(), 1);
     </insert>
 
     <update id="updateModule" parameterType="Module">

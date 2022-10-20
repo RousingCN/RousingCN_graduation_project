@@ -47,8 +47,8 @@
     </select>
 
     <insert id="insertArticle" parameterType="com.rousing.pojo.Article">
-        insert into article(art_title, art_context, art_module, art_author, art_create)
-        values (#{artTitle}, #{artContext}, #{artModule}, #{artAuthor.userid}, now());
+        insert into article(art_title, art_context, art_module, art_author, art_create, art_status)
+        values (#{artTitle}, #{artContext}, #{artModule}, #{artAuthor.userid}, now(), 1);
     </insert>
 
 </mapper>
