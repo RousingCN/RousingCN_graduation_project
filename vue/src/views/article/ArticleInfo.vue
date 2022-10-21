@@ -17,10 +17,31 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <div class="grid-content ep-bg-purple" style="padding: 12px;height: 16px">
-            <el-link :href="'/userCenter/'+articleData.artAuthor.userid" target="_blank"
-                     style="margin-left: 6px;margin-top: -6px;font-size: 16px" :icon="icon.Avatar">
-              {{ articleData.artAuthor.username }}
-            </el-link>
+            <el-popover :width="250" placement="top"
+                        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
+              <template #reference>
+                <el-link :href="'/userCenter/'+articleData.artAuthor.userid" target="_blank"
+                         style="margin-left: 6px;margin-top: -6px;font-size: 16px" :icon="icon.Avatar">
+                  {{ articleData.artAuthor.username }}
+                </el-link>
+              </template>
+              <template #default>
+                <div style="display: flex; gap: 16px; flex-direction: column;text-align: center">
+                  <el-avatar :size="60" :src="articleData.artAuthor.userAvatar"
+                             style="margin: 0 auto 8px"/>
+                  <div>
+                    <p style="margin: 0; font-weight: bold">{{ articleData.artAuthor.username }}</p>
+                    <p style="margin: 0; font-size: 14px; color: var(--el-color-info)">
+                      #{{ articleData.artAuthor.userid }}</p>
+                  </div>
+                  <p style="margin: 0" v-if="articleData.artAuthor.userinfo!==''">{{
+                      articleData.artAuthor.userinfo
+                    }}</p>
+                  <p style="margin: 0;color: #bebebe" v-if="articleData.artAuthor.userinfo===''">
+                    用户还没有设置个人签名</p>
+                </div>
+              </template>
+            </el-popover>
           </div>
         </el-col>
         <el-col :span="8">
@@ -70,7 +91,7 @@
   <el-drawer v-model="commentVisible" :show-close="false">
 
     <!--    抽屉头部-->
-    <template #header="{ close, titleId, titleClass }">
+    <template #header="{ close, titleId, titleClass }" style="margin-bottom: 0">
       <h4 :id="titleId" :class="titleClass" style="line-height: 30px">评论 {{ count_comment }}</h4>
       <el-button type="danger" @click="close">
         <el-icon class="el-icon--left">
@@ -154,10 +175,13 @@
               <el-header style="height: 20px;color: #656565">
                 <el-row class="row-bg" justify="space-between">
                   <el-col :span="9">
-                    <a href="#"
-                       style="text-decoration: none;color: #2a2a2a;font-size: 16px;margin-right: 40px;line-height: 20px">
-                      {{ comData.comUser.username }}
-                    </a>
+                    <el-tooltip class="box-item" effect="light" placement="right">
+                      <template #content> {{ comData.comUser.username }}<span style="color: #969696"> #{{ comData.comUser.userid }}</span></template>
+                      <a href="#"
+                         style="text-decoration: none;color: #2a2a2a;font-size: 16px;margin-right: 40px;line-height: 20px">
+                        {{ comData.comUser.username }}
+                      </a>
+                    </el-tooltip>
                   </el-col>
                   <el-col :span="9">
                     <span style="position: absolute;right: 10px;font-size: 12px;line-height: 20px">

@@ -1,6 +1,6 @@
 <template>
   <div
-      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 600px;height: 100%;flex: 1">
+      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;width: 600px;height: 100%;">
     <h1>板块创建</h1>
     <el-divider/>
     <el-form :model="form" label-width="80px" style="margin-top: 50px">

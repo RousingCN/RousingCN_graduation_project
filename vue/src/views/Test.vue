@@ -1,22 +1,38 @@
 <template>
-  <el-button type="primary" @click="clickBtn">获取内容</el-button>
-  <div style="border: 1px solid #ccc;width: 80%;line-height: 800px;margin: 50px auto">
-    <Toolbar
-        style="border-bottom: 1px solid #ccc"
-        :editor="editorRef"
-        :defaultConfig="toolbarConfig"
-        :mode="mode"
-    />
-    <Editor
-        style="height: 500px; overflow-y: hidden;"
-        v-model="valueHtml"
-        :defaultConfig="editorConfig"
-        :mode="mode"
-        @onCreated="handleCreated"
-    />
-  </div>
-  <div class="test"></div>
-  <button @click="jump">新建标签页</button>
+  <!--    <el-button type="primary" @click="clickBtn">获取内容</el-button>-->
+  <!--    <div style="border: 1px solid #ccc;width: 80%;line-height: 800px;margin: 50px auto">-->
+  <!--      <Toolbar-->
+  <!--          style="border-bottom: 1px solid #ccc"-->
+  <!--          :editor="editorRef"-->
+  <!--          :defaultConfig="toolbarConfig"-->
+  <!--          :mode="mode"-->
+  <!--      />-->
+  <!--      <Editor-->
+  <!--          style="height: 500px; overflow-y: hidden;"-->
+  <!--          v-model="valueHtml"-->
+  <!--          :defaultConfig="editorConfig"-->
+  <!--          :mode="mode"-->
+  <!--          @onCreated="handleCreated"-->
+  <!--      />-->
+  <!--    </div>-->
+  <!--    <div class="test"></div>-->
+  <!--    <button @click="jump">新建标签页</button>-->
+  <el-popover :width="250"
+              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
+    <template #reference>
+      <el-link :underline="false">用户名</el-link>
+    </template>
+    <template #default>
+      <div style="display: flex; gap: 16px; flex-direction: column;text-align: center">
+        <el-avatar :size="60" src="https://avatars.githubusercontent.com/u/72015883?v=4" style="margin: 0 auto 8px"/>
+        <div>
+          <p style="margin: 0; font-weight: bold">用户名</p>
+          <p style="margin: 0; font-size: 14px; color: var(--el-color-info)">#uid</p>
+        </div>
+        <p style="margin: 0">个人介绍</p>
+      </div>
+    </template>
+  </el-popover>
 </template>
 
 <script>
@@ -32,6 +48,9 @@ import {useRoute} from "vue-router";
 export default {
   name: "Test",
   components: {Editor, Toolbar},
+  data() {
+    return {}
+  },
   setup() {
     // 编辑器实例，必须用 shallowRef
     const editorRef = shallowRef()
@@ -40,11 +59,14 @@ export default {
     const valueHtml = ref('<p>hello</p>')
 
     // 模拟 ajax 异步获取内容
-    // onMounted(() => {
-    //   setTimeout(() => {
-    //     valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
-    //   }, 1500)
-    // })
+    onMounted(() => {
+      // setTimeout(() => {
+      //   valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
+      // }, 1500)
+      // setInterval(() => {
+      //   console.log()
+      // }, 1500)
+    })
 
     const toolbarConfig = {}
     toolbarConfig.excludeKeys = [
@@ -68,7 +90,7 @@ export default {
 
     //接收query方式传来的参数
     const Route = useRoute();
-    onMounted(()=>{
+    onMounted(() => {
       console.log(Route.query)
     })
 

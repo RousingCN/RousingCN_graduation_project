@@ -1,16 +1,45 @@
 <template>
-  <div style="flex: 1;margin: 20px;border: 1px solid var(--el-border-color);padding: 50px;border-radius: 20px">
-    <el-page-header :content="module.moduleName" @back="this.$router.back()" style="margin-bottom: 30px;"/>
+  <div style="margin: 20px auto;border: 1px solid var(--el-border-color);padding: 50px;border-radius: 20px;width: 80%;">
+    <el-page-header @back="this.$router.back()" style="margin-bottom: 30px;" :icon="ArrowLeft">
+      <template #content>
+        <span class="text-large font-600 mr-3" style="font-weight: bold"> {{ module.moduleName }} </span>
+      </template>
+    </el-page-header>
+
     <p style="color: #a1a1a1">{{ module.moduleInfo }}</p>
     <el-divider/>
     <div>
       <el-button type="primary" @click="createArticle">发帖</el-button>
     </div>
     <div style="padding: 20px">
-      <el-table :data="articles" :table-layout="'fixed'" @cell-click="click" :stripe="true">
-        <el-table-column prop="artTitle" label="标题" width="200px" :fixed="'left'" :show-overflow-tooltip="true"/>
-        <el-table-column prop="artContext" label="内容" :show-overflow-tooltip="true"/>
-        <el-table-column prop="artCreate" label="创建时间" width="200px" :fixed="'right'" :align="'right'"/>
+      <el-table :data="articles" :table-layout="'fixed'" @cell-click="click" :stripe="true"
+                :default-sort="{ prop: 'artCreate', order: 'descending' }">
+        <el-table-column prop="artTitle" label="标题" sortable/>
+        <el-table-column prop="artAuthor.username" label="作者" sortable>
+          <template #default="scope">
+            <el-popover :width="250"
+                        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
+              <template #reference>
+                <el-link :underline="false">{{ scope.row.artAuthor.username }}</el-link>
+              </template>
+              <template #default>
+                <div style="display: flex; gap: 16px; flex-direction: column;text-align: center">
+                  <el-avatar :size="60" :src="scope.row.artAuthor.userAvatar"
+                             style="margin: 0 auto 8px"/>
+                  <div>
+                    <p style="margin: 0; font-weight: bold">{{scope.row.artAuthor.username}}</p>
+                    <p style="margin: 0; font-size: 14px; color: var(--el-color-info)">
+                      #{{ scope.row.artAuthor.userid }}</p>
+                  </div>
+                  <p style="margin: 0" v-if="scope.row.artAuthor.userinfo!==''">{{ scope.row.artAuthor.userinfo }}</p>
+                  <p style="margin: 0;color: #bebebe" v-if="scope.row.artAuthor.userinfo===''">
+                    用户还没有设置个人签名</p>
+                </div>
+              </template>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="artCreate" label="创建时间" :align="'right'" sortable/>
       </el-table>
       <div>
         <el-pagination style="margin-top: 20px" background hide-on-single-page layout="prev, pager, next"
@@ -23,11 +52,14 @@
 <script>
 import request from "@/utils/request";
 import {ElMessage} from "element-plus";
+import {ArrowLeft} from "@element-plus/icons-vue";
+import {ref} from "vue";
 
 export default {
   name: "ModuleInfo",
   data() {
     return {
+      ArrowLeft: ArrowLeft,
       module: module,
       articles: [],
       articleCount: 0,

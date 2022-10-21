@@ -29,7 +29,30 @@
       <el-table v-loading="tableLoading" :data="tableData" max-height="350" style="width: 100%" border :stripe="true"
                 @cell-mouse-enter="getRowData" :default-sort="{ prop: 'comId', order: 'ascending' }">
         <el-table-column prop="comId" label="评论id" sortable/>
-        <el-table-column prop="comUser.userid" label="评论用户uid" sortable/>
+        <el-table-column prop="comUser.username" label="评论用户" sortable>
+          <template #default="scope">
+            <el-popover :width="250"
+                        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
+              <template #reference>
+                <el-link :underline="false">{{ scope.row.comUser.username }}</el-link>
+              </template>
+              <template #default>
+                <div style="display: flex; gap: 16px; flex-direction: column;text-align: center">
+                  <el-avatar :size="60" :src="scope.row.comUser.userAvatar"
+                             style="margin: 0 auto 8px"/>
+                  <div>
+                    <p style="margin: 0; font-weight: bold">{{scope.row.comUser.username}}</p>
+                    <p style="margin: 0; font-size: 14px; color: var(--el-color-info)">
+                      #{{ scope.row.comUser.userid }}</p>
+                  </div>
+                  <p style="margin: 0" v-if="scope.row.comUser.userinfo!==''">{{ scope.row.comUser.userinfo }}</p>
+                  <p style="margin: 0;color: #bebebe" v-if="scope.row.comUser.userinfo===''">
+                    用户还没有设置个人签名</p>
+                </div>
+              </template>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column prop="comArticle" label="帖子" sortable/>
         <el-table-column prop="comCreate" label="评论时间" sortable/>
         <el-table-column prop="comStatus" label="评论状态" sortable/>

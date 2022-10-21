@@ -2,7 +2,7 @@
   <el-menu
       default-active="2"
       class="el-menu-vertical-demo"
-      style="height: calc(100vh - 62px)"
+      style="height: calc(100vh - 62px);min-width: 64px"
       :collapse="isCollapse"
       router
   >

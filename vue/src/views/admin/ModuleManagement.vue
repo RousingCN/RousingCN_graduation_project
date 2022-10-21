@@ -31,7 +31,30 @@
                 @cell-mouse-enter="getRowData" :default-sort="{ prop: 'moduleId', order: 'ascending' }">
         <el-table-column prop="moduleId" label="模块id" sortable/>
         <el-table-column prop="moduleName" label="模块名称" sortable/>
-        <el-table-column prop="moduleAuthor.userid" label="创建者uid" sortable/>
+        <el-table-column prop="moduleAuthor.username" label="创建者" sortable>
+          <template #default="scope">
+            <el-popover :width="250"
+                        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
+              <template #reference>
+                <el-link :underline="false">{{ scope.row.moduleAuthor.username }}</el-link>
+              </template>
+              <template #default>
+                <div style="display: flex; gap: 16px; flex-direction: column;text-align: center">
+                  <el-avatar :size="60" :src="scope.row.moduleAuthor.userAvatar"
+                             style="margin: 0 auto 8px"/>
+                  <div>
+                    <p style="margin: 0; font-weight: bold">{{scope.row.moduleAuthor.username}}</p>
+                    <p style="margin: 0; font-size: 14px; color: var(--el-color-info)">
+                      #{{ scope.row.moduleAuthor.userid }}</p>
+                  </div>
+                  <p style="margin: 0" v-if="scope.row.moduleAuthor.userinfo!==''">{{ scope.row.moduleAuthor.userinfo }}</p>
+                  <p style="margin: 0;color: #bebebe" v-if="scope.row.moduleAuthor.userinfo===''">
+                    用户还没有设置个人签名</p>
+                </div>
+              </template>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column prop="moduleCreate" label="创建时间" sortable/>
         <el-table-column prop="moduleStatus" label="模块状态" sortable/>
         <el-table-column fixed="right" label="操作" width="120">

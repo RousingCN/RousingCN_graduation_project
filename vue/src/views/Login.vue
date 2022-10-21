@@ -40,23 +40,23 @@ export default {
           if (res.data.userStatus === 1) {
             sessionStorage.setItem("user", JSON.stringify(res.data));
 
-            request.post("/Achievement/user", {userid: res.data.userid}).then(re => {
-              if (res.code === undefined) {
-                ElMessage.error("登录已过期，请重新登录后再试");
-                this.$router.push('/')
-              } else if (re.code === "1") {
-                sessionStorage.setItem("userAchievement", JSON.stringify(re.data));
-              } else {
-                sessionStorage.setItem("userAchievement", JSON.stringify({
-                  fans: 0,
-                  attention: 0,
-                  collect: 0,
-                  like: 0,
-                  view: 0,
-                  userid: -1
-                }))
-              }
-            })
+            // request.post("/Achievement/user", {userid: res.data.userid}).then(re => {
+            //   if (res.code === undefined) {
+            //     ElMessage.error("登录已过期，请重新登录后再试");
+            //     this.$router.push('/')
+            //   } else if (re.code === "1") {
+            //     sessionStorage.setItem("userAchievement", JSON.stringify(re.data));
+            //   } else {
+            //     sessionStorage.setItem("userAchievement", JSON.stringify({
+            //       fans: 0,
+            //       attention: 0,
+            //       collect: 0,
+            //       like: 0,
+            //       view: 0,
+            //       userid: -1
+            //     }))
+            //   }
+            // })
 
             ElMessage({
               message: '登录成功',

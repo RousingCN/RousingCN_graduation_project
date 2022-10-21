@@ -31,7 +31,30 @@
                 @cell-mouse-enter="getRowData" :default-sort="{ prop: 'artId', order: 'ascending' }">
         <el-table-column prop="artId" label="帖子id" sortable/>
         <el-table-column prop="artTitle" label="帖子标题" sortable/>
-        <el-table-column prop="artAuthor.userid" label="创建者uid" sortable/>
+        <el-table-column prop="artAuthor.username" label="创建者" sortable>
+          <template #default="scope">
+            <el-popover :width="250"
+                        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
+              <template #reference>
+                <el-link :underline="false">{{ scope.row.artAuthor.username }}</el-link>
+              </template>
+              <template #default>
+                <div style="display: flex; gap: 16px; flex-direction: column;text-align: center">
+                  <el-avatar :size="60" :src="scope.row.artAuthor.userAvatar"
+                             style="margin: 0 auto 8px"/>
+                  <div>
+                    <p style="margin: 0; font-weight: bold">{{scope.row.artAuthor.username}}</p>
+                    <p style="margin: 0; font-size: 14px; color: var(--el-color-info)">
+                      #{{ scope.row.artAuthor.userid }}</p>
+                  </div>
+                  <p style="margin: 0" v-if="scope.row.artAuthor.userinfo!==''">{{ scope.row.artAuthor.userinfo }}</p>
+                  <p style="margin: 0;color: #bebebe" v-if="scope.row.artAuthor.userinfo===''">
+                    用户还没有设置个人签名</p>
+                </div>
+              </template>
+            </el-popover>
+          </template>
+        </el-table-column>
         <el-table-column prop="artCreate" label="创建时间" sortable/>
         <el-table-column prop="artStatus" label="帖子状态" sortable/>
         <el-table-column fixed="right" label="操作" width="120">
@@ -73,6 +96,7 @@ export default {
         },
         artStatus: this.formInline.artStatus
       }).then(res => {
+        console.log(res)
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
