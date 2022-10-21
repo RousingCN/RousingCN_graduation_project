@@ -9,7 +9,7 @@
           <el-input v-model="formInline.comId" placeholder="0"/>
         </el-form-item>
         <el-form-item label="评论用户id">
-          <el-input v-model="formInline.comUser" placeholder="0"/>
+          <el-input v-model="formInline.comUserId" placeholder="0"/>
         </el-form-item>
         <el-form-item label="帖子id">
           <el-input v-model="formInline.comArticle" placeholder="0"/>
@@ -27,12 +27,12 @@
     </div>
     <div style="margin: 100px auto;text-align: center;max-width: 1300px">
       <el-table v-loading="tableLoading" :data="tableData" max-height="350" style="width: 100%" border :stripe="true"
-                @cell-mouse-enter="getRowData">
-        <el-table-column prop="comId" label="评论id"/>
-        <el-table-column prop="comUser" label="评论用户"/>
-        <el-table-column prop="comArticle" label="帖子"/>
-        <el-table-column prop="comCreate" label="评论时间"/>
-        <el-table-column prop="comStatus" label="评论状态"/>
+                @cell-mouse-enter="getRowData" :default-sort="{ prop: 'comId', order: 'ascending' }">
+        <el-table-column prop="comId" label="评论id" sortable/>
+        <el-table-column prop="comUser.userid" label="评论用户uid" sortable/>
+        <el-table-column prop="comArticle" label="帖子" sortable/>
+        <el-table-column prop="comCreate" label="评论时间" sortable/>
+        <el-table-column prop="comStatus" label="评论状态" sortable/>
         <el-table-column fixed="right" label="操作">
           <template #default>
             <el-button link type="primary" size="small" @click="updateCommentStatus">
@@ -57,7 +57,7 @@ export default {
   name: "CommentManagement",
   data() {
     return {
-      formInline: {},
+      formInline: {comUser: {}},
       tableData: [],
       tableLoading: ref(false)
     }
@@ -67,15 +67,14 @@ export default {
       this.tableLoading = ref(true);
       request.post("/api/admin/selectComment", {
         comId: this.formInline.comId,
-        comUser: this.formInline.comUser,
+        comUser: {userid: this.formInline.comUserId},
         comArticle: this.formInline.comArticle,
         comStatus: this.formInline.comStatus
       }).then(res => {
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (res.code === '1') {
+        } else if (res.code === '1') {
           const resData = res.data;
           for (let i = 0; i < resData.length; i++) {
             resData[i].comCreate = resData[i].comCreate.substring(0, 10) + " " + resData[i].comCreate.substring(11, 19)
@@ -113,8 +112,7 @@ export default {
               if (res.code === undefined) {
                 ElMessage.error("登录已过期，请重新登录后再试");
                 this.$router.push('/')
-              }
-              if (res.code === '1') {
+              } else if (res.code === '1') {
                 ElMessage({
                   type: 'success',
                   message: selectRowData.comId + `号评论的状态已经修改成功`,

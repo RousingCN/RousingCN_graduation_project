@@ -16,13 +16,14 @@
     <el-menu-item index="/admin/articleManagement" style="width: 8%">帖子管理</el-menu-item>
     <el-menu-item index="/admin/commentManagement" style="width: 8%">评论管理</el-menu-item>
     <div style="width: 10%;"/>
-    <el-sub-menu index="" >
+    <el-sub-menu index="">
       <template #title>
         <el-avatar v-if="user.userAvatar===null"> user</el-avatar>
-        <el-image style="width: 59px;height: 59px;border-radius: 50%" v-if="user.userAvatar!==null" :src="user.userAvatar"
+        <el-image style="width: 59px;height: 59px;border-radius: 50%" v-if="user.userAvatar!==null"
+                  :src="user.userAvatar"
                   :fit="'contain'">
-          <template #error >
-            <div class="image-slot">{{user.username}}</div>
+          <template #error>
+            <div class="image-slot">{{ user.username }}</div>
           </template>
         </el-image>
       </template>
@@ -46,8 +47,7 @@ const loginOut = function () {
     if (res.code === undefined) {
       ElMessage.error("登录已过期，请重新登录后再试");
       this.$router.push('/')
-    }
-    if (res.code === '1') {
+    } else if (res.code === '1') {
       ElMessage({
         message: '注销成功',
         type: 'success',

@@ -1,5 +1,6 @@
 <template>
-  <div style="margin: 50px auto 20px;width: 1400px;border: 1px solid #ccc;padding: 50px 50px 20px;border-radius: 20px">
+  <div style="margin: 50px auto 20px;width: 1400px;border: 1px solid #ccc;padding: 50px 50px 20px;border-radius: 20px"
+       v-loading="pageLoading">
     <h2/>
     <el-divider/>
     <div style="width: 1200px;margin: 0 auto">
@@ -12,15 +13,14 @@
       />
     </div>
     <el-divider/>
-    <div>
+    <div style="height: 40px;">
       <el-row :gutter="20">
         <el-col :span="8">
-          <div class="grid-content ep-bg-purple" style="padding: 12px;">
-            <el-icon>
-              <Avatar/>
-            </el-icon>
-            <a :href="'/userCenter/'+articleData.artAuthor.userid"
-               style="text-decoration: none;color: #a1a1a1;margin-left: 6px">{{ articleData.artAuthor.username }}</a>
+          <div class="grid-content ep-bg-purple" style="padding: 12px;height: 16px">
+            <el-link :href="'/userCenter/'+articleData.artAuthor.userid" target="_blank"
+                     style="margin-left: 6px;margin-top: -6px;font-size: 16px" :icon="icon.Avatar">
+              {{ articleData.artAuthor.username }}
+            </el-link>
           </div>
         </el-col>
         <el-col :span="8">
@@ -32,7 +32,7 @@
                   <Sunny/>
                 </el-icon>
                 点赞
-                <el-badge class="mark" :value="count_like" type="primary" style="margin-top: -10px"/>
+                <el-badge class="mark" :value="count_like" type="primary" :max="99" style="margin-top: -10px"/>
               </el-button>
               <el-button :type="userCommentIt?'primary':''" size="large" text style="margin-right: 20px"
                          @click="clickComment" :loading="commentLoading">
@@ -40,7 +40,7 @@
                   <ChatLineRound/>
                 </el-icon>
                 评论
-                <el-badge class="mark" :value="count_comment" type="primary" style="margin-top: -10px"/>
+                <el-badge class="mark" :value="count_comment" type="primary" :max="99" style="margin-top: -10px"/>
               </el-button>
               <el-button :type="userCollectIt?'primary':''" size="large" text style="margin-right: 20px"
                          @click="clickCollect" :loading="collectLoading">
@@ -48,15 +48,20 @@
                   <Star/>
                 </el-icon>
                 收藏
-                <el-badge class="mark" :value="count_collect" type="primary" style="margin-top: -10px"/>
+                <el-badge class="mark" :value="count_collect" type="primary" :max="99" style="margin-top: -10px"/>
               </el-button>
             </el-button-group>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content ep-bg-purple">
-            <span style="line-height: 100%;position: absolute;right: 20px;padding: 12px;color: #a1a1a1"><el-icon
-                style="margin-right: 6px"><EditPen/></el-icon>{{ articleData.artCreate }}</span>
+            <span style="height: 16px;position: absolute;padding: 12px;right: 20px;">
+              <el-link target="_blank"
+                       style="margin-left: 6px;margin-top: -6px;font-size: 16px" :icon="icon.Timer" :underline="false"
+                       disabled>
+              {{ articleData.artCreate }}
+            </el-link>
+            </span>
           </div>
         </el-col>
       </el-row>
@@ -79,13 +84,13 @@
       <div class="common-layout" style=";padding: 10px">
         <el-container>
           <el-aside width="60px">
-            <div class="demo-image">
+            <div>
               <el-image style="width: 60px; height: 60px;border-radius: 50%"
                         :src="userData.userAvatar" :fit="'cover'">
                 <template #error>
                   <div class="image-slot">
                     <el-icon>
-                      <icon-picture/>
+                      <PictureFilled/>
                     </el-icon>
                   </div>
                 </template>
@@ -96,7 +101,9 @@
             <el-header style="height: 20px;">
               <el-row class="row-bg" justify="space-between">
                 <el-col :span="9">
-                  <a href="#" style="text-decoration: none;color: #656565;font-size: 18px;line-height: 20px">{{ userData.username }}</a>
+                  <a href="#" style="text-decoration: none;color: #656565;font-size: 18px;line-height: 20px"> {{
+                      userData.username
+                    }}</a>
                 </el-col>
                 <el-col :span="9">
                   <el-button type="primary" style="position: absolute;right: 0;" @click="postComment"
@@ -130,7 +137,7 @@
         <div v-for="comData in commentList" :key="comData" class="common-layout" style="margin-bottom: 20px">
           <el-container>
             <el-aside width="50px">
-              <div class="demo-image">
+              <div>
                 <el-image style="width: 50px; height: 50px;border-radius: 50%"
                           :src="comData.comUser.userAvatar" :fit="'cover'">
                   <template #error>
@@ -147,7 +154,8 @@
               <el-header style="height: 20px;color: #656565">
                 <el-row class="row-bg" justify="space-between">
                   <el-col :span="9">
-                    <a href="#" style="text-decoration: none;color: #2a2a2a;font-size: 16px;margin-right: 40px;line-height: 20px">
+                    <a href="#"
+                       style="text-decoration: none;color: #2a2a2a;font-size: 16px;margin-right: 40px;line-height: 20px">
                       {{ comData.comUser.username }}
                     </a>
                   </el-col>
@@ -176,12 +184,18 @@ import {createApp, onBeforeUnmount, ref, shallowRef} from "vue";
 import request from "@/utils/request";
 import {ElMessage} from "element-plus";
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import {Avatar, Timer} from '@element-plus/icons-vue'
 
 
 export default {
   name: 'ArticleInfo',
   data() {
     return {
+      icon: {
+        Avatar: Avatar,
+        Timer: Timer
+      },
+      pageLoading: true,
       userData: JSON.parse(sessionStorage.getItem('user')),
       articleData: JSON.parse(sessionStorage.getItem('article')),
       count_like: 0,
@@ -196,10 +210,6 @@ export default {
       collectLoading: false,
       commentVisible: false,
       commentList: [],
-      commentUserName: [],
-      commentCreate: [],
-      commentContext: [],
-      commentUserAvatar: [],
       loginUserCommentContext: ""
     };
   },
@@ -215,7 +225,7 @@ export default {
     // 内容 HTML
     const valueHtml = ref('')
 
-    const editorConfig = {placeholder: '请输入内容...'}
+    const editorConfig = {placeholder: '帖子内容获取中...'}
 
     // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
@@ -225,7 +235,7 @@ export default {
     })
 
     const handleCreated = (editor) => {
-      editorRef.value = editor // 记录 editor 实例，重要！
+      editorRef.value = editor
     }
 
     return {
@@ -237,25 +247,24 @@ export default {
     };
   },
   mounted() {
-
-  },
-  updated() {
-    this.updateArtAchievement();
+    setTimeout(() => {
+      this.updateArtAchievement();
+    }, 500);
   },
   methods: {
     updateArtAchievement() {
       this.articleData = JSON.parse(sessionStorage.getItem('article'))
       document.getElementsByTagName("h2")[0].innerText = this.articleData.artTitle;
-      this.valueHtml = this.articleData.artContext
-      this.editorRef.disable()
+      this.editorRef.setHtml(this.articleData.artContext)
+
+
       request.post("/Achievement/article", {
         artId: this.articleData.artId
       }).then(re => {
         if (re.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (re.code === '1') {
+        } else if (re.code === '1') {
           this.count_view = re.data.view;
           this.count_like = re.data.like;
           this.count_comment = re.data.comment;
@@ -266,10 +275,11 @@ export default {
         } else {
           ElMessage.error(re.msg);
         }
+        this.editorRef.disable();
+        this.pageLoading = false;
       })
     },
     updateArtComment() {
-
       request.post("/comment/all", {artId: this.articleData.artId}).then(re => {
         if (re.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
@@ -297,8 +307,7 @@ export default {
         if (re.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (res.code === '1') {
+        } else if (res.code === '1') {
           this.userLikeIt = res.data;
           if (this.userLikeIt) {
             this.count_like++;
@@ -325,8 +334,7 @@ export default {
         if (re.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (res.code === '1') {
+        } else if (res.code === '1') {
           this.userCollectIt = res.data;
           if (this.userCollectIt) {
             this.count_collect++;
@@ -353,8 +361,7 @@ export default {
         if (re.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (re.code === '1') {
+        } else if (re.code === '1') {
           this.loginUserCommentContext = '';
           this.updateArtComment();
           ElMessage({

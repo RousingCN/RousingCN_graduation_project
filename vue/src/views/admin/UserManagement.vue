@@ -25,11 +25,11 @@
     </div>
     <div style="margin: 100px auto;text-align: center;max-width: 1000px">
       <el-table v-loading="tableLoading" :data="tableData" max-height="350" style="width: 100%" border :stripe="true"
-                @cell-mouse-enter="getRowData">
-        <el-table-column prop="userid" label="用户id"/>
-        <el-table-column prop="username" label="用户名"/>
-        <el-table-column prop="userCreate" label="用户注册时间"/>
-        <el-table-column prop="userStatus" label="用户状态"/>
+                @cell-mouse-enter="getRowData" :default-sort="{ prop: 'userid', order: 'ascending' }">
+        <el-table-column prop="userid" label="用户id" sortable/>
+        <el-table-column prop="username" label="用户名" sortable/>
+        <el-table-column prop="userCreate" label="用户注册时间" sortable/>
+        <el-table-column prop="userStatus" label="用户状态" sortable/>
         <el-table-column fixed="right" label="操作" width="120">
           <template #default>
             <el-button link type="primary" size="small" @click="updateUserStatus">
@@ -65,8 +65,7 @@ export default {
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (res.code === '1') {
+        } else if (res.code === '1') {
           const resData = res.data;
           for (let i = 0; i < resData.length; i++) {
             resData[i].userCreate = resData[i].userCreate.substring(0, 10) + " " + resData[i].userCreate.substring(11, 19)
@@ -103,8 +102,7 @@ export default {
               if (res.code === undefined) {
                 ElMessage.error("登录已过期，请重新登录后再试");
                 this.$router.push('/')
-              }
-              if (res.code === '1') {
+              } else if (res.code === '1') {
                 ElMessage({
                   type: 'success',
                   message: selectRowData.userid + `号用户的状态已经修改成功`,

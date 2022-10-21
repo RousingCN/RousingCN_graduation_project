@@ -28,12 +28,12 @@
     </div>
     <div style="margin: 100px auto;text-align: center;max-width: 1300px">
       <el-table v-loading="tableLoading" :data="tableData" max-height="350" style="width: 100%" border :stripe="true"
-                @cell-mouse-enter="getRowData">
-        <el-table-column prop="artId" label="帖子id"/>
-        <el-table-column prop="artTitle" label="帖子标题"/>
-        <el-table-column prop="artAuthor.username" label="创建者"/>
-        <el-table-column prop="artCreate" label="创建时间"/>
-        <el-table-column prop="artStatus" label="帖子状态"/>
+                @cell-mouse-enter="getRowData" :default-sort="{ prop: 'artId', order: 'ascending' }">
+        <el-table-column prop="artId" label="帖子id" sortable/>
+        <el-table-column prop="artTitle" label="帖子标题" sortable/>
+        <el-table-column prop="artAuthor.userid" label="创建者uid" sortable/>
+        <el-table-column prop="artCreate" label="创建时间" sortable/>
+        <el-table-column prop="artStatus" label="帖子状态" sortable/>
         <el-table-column fixed="right" label="操作" width="120">
           <template #default>
             <el-button link type="primary" size="small" @click="updateArticleStatus">
@@ -76,8 +76,7 @@ export default {
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (res.code === '1') {
+        } else if (res.code === '1') {
           const resData = res.data;
           for (let i = 0; i < resData.length; i++) {
             resData[i].artCreate = resData[i].artCreate.substring(0, 10) + " " + resData[i].artCreate.substring(11, 19)
@@ -114,8 +113,7 @@ export default {
               if (res.code === undefined) {
                 ElMessage.error("登录已过期，请重新登录后再试");
                 this.$router.push('/')
-              }
-              if (res.code === '1') {
+              } else if (res.code === '1') {
                 ElMessage({
                   type: 'success',
                   message: selectRowData.artId + `号帖子的状态已经修改成功`,

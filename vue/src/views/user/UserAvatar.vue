@@ -2,9 +2,11 @@
   <div
       style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 800px;height: 100%">
     <h1>头像</h1>
-    <el-divider />
+    <el-divider/>
     <div style="width: 120px;height: 120px;margin: 50px auto">
-      <el-image style="width: 120px; height: 120px;margin-bottom: 40px" :src="url" :fit="'cover'">
+      <el-image style="width: 120px; height: 120px;margin-bottom: 40px" :src="url" :fit="'cover'"
+                :preview-src-list="[url]"
+                :initial-index="0">
         <template #error>
           <div class="image-slot" style="color: #a1a1a1">暂无头像</div>
         </template>
@@ -42,8 +44,7 @@ export default {
       if (res.code === undefined) {
         ElMessage.error("登录已过期，请重新登录后再试");
         this.$router.push('/')
-      }
-      if (res.code === "1") {
+      } else if (res.code === "1") {
         ElMessage({
           message: '头像修改成功',
           type: 'success',

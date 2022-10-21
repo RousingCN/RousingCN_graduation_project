@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 100px auto;width: 400px;border: 1px solid #ccc;padding: 50px;border-radius: 20px">
     <h1>用户注册</h1>
-    <el-divider />
+    <el-divider/>
     <el-form :model="form" label-width="60px" style="margin-top: 50px">
       <el-form-item label="用户名" prop="name">
         <el-input v-model="form.username" clearable/>
@@ -26,7 +26,7 @@
 <script>
 import request from "@/utils/request";
 import {reactive} from "vue";
-import { ElMessage } from 'element-plus'
+import {ElMessage} from 'element-plus'
 
 const form = reactive({
   name: '',
@@ -53,8 +53,7 @@ export default {
         if (res.code === undefined) {
           ElMessage.error("页面停留时间过长，请刷新页面后再试");
           this.$router.push('/register')
-        }
-        if (res.code === "1") {
+        } else if (res.code === "1") {
           ElMessage({
             message: '注册成功',
             type: 'success',

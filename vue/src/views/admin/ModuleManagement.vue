@@ -28,12 +28,12 @@
     </div>
     <div style="margin: 100px auto;text-align: center;max-width: 1300px">
       <el-table v-loading="tableLoading" :data="tableData" max-height="350" style="width: 100%" border :stripe="true"
-                @cell-mouse-enter="getRowData">
-        <el-table-column prop="moduleId" label="模块id"/>
-        <el-table-column prop="moduleName" label="模块名称"/>
-        <el-table-column prop="moduleAuthor.username" label="创建者"/>
-        <el-table-column prop="moduleCreate" label="创建时间"/>
-        <el-table-column prop="moduleStatus" label="模块状态"/>
+                @cell-mouse-enter="getRowData" :default-sort="{ prop: 'moduleId', order: 'ascending' }">
+        <el-table-column prop="moduleId" label="模块id" sortable/>
+        <el-table-column prop="moduleName" label="模块名称" sortable/>
+        <el-table-column prop="moduleAuthor.userid" label="创建者uid" sortable/>
+        <el-table-column prop="moduleCreate" label="创建时间" sortable/>
+        <el-table-column prop="moduleStatus" label="模块状态" sortable/>
         <el-table-column fixed="right" label="操作" width="120">
           <template #default>
             <el-button link type="primary" size="small" @click="updateModuleStatus">
@@ -71,13 +71,12 @@ export default {
         moduleAuthor: {
           userid: this.formInline.moduleAuthor
         },
-        moduleStatus:this.formInline.moduleStatus
+        moduleStatus: this.formInline.moduleStatus
       }).then(res => {
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (res.code === '1') {
+        } else if (res.code === '1') {
           const resData = res.data;
           for (let i = 0; i < resData.length; i++) {
             resData[i].moduleCreate = resData[i].moduleCreate.substring(0, 10) + " " + resData[i].moduleCreate.substring(11, 19)
@@ -114,8 +113,7 @@ export default {
               if (res.code === undefined) {
                 ElMessage.error("登录已过期，请重新登录后再试");
                 this.$router.push('/')
-              }
-              if (res.code === '1') {
+              } else if (res.code === '1') {
                 ElMessage({
                   type: 'success',
                   message: selectRowData.moduleId + `号模块的状态已经修改成功`,

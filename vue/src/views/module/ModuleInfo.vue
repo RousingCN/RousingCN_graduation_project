@@ -2,7 +2,7 @@
   <div style="flex: 1;margin: 20px;border: 1px solid var(--el-border-color);padding: 50px;border-radius: 20px">
     <el-page-header :content="module.moduleName" @back="this.$router.back()" style="margin-bottom: 30px;"/>
     <p style="color: #a1a1a1">{{ module.moduleInfo }}</p>
-    <el-divider />
+    <el-divider/>
     <div>
       <el-button type="primary" @click="createArticle">发帖</el-button>
     </div>
@@ -49,8 +49,7 @@ export default {
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (res.code === '1') {
+        } else if (res.code === '1') {
           let rows = [];
           // 从时间截取日期
           for (let i = 0; i < (res.data.list.length <= 10 ? res.data.list.length : 10); i++) {

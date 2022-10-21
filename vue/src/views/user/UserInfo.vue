@@ -83,8 +83,7 @@ export default {
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        }
-        if (res.code === "1") {
+        } else if (res.code === "1") {
           ElMessage({
             message: '信息修改成功',
             type: 'success',
