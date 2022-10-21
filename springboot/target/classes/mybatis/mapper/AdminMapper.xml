@@ -44,6 +44,20 @@
         </association>
     </resultMap>
 
+    <resultMap id="CommentResultMap" type="com.rousing.pojo.Comment">
+        <result property="comId" column="com_id"/>
+        <result property="comContext" column="com_context"/>
+        <result property="comArticle" column="com_article"/>
+        <result property="comCreate" column="com_create"/>
+        <result property="comStatus" column="com_status"/>
+        <association property="comUser" javaType="com.rousing.pojo.User">
+            <result property="userid" column="userid"/>
+            <result property="username" column="username"/>
+            <result property="userAvatar" column="user_avatar"/>
+            <result property="userinfo" column="userinfo"/>
+        </association>
+    </resultMap>
+
     <cache eviction="FIFO"
            flushInterval="60000"
            size="512"
@@ -161,28 +175,28 @@
           and art_title = #{artTitle}
     </update>
 
-    <select id="selectComment" parameterType="Comment" resultType="Comment">
-        select * from comment
-        <where>
-            <if test="comId!=null">
-                com_id=#{comId}
-            </if>
-            <if test="comUser!=null">
-                and com_user=#{comUser.userid}
-            </if>
-            <if test="comContext!=null">
-                and com_context=#{comContext}
-            </if>
-            <if test="comArticle!=null">
-                and com_article=#{comArticle}
-            </if>
-            <if test="comCreate!=null">
-                and com_create=#{comCreate}
-            </if>
-            <if test="comStatus!=null">
-                and com_status=#{comStatus}
-            </if>
-        </where>
+    <select id="selectComment" parameterType="Comment" resultMap="CommentResultMap">
+        select c.*,u.* from comment c,user u
+        where c.com_user=u.userid
+        <if test="comId!=null">
+            and c.com_id=#{comId}
+        </if>
+        <if test="comUser.userid!=null">
+            and c.com_user=#{comUser.userid}
+        </if>
+        <if test="comContext!=null">
+            and c.com_context=#{comContext}
+        </if>
+        <if test="comArticle!=null">
+            and c.com_article=#{comArticle}
+        </if>
+        <if test="comCreate!=null">
+            and c.com_create=#{comCreate}
+        </if>
+        <if test="comStatus!=null">
+            and c.com_status=#{comStatus}
+        </if>
+
     </select>
 
     <update id="updateComment" parameterType="Comment">
