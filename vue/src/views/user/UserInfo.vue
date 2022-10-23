@@ -1,7 +1,7 @@
 <template>
   <div
-      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 800px;height: 100%">
-    <h1>信息</h1>
+      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;width: 40%;height: 100%">
+    <h1>修改信息</h1>
     <el-divider/>
     <el-form :model="form" label-width="120px" style="margin: 50px auto">
       <el-form-item label="用户ID" style="width: 60%;margin-bottom: 20px">

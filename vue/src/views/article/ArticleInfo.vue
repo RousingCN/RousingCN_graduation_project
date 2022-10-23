@@ -20,7 +20,7 @@
             <el-popover :width="250" placement="top"
                         popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
-                <el-link :href="'/userCenter/'+articleData.artAuthor.userid" target="_blank"
+                <el-link target="_blank"
                          style="margin-left: 6px;margin-top: -6px;font-size: 16px" :icon="icon.Avatar">
                   {{ articleData.artAuthor.username }}
                 </el-link>
@@ -176,7 +176,8 @@
                 <el-row class="row-bg" justify="space-between">
                   <el-col :span="9">
                     <el-tooltip class="box-item" effect="light" placement="right">
-                      <template #content> {{ comData.comUser.username }}<span style="color: #969696"> #{{ comData.comUser.userid }}</span></template>
+                      <template #content> {{ comData.comUser.username }}<span
+                          style="color: #969696"> #{{ comData.comUser.userid }}</span></template>
                       <a href="#"
                          style="text-decoration: none;color: #2a2a2a;font-size: 16px;margin-right: 40px;line-height: 20px">
                         {{ comData.comUser.username }}
@@ -284,38 +285,38 @@ export default {
 
       request.post("/Achievement/article", {
         artId: this.articleData.artId
-      }).then(re => {
-        if (re.code === undefined) {
+      }).then(res => {
+        if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        } else if (re.code === '1') {
-          this.count_view = re.data.view;
-          this.count_like = re.data.like;
-          this.count_comment = re.data.comment;
-          this.count_collect = re.data.collect;
-          this.userLikeIt = re.data.like_it;
-          this.userCommentIt = re.data.comment_it;
-          this.userCollectIt = re.data.collect_it;
+        } else if (res.code === '1') {
+          this.count_view = res.data.view;
+          this.count_like = res.data.like;
+          this.count_comment = res.data.comment;
+          this.count_collect = res.data.collect;
+          this.userLikeIt = res.data.like_it;
+          this.userCommentIt = res.data.comment_it;
+          this.userCollectIt = res.data.collect_it;
         } else {
-          ElMessage.error(re.msg);
+          ElMessage.error(res.msg);
         }
         this.editorRef.disable();
         this.pageLoading = false;
       })
     },
     updateArtComment() {
-      request.post("/comment/all", {artId: this.articleData.artId}).then(re => {
-        if (re.code === undefined) {
+      request.post("/comment/all", {artId: this.articleData.artId}).then(res => {
+        if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         }
-        if (re.code === '1') {
-          for (let i = 0; i < re.data.length; i++) {
-            re.data[i].comCreate = re.data[i].comCreate.substring(0, 10) + " " + re.data[i].comCreate.substring(11, 19)
+        if (res.code === '1') {
+          for (let i = 0; i < res.data.length; i++) {
+            res.data[i].comCreate = res.data[i].comCreate.substring(0, 10) + " " + res.data[i].comCreate.substring(11, 19)
           }
-          this.commentList = re.data;
+          this.commentList = res.data;
         } else {
-          ElMessage.error(re.msg);
+          ElMessage.error(res.msg);
         }
         this.commentLoading = false;
         this.commentVisible = true;
@@ -328,7 +329,7 @@ export default {
         articleId: this.articleData.artId,
         like_it: this.userLikeIt
       }).then(res => {
-        if (re.code === undefined) {
+        if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
@@ -355,7 +356,7 @@ export default {
         articleId: this.articleData.artId,
         collect_it: this.userCollectIt
       }).then(res => {
-        if (re.code === undefined) {
+        if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
@@ -381,11 +382,11 @@ export default {
       request.post('/comment/add', {
         comContext: this.loginUserCommentContext,
         comArticle: this.articleData.artId
-      }).then(re => {
-        if (re.code === undefined) {
+      }).then(res => {
+        if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
-        } else if (re.code === '1') {
+        } else if (res.code === '1') {
           this.loginUserCommentContext = '';
           this.updateArtComment();
           ElMessage({
@@ -393,7 +394,7 @@ export default {
             type: 'success',
           });
         } else {
-          ElMessage.error(re.msg);
+          ElMessage.error(res.msg);
         }
       })
     },

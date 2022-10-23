@@ -25,19 +25,8 @@
 
 <script>
 import request from "@/utils/request";
-import {reactive} from "vue";
 import {ElMessage} from 'element-plus'
 
-const form = reactive({
-  name: '',
-  region: '',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
-  desc: '',
-})
 
 export default {
   name: "Register",
@@ -48,7 +37,10 @@ export default {
   },
   methods: {
     register() {
-      console.log(this.form)
+      if (form.username === '' || form.userPassword === '' || form.userMail === '' || form.userPhone === '') {
+        ElMessage.error("请完成所有信息的填写后再试")
+        return;
+      }
       request.post("/user/register", this.form).then(res => {
         if (res.code === undefined) {
           ElMessage.error("页面停留时间过长，请刷新页面后再试");
@@ -62,8 +54,7 @@ export default {
         } else {
           ElMessage.error(res.msg);
         }
-
-      })
+      });
     },
     toLogin() {
       this.$router.push("/");

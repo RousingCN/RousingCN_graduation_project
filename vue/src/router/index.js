@@ -68,9 +68,29 @@ const routes = [
     {
         path: '/userCenter',
         name: 'UserLayout',
-        redirect: '/userAvatar',
+        redirect: '/likeHistory',
         component: UserLayout,
         children: [
+            {
+                path: '/likeHistory',
+                name: 'UserLikeHistory',
+                component: () => import('../views/user/UserLikeHistory')
+            },
+            {
+                path: '/commentHistory',
+                name: 'UserCommentHistory',
+                component: () => import('../views/user/UserCommentHistory')
+            },
+            {
+                path: '/collectHistory',
+                name: 'UserCollectHistory',
+                component: () => import('../views/user/UserCollectHistory')
+            },
+            {
+                path: '/viewHistory',
+                name: 'UserViewHistory',
+                component: () => import('../views/user/UserViewHistory')
+            },
             {
                 path: '/userAvatar',
                 name: 'UserAvatar',
@@ -120,7 +140,7 @@ const routes = [
                 component: () => import('../views/module/ModuleInfo')
             }
         ]
-    },{
+    }, {
         path: '/article',
         name: 'Article',
         component: ArticleLayout,

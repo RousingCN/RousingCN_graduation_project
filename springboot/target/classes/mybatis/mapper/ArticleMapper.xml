@@ -12,15 +12,8 @@
         <association property="artAuthor" javaType="com.rousing.pojo.User">
             <result property="userid" column="userid"/>
             <result property="username" column="username"/>
-<!--            <result property="userPassword" column="user_password"/>-->
-<!--            <result property="userPhone" column="user_phone"/>-->
-<!--            <result property="userMail" column="user_mail"/>-->
-<!--            <result property="userSex" column="user_sex"/>-->
-<!--            <result property="userBirth" column="user_birth"/>-->
-<!--            <result property="userCreate" column="user_create"/>-->
             <result property="userAvatar" column="user_avatar"/>
             <result property="userinfo" column="userinfo"/>
-<!--            <result property="userStatus" column="user_status"/>-->
         </association>
     </resultMap>
 
@@ -35,7 +28,7 @@
              user u
         where a.art_author = u.userid
           and a.art_module = #{moduleId}
-          and a.art_status = 1
+          and a.art_status != 2
         order by a.art_id
         limit #{startNum},#{endNum}
     </select>
@@ -43,7 +36,7 @@
     <select id="selectAllCount" resultType="Integer">
         select count(*)
         from article
-        where art_status = 1;
+        where art_status != 2;
     </select>
 
     <insert id="insertArticle" parameterType="com.rousing.pojo.Article">

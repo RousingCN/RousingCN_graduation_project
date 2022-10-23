@@ -1,6 +1,6 @@
 <template>
-  <div style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;max-width: 800px;height: 100%">
-    <h1>密码</h1>
+  <div style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;width: 40%;height: 100%">
+    <h1>修改密码</h1>
     <el-divider/>
     <el-form :model="form" label-width="120px" style="margin: 50px auto" :rules="rules" status-icon>
       <el-form-item label="旧密码" style="width: 80%;margin-bottom: 40px" prop="password">

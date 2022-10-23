@@ -11,7 +11,7 @@ public class MD5Utils {
         return DigestUtils.md5DigestAsHex(str.getBytes(StandardCharsets.UTF_8));
     }
 
-    private static final String salt = "1a4e1d1e";
+    private static final String SALT = "1a4e1d1e";
 
     /**
      * 第一次加密
@@ -24,7 +24,7 @@ public class MD5Utils {
      **/
     public static String inputPassToFromPass(String inputPass) {
         // salt可以随机的放在输入密码的各个部分当中
-        String str = salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
+        String str = SALT.charAt(0) + SALT.charAt(2) + inputPass + SALT.charAt(5) + SALT.charAt(4);
         return md5(str);
     }
 

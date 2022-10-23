@@ -13,7 +13,6 @@
         from collect
         where col_status = 1
           and col_article = #{artId}
-          and col_status = 1;
     </select>
 
     <select id="selectView" parameterType="Integer" resultType="Integer">
@@ -27,7 +26,6 @@
         from like_it
         where like_status = 1
           and like_article = #{artId}
-          and like_status = 1;
     </select>
 
     <select id="selectComment" parameterType="Integer" resultType="Integer">
@@ -35,7 +33,6 @@
         from comment
         where com_status = 1
           and com_article = #{artId}
-          and com_status = 1;
     </select>
 
     <select id="selectUserLikeIt" parameterType="Integer" resultType="Integer">

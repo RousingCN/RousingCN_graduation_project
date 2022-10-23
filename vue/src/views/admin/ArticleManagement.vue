@@ -96,7 +96,6 @@ export default {
         },
         artStatus: this.formInline.artStatus
       }).then(res => {
-        console.log(res)
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')

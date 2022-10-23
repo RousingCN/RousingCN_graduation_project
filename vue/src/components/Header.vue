@@ -15,8 +15,7 @@
     <el-menu-item index="/module" style="width: 8%">板块</el-menu-item>
     <el-menu-item index="/article" style="width: 8%">娱乐</el-menu-item>
     <el-menu-item index="/about" style="width: 8%">关于</el-menu-item>
-    <div style="width: 10%;"/>
-    <el-sub-menu index="">
+    <el-sub-menu index="/userAvatar">
       <template #title>
         <el-avatar v-if="user.userAvatar===null"> user</el-avatar>
         <el-image style="width: 59px;height: 59px;border-radius: 50%" v-if="user.userAvatar!==null"
@@ -28,7 +27,7 @@
         </el-image>
       </template>
       <el-menu-item index="/userCenter">个人中心</el-menu-item>
-      <el-menu-item index="/" @click="loginOut">注销</el-menu-item>
+      <el-menu-item index="/" @click="loginOut">退出登录</el-menu-item>
     </el-sub-menu>
   </el-menu>
 </template>
@@ -49,7 +48,7 @@ const loginOut = function () {
       this.$router.push('/')
     } else if (res.code === '1') {
       ElMessage({
-        message: '注销成功',
+        message: '退出登录成功',
         type: 'success',
       });
       sessionStorage.clear();

@@ -25,7 +25,7 @@ public class FileController {
     UserService userService;
     @Value("${server.port}")
     private String port;
-    private static final String ip = "http://localhost";
+    private static final String IP = "http://localhost";
 
     @PostMapping("/avatar/save")
     public Result<?> saveAvatar(MultipartFile file, HttpSession session) {
@@ -40,7 +40,7 @@ public class FileController {
         }
         //更新保存的信息
         User user = (User) session.getAttribute("user");
-        user.setUserAvatar(ip + ":" + port + "/avatar/" + uuid + "_" + originalFilename);
+        user.setUserAvatar(IP + ":" + port + "/avatar/" + uuid + "_" + originalFilename);
         if (userService.updateUser(user)) {
             return Result.success();
         }

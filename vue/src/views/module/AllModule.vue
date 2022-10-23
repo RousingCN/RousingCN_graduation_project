@@ -4,7 +4,7 @@
     <h1>全部板块</h1>
     <el-divider/>
     <div>
-      <el-table :data="tableData" :table-layout="'fixed'" @cell-click="click"
+      <el-table :data="tableData" @cell-click="click"
                 :default-sort="{ prop: 'moduleCreate', order: 'descending' }">
         <el-table-column prop="moduleName" label="名称" sortable/>
         <el-table-column prop="moduleInfo" label="介绍"/>

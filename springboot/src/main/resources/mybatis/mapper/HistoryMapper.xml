@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rousing.mapper.HistoryMapper">
+
+    <resultMap id="LikeResultMap" type="com.rousing.pojo.Like">
+        <result property="likeId" column="like_id"/>
+        <result property="likeStatus" column="like_status"/>
+        <association property="likeArticle" javaType="com.rousing.pojo.Article">
+            <result property="artId" column="art_id"/>
+            <result property="artTitle" column="art_title"/>
+            <result property="artContext" column="art_context"/>
+            <result property="artModule" column="art_module"/>
+            <result property="artCreate" column="art_create"/>
+            <result property="artStatus" column="art_status"/>
+            <association property="artAuthor" javaType="com.rousing.pojo.User">
+                <result property="userid" column="userid"/>
+                <result property="username" column="username"/>
+                <result property="userAvatar" column="user_avatar"/>
+                <result property="userinfo" column="userinfo"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <cache eviction="FIFO"
+           flushInterval="60000"
+           size="512"
+           readOnly="true"/>
+
+    <select id="selectLikeHistory" resultMap="LikeResultMap">
+        select l.*, u.*, a.*
+        from like_it l,
+             user u,
+             article a
+        where l.like_article = a.art_id
+          and a.art_author = u.userid
+          and l.like_user = #{likeUser.userid}
+          and l.like_status = 1
+          and a.art_status != 2
+        order by l.like_id desc
+        limit #{startIndex},#{endIndex};
+    </select>
+
+    <select id="selectCommentHistory" resultType="com.rousing.pojo.Comment">
+        select *
+        from comment
+        where com_user = #{comUser.userid}
+        and com_status = 1
+        <if test="comContext!=null">
+            <bind name="context" value="'%'+comContext+'%'"/>
+            and com_context like #{context}
+        </if>
+        <if test="comCreate">
+            and com_create = #{comCreate}
+        </if>
+        order by com_id desc;
+    </select>
+
+    <select id="selectCollectHistory" resultType="com.rousing.pojo.Collect">
+        select *
+        from collect
+        where col_user = #{colUser}
+          and col_status = 1
+        order by col_id desc;
+    </select>
+
+    <select id="selectViewHistory" resultType="com.rousing.pojo.View">
+        select *
+        from view
+        where view_user = #{viewUser}
+        <if test="viewTime!=null">
+            and view_time=#{viewTime}
+        </if>
+        order by view_time desc;
+    </select>
+
+
+</mapper>

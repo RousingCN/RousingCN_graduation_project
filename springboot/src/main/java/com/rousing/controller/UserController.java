@@ -75,8 +75,9 @@ public class UserController {
         }
         //查询旧密码是否符合
         user.setUserPassword(MD5Utils.inputPassToFromPass(pwd.getOldPassword()));
-        if (userService.getOne(user) == null)
+        if (userService.getOne(user) == null) {
             return Result.error("-1", "旧密码不正确");
+        }
         //开始修改密码
         user.setUserPassword(MD5Utils.inputPassToFromPass(pwd.getNewPassword()));
         if (userService.updateUser(user)) {
@@ -85,6 +86,5 @@ public class UserController {
         }
         return Result.error("-3", "更新密码时出错");
     }
-
 
 }

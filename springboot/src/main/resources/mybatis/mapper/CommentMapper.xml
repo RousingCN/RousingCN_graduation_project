@@ -27,7 +27,7 @@
              user u
         where c.com_user = u.userid
           and c.com_status = 1
-          and u.user_status = 1
+          and u.user_status != 2
           and c.com_article = #{artId}
     </select>
 

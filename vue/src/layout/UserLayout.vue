@@ -3,7 +3,7 @@
     <Header/>
     <div style="display: flex;">
       <UserAside/>
-      <router-view style="flex: 1"/>
+      <router-view />
     </div>
   </el-scrollbar>
 </template>

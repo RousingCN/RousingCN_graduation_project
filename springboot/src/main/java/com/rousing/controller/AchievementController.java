@@ -18,16 +18,6 @@ public class AchievementController {
     @Resource
     AchievementService achievementService;
 
-    @PostMapping("/user")
-    public Result<?> userAchievement(@RequestBody User user) {
-        try {
-            return Result.success(achievementService.getUserAchievement(user.getUserid()));
-        } catch (Exception err) {
-            log.error(err.getMessage());
-            return Result.error("-1", "获取用户信息失败");
-        }
-    }
-
     @PostMapping("/article")
     public Result<?> articleAchievement(@RequestBody Article article, HttpSession session) {
         User user = (User) session.getAttribute("user");
