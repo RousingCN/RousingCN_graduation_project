@@ -33,7 +33,7 @@
     <resultMap id="CommentResultMap" type="com.rousing.pojo.Comment">
         <result property="comId" column="com_id"/>
         <result property="comContext" column="com_context"/>
-        <result property="comArticle" column="com_article"/>
+        <result property="comArticle.artId" column="com_article"/>
         <result property="comCreate" column="com_create"/>
         <result property="comStatus" column="com_status"/>
         <association property="comUser" javaType="com.rousing.pojo.User">
@@ -173,8 +173,8 @@
         <if test="comContext!=null">
             and c.com_context=#{comContext}
         </if>
-        <if test="comArticle!=null">
-            and c.com_article=#{comArticle}
+        <if test="comArticle.artId!=null">
+            and c.com_article=#{comArticle.artId}
         </if>
         <if test="comCreate!=null">
             and c.com_create=#{comCreate}
@@ -190,6 +190,6 @@
         set com_status = #{comStatus}
         where com_id = #{comId}
           and com_user = #{comUser.userid}
-          and com_article = #{comArticle}
+          and com_article = #{comArticle.artId}
     </update>
 </mapper>

@@ -282,6 +282,7 @@ export default {
       document.getElementsByTagName("h2")[0].innerText = this.articleData.artTitle;
       this.editorRef.setHtml(this.articleData.artContext)
 
+      this.articleData.artCreate = this.articleData.artCreate.substring(0, 10) + " " + this.articleData.artCreate.substring(11, 19)
 
       request.post("/Achievement/article", {
         artId: this.articleData.artId
@@ -303,6 +304,8 @@ export default {
         this.editorRef.disable();
         this.pageLoading = false;
       })
+
+      this.userViewArticle()
     },
     updateArtComment() {
       request.post("/comment/all", {artId: this.articleData.artId}).then(res => {
@@ -381,7 +384,9 @@ export default {
       this.commentLoading = true;
       request.post('/comment/add', {
         comContext: this.loginUserCommentContext,
-        comArticle: this.articleData.artId
+        comArticle: {
+          artId: this.articleData.artId
+        }
       }).then(res => {
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
@@ -389,12 +394,28 @@ export default {
         } else if (res.code === '1') {
           this.loginUserCommentContext = '';
           this.updateArtComment();
+          this.count_comment++;
+          this.userCommentIt = true;
           ElMessage({
             message: '发布成功',
             type: 'success',
           });
         } else {
           ElMessage.error(res.msg);
+        }
+      })
+    },
+    userViewArticle() {
+      request.post('Achievement/userViewArticle', {
+        articleId: this.articleData.artId
+      }).then(res => {
+        if (res.code === undefined) {
+          ElMessage.error("登录已过期，请重新登录后再试");
+          this.$router.push('/')
+        } else if (res.code === '1') {
+          console.log('已记录浏览历史,当前帖子id：' + this.articleData.artId);
+        } else {
+          ElMessage.error(res.msg)
         }
       })
     },

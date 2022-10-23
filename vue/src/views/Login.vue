@@ -4,10 +4,10 @@
     <el-divider/>
     <el-form :model="form" label-width="60px" style="margin-top: 50px">
       <el-form-item label="用户名" prop="name" style="margin-bottom: 40px">
-        <el-input v-model="form.username" clearable/>
+        <el-input v-model="form.username" maxlength="16" clearable/>
       </el-form-item>
       <el-form-item label="密码" prop="pwd" style="margin-bottom: 40px">
-        <el-input v-model="form.userPassword" clearable show-password/>
+        <el-input v-model="form.userPassword" maxlength="20" clearable show-password/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="login">登录</el-button>

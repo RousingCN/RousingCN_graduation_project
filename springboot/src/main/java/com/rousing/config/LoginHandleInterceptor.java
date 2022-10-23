@@ -12,6 +12,7 @@ public class LoginHandleInterceptor implements HandlerInterceptor {
         Object user = request.getSession().getAttribute("user");
         // 如果找不到用户信息，则拒绝请求
         if (user == null) {
+            System.out.println("未知来源请求");
             response.encodeRedirectURL("http://localhost:9876/");
             return false;
         } else {

@@ -5,12 +5,12 @@
     <el-divider/>
     <div>
       <el-table :data="tableData" @cell-click="click"
-                :default-sort="{ prop: 'moduleCreate', order: 'descending' }">
-        <el-table-column prop="moduleName" label="名称" sortable/>
+                :default-sort="{ prop: 'moduleCreate', order: 'ascending' }">
+        <el-table-column prop="moduleName" label="名称" width="180px" sortable/>
         <el-table-column prop="moduleInfo" label="介绍"/>
-        <el-table-column prop="moduleAuthor.username" label="创建者" sortable>
+        <el-table-column prop="moduleAuthor.username" label="创建者" width="280px" sortable>
           <template #default="scope">
-            <el-popover :width="250"
+            <el-popover :width="250" placement="top"
                         popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <el-link :underline="false">{{ scope.row.moduleAuthor.username }}</el-link>
@@ -34,7 +34,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="moduleCreate" label="创建时间" sortable/>
+        <el-table-column prop="moduleCreate" label="创建时间" width="200px" sortable/>
       </el-table>
       <el-pagination style="margin-top: 20px" background hide-on-single-page layout="prev, pager, next"
                      :total="moduleCount" @current-change="changPage"/>
@@ -71,7 +71,7 @@ export default {
           // 从时间截取日期
           for (let i = 0; i < (res.data.pageData.length <= 10 ? res.data.pageData.length : 10); i++) {
             const row = res.data.pageData[i];
-            row.moduleCreate = row.moduleCreate.substring(0, 10) + " " + row.moduleCreate.substring(11, 19);
+            row.moduleCreate = row.moduleCreate.substring(0, 10);
             rows[i] = row;
           }
           this.tableData = rows;

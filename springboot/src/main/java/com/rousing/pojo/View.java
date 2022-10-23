@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class View {
     private Integer viewId;
-    private Integer viewArticle;
-    private Integer viewUser;
+    private Article viewArticle;
+    private User viewUser;
     private Date viewTime;
 }

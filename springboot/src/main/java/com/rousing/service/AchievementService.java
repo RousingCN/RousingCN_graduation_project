@@ -12,7 +12,6 @@ public class AchievementService {
     @Resource
     ArticleAchievementMapper articleAchievementMapper;
 
-
     public ArticleAchievement getArticleAchievement(Integer articleId, Integer userid) {
         ArticleAchievement achievement = new ArticleAchievement();
         achievement.setArticleId(articleId);
@@ -55,6 +54,14 @@ public class AchievementService {
             } else {
                 return articleAchievementMapper.newUserCollectIt(artId, userid) > 0;
             }
+        }
+    }
+
+    public Boolean viewArticle(Integer artId,Integer userid) {
+        if (articleAchievementMapper.userViewIt(artId, userid) > 0) {
+            return true;
+        } else {
+            return articleAchievementMapper.newUserViewIt(artId, userid) > 0;
         }
     }
 

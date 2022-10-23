@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Collect {
     private Integer colId;
-    private Integer colArticle;
-    private Integer colUser;
+    private Article colArticle;
+    private User colUser;
     private Integer colStatus;
 }

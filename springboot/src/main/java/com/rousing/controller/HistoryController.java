@@ -31,7 +31,9 @@ public class HistoryController {
     }
 
     @PostMapping("/comment")
-    public Result<?> commentHistory(@RequestBody Comment comment) {
+    public Result<?> commentHistory(@RequestBody Comment comment,HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        comment.setComUser(user);
         try {
             return Result.success(historyService.selectCommentHistory(comment));
         } catch (Exception e) {
@@ -41,7 +43,9 @@ public class HistoryController {
     }
 
     @PostMapping("/collect")
-    public Result<?> collectHistory(@RequestBody Collect collect) {
+    public Result<?> collectHistory(@RequestBody Collect collect,HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        collect.setColUser(user);
         try {
             return Result.success(historyService.selectCollectHistory(collect));
         } catch (Exception e) {
@@ -51,7 +55,9 @@ public class HistoryController {
     }
 
     @PostMapping("/view")
-    public Result<?> viewHistory(@RequestBody View view) {
+    public Result<?> viewHistory(@RequestBody View view,HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        view.setViewUser(user);
         try {
             return Result.success(historyService.selectViewHistory(view));
         } catch (Exception e) {

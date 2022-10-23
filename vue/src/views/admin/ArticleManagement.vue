@@ -33,7 +33,7 @@
         <el-table-column prop="artTitle" label="帖子标题" sortable/>
         <el-table-column prop="artAuthor.username" label="创建者" sortable>
           <template #default="scope">
-            <el-popover :width="250"
+            <el-popover :width="250" placement="top"
                         popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <el-link :underline="false">{{ scope.row.artAuthor.username }}</el-link>

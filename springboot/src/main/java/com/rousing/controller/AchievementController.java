@@ -49,4 +49,13 @@ public class AchievementController {
         }
     }
 
+    @PostMapping("/userViewArticle")
+    public Result<?> userViewArticle(@RequestBody ArticleAchievement achievement, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (achievementService.viewArticle(achievement.getArticleId(), user.getUserid())) {
+            return Result.success(!achievement.isCollect_it());
+        } else {
+            return Result.error("-1", "发生意外，本次浏览不会被记录");
+        }
+    }
 }

@@ -21,6 +21,65 @@
         </association>
     </resultMap>
 
+    <resultMap id="CommentResultMap" type="com.rousing.pojo.Comment">
+        <result property="comId" column="com_id"/>
+        <result property="comContext" column="com_context"/>
+        <result property="comCreate" column="com_create"/>
+        <result property="comStatus" column="com_status"/>
+        <association property="comArticle" javaType="com.rousing.pojo.Article">
+            <result property="artId" column="art_id"/>
+            <result property="artTitle" column="art_title"/>
+            <result property="artContext" column="art_context"/>
+            <result property="artModule" column="art_module"/>
+            <result property="artCreate" column="art_create"/>
+            <result property="artStatus" column="art_status"/>
+            <association property="artAuthor" javaType="com.rousing.pojo.User">
+                <result property="userid" column="userid"/>
+                <result property="username" column="username"/>
+                <result property="userAvatar" column="user_avatar"/>
+                <result property="userinfo" column="userinfo"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <resultMap id="CollectResultMap" type="com.rousing.pojo.Collect">
+        <result property="colId" column="col_id"/>
+        <result property="colStatus" column="com_status"/>
+        <association property="colArticle" javaType="com.rousing.pojo.Article">
+            <result property="artId" column="art_id"/>
+            <result property="artTitle" column="art_title"/>
+            <result property="artContext" column="art_context"/>
+            <result property="artModule" column="art_module"/>
+            <result property="artCreate" column="art_create"/>
+            <result property="artStatus" column="art_status"/>
+            <association property="artAuthor" javaType="com.rousing.pojo.User">
+                <result property="userid" column="userid"/>
+                <result property="username" column="username"/>
+                <result property="userAvatar" column="user_avatar"/>
+                <result property="userinfo" column="userinfo"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <resultMap id="ViewResultMap" type="com.rousing.pojo.View">
+        <result property="viewId" column="view_id"/>
+        <result property="viewTime" column="view_time"/>
+        <association property="viewArticle" javaType="com.rousing.pojo.Article">
+            <result property="artId" column="art_id"/>
+            <result property="artTitle" column="art_title"/>
+            <result property="artContext" column="art_context"/>
+            <result property="artModule" column="art_module"/>
+            <result property="artCreate" column="art_create"/>
+            <result property="artStatus" column="art_status"/>
+            <association property="artAuthor" javaType="com.rousing.pojo.User">
+                <result property="userid" column="userid"/>
+                <result property="username" column="username"/>
+                <result property="userAvatar" column="user_avatar"/>
+                <result property="userinfo" column="userinfo"/>
+            </association>
+        </association>
+    </resultMap>
+
     <cache eviction="FIFO"
            flushInterval="60000"
            size="512"
@@ -40,38 +99,47 @@
         limit #{startIndex},#{endIndex};
     </select>
 
-    <select id="selectCommentHistory" resultType="com.rousing.pojo.Comment">
-        select *
-        from comment
-        where com_user = #{comUser.userid}
-        and com_status = 1
+    <select id="selectCommentHistory" resultMap="CommentResultMap">
+        select c.*, u.*, a.*
+        from comment c,
+        user u,
+        article a
+        where c.com_article = a.art_id
+        and a.art_author = u.userid
+        and c.com_user = #{comUser.userid}
+        and c.com_status = 1
         <if test="comContext!=null">
             <bind name="context" value="'%'+comContext+'%'"/>
-            and com_context like #{context}
+            and c.com_context like #{context}
         </if>
-        <if test="comCreate">
-            and com_create = #{comCreate}
+        <if test="comCreate!=null">
+            and date_format(c.com_create,'%Y-%m-%d') = date_format(#{comCreate},'%Y-%m-%d')
         </if>
         order by com_id desc;
     </select>
 
-    <select id="selectCollectHistory" resultType="com.rousing.pojo.Collect">
-        select *
-        from collect
-        where col_user = #{colUser}
+    <select id="selectCollectHistory" resultMap="CollectResultMap">
+        select c.*, u.*, a.*
+        from collect c,
+             user u,
+             article a
+        where c.col_article = a.art_id
+          and a.art_author = u.userid
+          and col_user = #{colUser.userid}
           and col_status = 1
         order by col_id desc;
     </select>
 
-    <select id="selectViewHistory" resultType="com.rousing.pojo.View">
-        select *
-        from view
-        where view_user = #{viewUser}
+    <select id="selectViewHistory" resultMap="ViewResultMap">
+        select v.*,u.*,a.*
+        from view v,user u,article a
+        where v.view_article = a.art_id
+        and a.art_author = u.userid
+        and v.view_user = #{viewUser.userid}
         <if test="viewTime!=null">
-            and view_time=#{viewTime}
+            and date_format(v.view_time,'%Y-%m-%d') = date_format(#{viewTime},'%Y-%m-%d')
         </if>
-        order by view_time desc;
+        order by v.view_time desc;
     </select>
-
 
 </mapper>

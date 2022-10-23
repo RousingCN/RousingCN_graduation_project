@@ -31,4 +31,8 @@ public interface ArticleAchievementMapper {
 
     Integer userUnCollectIt(@Param("artId") Integer artId, @Param("userid") Integer userid);
 
+    Integer newUserViewIt(@Param("artId") Integer artId, @Param("userid") Integer userid);
+
+    Integer userViewIt(@Param("artId") Integer artId, @Param("userid") Integer userid);
+
 }

@@ -13,7 +13,7 @@ public class Comment {
     private Integer comId;
     private User comUser;
     private String comContext;
-    private Integer comArticle;
+    private Article comArticle;
     private Date comCreate;
     private Integer comStatus;
 }

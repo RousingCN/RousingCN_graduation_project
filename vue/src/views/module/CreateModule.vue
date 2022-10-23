@@ -4,11 +4,12 @@
     <h1>板块创建</h1>
     <el-divider/>
     <el-form :model="form" label-width="80px" style="margin-top: 50px">
-      <el-form-item label="板块名称" prop="name" style="width: 50%;">
-        <el-input v-model="form.moduleName" clearable/>
+      <el-form-item label="板块名称" prop="name" style="width: 70%;">
+        <el-input v-model="form.moduleName" clearable maxlength="10" show-word-limit/>
       </el-form-item>
       <el-form-item label="板块介绍" style="width: 90%;margin: 50px 0">
-        <el-input v-model="form.moduleInfo" type="textarea"/>
+        <el-input v-model="form.moduleInfo" type="textarea" maxlength="50" placeholder="向大家介绍一下你的板块吧" autosize
+                  show-word-limit/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="createModule">创建</el-button>
@@ -30,6 +31,11 @@ export default {
   },
   methods: {
     createModule() {
+      if (this.form.moduleName === '' || this.form.moduleName === undefined || this.form.moduleInfo === '' || this.form.moduleInfo === undefined) {
+        ElMessage.error('模块名称和模块介绍不能为空')
+        return;
+      }
+
       request.post("/module/add", {
         moduleName: this.form.moduleName,
         moduleInfo: this.form.moduleInfo,
@@ -46,7 +52,7 @@ export default {
         } else {
           ElMessage.error(res.msg);
         }
-      })
+      });
     },
   }
 }

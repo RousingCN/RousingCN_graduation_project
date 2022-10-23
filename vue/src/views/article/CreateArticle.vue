@@ -4,11 +4,11 @@
     <h1>创建帖子</h1>
     <el-divider/>
     <el-form label-width="80px" style="margin-top: 50px;width: 1600px;">
-      <el-form-item label="所属板块" prop="name" style="width: 30%;margin-bottom: 30px">
+      <el-form-item label="所属板块" prop="name" style="width: 20%;margin-bottom: 30px">
         <el-input v-model="moduleName" disabled/>
       </el-form-item>
-      <el-form-item label="帖子标题" prop="name" style="width: 50%;margin-bottom: 30px">
-        <el-input v-model="artTitle" clearable/>
+      <el-form-item label="帖子标题" prop="name" style="width: 40%;margin-bottom: 30px">
+        <el-input v-model="artTitle" maxlength="20" show-word-limit clearable/>
       </el-form-item>
       <el-form-item label="帖子内容" prop="name" style="width: 1600px;margin-bottom: 30px">
         <div style="border: 1px solid var(--el-border-color);border-radius: 2px;width: 1200px;">
@@ -89,6 +89,14 @@ export default {
   },
   methods: {
     create() {
+      if (this.artTitle === '' || this.artTitle === undefined || this.artContext === '' || this.artContext === undefined) {
+        ElMessage.error('帖子标题和帖子内容不能为空')
+        return;
+      }
+      if (this.artContext.length > 20000) {
+        ElMessage.error('帖子内容占用空间太大，请减少帖子内容')
+        return;
+      }
       request.post("/article/createArticle", {
         artTitle: this.artTitle,
         artContext: this.artContext,
@@ -107,7 +115,7 @@ export default {
         } else {
           ElMessage.error(res.msg);
         }
-      })
+      });
     },
   },
 }

@@ -15,9 +15,9 @@
       <el-table :data="articles" :table-layout="'fixed'" @cell-click="click" :stripe="true"
                 :default-sort="{ prop: 'artCreate', order: 'descending' }">
         <el-table-column prop="artTitle" label="标题" sortable/>
-        <el-table-column prop="artAuthor.username" label="作者" sortable>
+        <el-table-column prop="artAuthor.username" label="作者" :align="'center'" sortable>
           <template #default="scope">
-            <el-popover :width="250"
+            <el-popover :width="250" placement="top"
                         popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <el-link :underline="false">{{ scope.row.artAuthor.username }}</el-link>
@@ -27,7 +27,7 @@
                   <el-avatar :size="60" :src="scope.row.artAuthor.userAvatar"
                              style="margin: 0 auto 8px"/>
                   <div>
-                    <p style="margin: 0; font-weight: bold">{{scope.row.artAuthor.username}}</p>
+                    <p style="margin: 0; font-weight: bold">{{ scope.row.artAuthor.username }}</p>
                     <p style="margin: 0; font-size: 14px; color: var(--el-color-info)">
                       #{{ scope.row.artAuthor.userid }}</p>
                   </div>
@@ -39,7 +39,11 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="artCreate" label="创建时间" :align="'right'" sortable/>
+        <el-table-column prop="artCreate" label="创建时间" :align="'right'" sortable>
+          <template #default="scope">
+            {{scope.row.artCreate.substring(0,10) + " " + scope.row.artCreate.substring(11, 19)}}
+          </template>
+        </el-table-column>
       </el-table>
       <div>
         <el-pagination style="margin-top: 20px" background hide-on-single-page layout="prev, pager, next"
@@ -53,14 +57,13 @@
 import request from "@/utils/request";
 import {ElMessage} from "element-plus";
 import {ArrowLeft} from "@element-plus/icons-vue";
-import {ref} from "vue";
 
 export default {
   name: "ModuleInfo",
   data() {
     return {
       ArrowLeft: ArrowLeft,
-      module: module,
+      module: {},
       articles: [],
       articleCount: 0,
     };
@@ -82,14 +85,7 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
-          let rows = [];
-          // 从时间截取日期
-          for (let i = 0; i < (res.data.list.length <= 10 ? res.data.list.length : 10); i++) {
-            const row = res.data.list[i];
-            row.artCreate = row.artCreate.substring(0, 10);
-            rows[i] = row;
-          }
-          this.articles = rows;
+          this.articles = res.data.list;
           this.articleCount = res.data.count
         } else {
           ElMessage.error(res.data);

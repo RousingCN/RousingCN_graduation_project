@@ -23,6 +23,7 @@
               type="date"
               placeholder="请选择日期"
               style="width: 100%"
+              :clearable="false"
           />
         </el-col>
       </el-form-item>
@@ -45,7 +46,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="个人签名" style="width: 90%">
-        <el-input v-model="form.userinfo" type="textarea"/>
+        <el-input v-model="form.userinfo" type="textarea" maxlength="255" autosize show-word-limit/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>

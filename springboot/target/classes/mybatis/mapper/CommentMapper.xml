@@ -5,7 +5,7 @@
     <resultMap id="CommentResultMap" type="com.rousing.pojo.Comment">
         <result property="comId" column="com_id"/>
         <result property="comContext" column="com_context"/>
-        <result property="comArticle" column="com_article"/>
+        <result property="comArticle.artId" column="com_article"/>
         <result property="comCreate" column="com_create"/>
         <result property="comStatus" column="com_status"/>
         <association property="comUser" javaType="com.rousing.pojo.User">
@@ -33,14 +33,14 @@
 
     <insert id="insertComment" parameterType="com.rousing.pojo.Comment">
         insert into comment (com_user, com_context, com_article, com_create, com_status)
-        values (#{comUser.userid}, #{comContext}, #{comArticle}, now(), 1);
+        values (#{comUser.userid}, #{comContext}, #{comArticle.artId}, now(), 1);
     </insert>
 
     <update id="hideComment" parameterType="com.rousing.pojo.Comment">
         update comment
         set com_status = 2
         where com_user = #{comUser.userid}
-          and com_article = #{comArticle};
+          and com_article = #{comArticle.artId};
     </update>
 
 </mapper>

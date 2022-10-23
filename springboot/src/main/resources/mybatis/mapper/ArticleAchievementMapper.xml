@@ -98,4 +98,16 @@
           and col_user = #{userid}
           and col_status = 1
     </update>
+
+    <insert id="newUserViewIt" parameterType="Integer">
+        insert into view (view_article, view_user, view_time)
+        values (#{artId}, #{userid}, now());
+    </insert>
+
+    <update id="userViewIt" parameterType="Integer">
+        update view
+        set view_time = now()
+        where view_article = #{artId}
+          and view_user = #{userid}
+    </update>
 </mapper>

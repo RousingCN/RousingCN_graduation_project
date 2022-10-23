@@ -4,11 +4,11 @@
     <el-divider/>
     <div>
       <el-table :data="tableData" :table-layout="'fixed'" @cell-click="click">
-        <el-table-column prop="moduleName" label="名称" width="300px"/>
-        <el-table-column prop="moduleInfo" label="介绍" width=""/>
-        <el-table-column prop="moduleAuthor.username" label="创建者" width="150px">
+        <el-table-column prop="moduleName" label="名称" width="180px" sortable/>
+        <el-table-column prop="moduleInfo" label="介绍" />
+        <el-table-column prop="moduleAuthor.username" label="创建者" width="280px" sortable>
           <template #default="scope">
-            <el-popover :width="250"
+            <el-popover :width="250" placement="top"
                         popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <el-link :underline="false">{{ scope.row.moduleAuthor.username }}</el-link>
@@ -30,7 +30,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="moduleCreate" label="创建时间" width="120px"/>
+        <el-table-column prop="moduleCreate" label="创建时间" width="200px" sortable/>
       </el-table>
     </div>
   </div>

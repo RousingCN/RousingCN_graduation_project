@@ -31,7 +31,7 @@
         <el-table-column prop="comId" label="评论id" sortable/>
         <el-table-column prop="comUser.username" label="评论用户" sortable>
           <template #default="scope">
-            <el-popover :width="250"
+            <el-popover :width="250" placement="top"
                         popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <el-link :underline="false">{{ scope.row.comUser.username }}</el-link>

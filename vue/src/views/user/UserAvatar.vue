@@ -62,7 +62,6 @@ export default {
       ElMessage.error("头像上传失败");
     },
     beforeAvatarUpload(avatar) {
-      console.log(avatar)
       if (avatar.type !== 'image/png') {
         ElMessage.error('图片格式必须为 PNG 格式!')
         return false

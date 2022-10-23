@@ -5,12 +5,18 @@
     <el-divider/>
     <div>
       <el-table :data="likeList" stripe style="width: 100%"
-                :default-sort="{ prop: 'likeArticle.artId', order: 'descending' }" v-loading="loadingData">
+                :default-sort="{ prop: 'likeArticle.artId', order: 'descending' }" v-loading="loadingData" @cell-click="click">
         <el-table-column prop="likeArticle.artId" label="帖子id" sortable/>
-        <el-table-column prop="likeArticle.artTitle" label="帖子标题" sortable/>
-        <el-table-column prop="likeArticle.artAuthor.username" label="作者" sortable>
+        <el-table-column prop="likeArticle.artTitle" label="帖子标题" :align="'center'" sortable>
           <template #default="scope">
-            <el-popover :width="250"
+            <el-link :underline="false">
+              {{ scope.row.likeArticle.artTitle }}
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="likeArticle.artAuthor.username" label="作者" :align="'right'" sortable>
+          <template #default="scope">
+            <el-popover :width="250" placement="top"
                         popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <el-link :underline="false">{{ scope.row.likeArticle.artAuthor.username }}</el-link>
@@ -74,6 +80,13 @@ export default {
         }
         this.loadingData = false;
       })
+    },
+    click(data) {
+      sessionStorage.setItem("article", JSON.stringify(data.likeArticle));
+      const routerUrl = this.$router.resolve({
+        path: '/articleInfo'
+      });
+      window.open(routerUrl.href, '_blank')
     },
   }
 }

@@ -93,9 +93,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.form.password);
-      console.log(this.form.newPassword);
-      console.log(JSON.parse(sessionStorage.getItem("user")).userid);
       if (input1 && input2 && input3) {
         request.put("/user/update/password", {
           oldPassword: this.form.password,

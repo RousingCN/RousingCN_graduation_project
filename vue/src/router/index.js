@@ -156,7 +156,17 @@ const routes = [
         path: '/test',
         name: 'Test',
         component: () => import('../views/Test')
-    }
+    },
+    {
+        path: '/404',
+        name: '404',
+        component: () => import('../views/404')
+    },
+    // {
+    //     path: '*',
+    //     redirect: '/404',
+    //     hidden: true,
+    // }
 ];
 
 const router = createRouter({
