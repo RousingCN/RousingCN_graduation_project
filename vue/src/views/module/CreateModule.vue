@@ -1,7 +1,7 @@
 <template>
   <div
-      style="border: 1px solid #ccc;margin: 50px auto;padding: 50px;border-radius: 20px;width: 600px;height: 100%;">
-    <h1>板块创建</h1>
+      style="border: 1px solid #ccc;margin: 80px auto;padding: 50px;border-radius: 20px;width: 600px;height: 100%;">
+    <h1>创建板块</h1>
     <el-divider/>
     <el-form :model="form" label-width="80px" style="margin-top: 50px">
       <el-form-item label="板块名称" prop="name" style="width: 70%;">
@@ -31,18 +31,21 @@ export default {
   },
   methods: {
     createModule() {
+      // 输入框的简单校验
       if (this.form.moduleName === '' || this.form.moduleName === undefined || this.form.moduleInfo === '' || this.form.moduleInfo === undefined) {
-        ElMessage.error('模块名称和模块介绍不能为空')
+        ElMessage.error('板块名称和板块介绍不能为空')
         return;
       }
-
+      // 发送请求
       request.post("/module/add", {
         moduleName: this.form.moduleName,
         moduleInfo: this.form.moduleInfo,
         moduleAuthor: JSON.parse(sessionStorage.getItem("user")),
       }).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
+          // 返回登录界面
           this.$router.push('/')
         } else if (res.code === "1") {
           ElMessage({

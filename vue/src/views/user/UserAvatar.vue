@@ -26,7 +26,7 @@
       </el-upload>
     </div>
     <p style="text-align: center;color: #a1a1a1;font-size: 10px">
-      仅支持 PNG 格式文件，图片大小不能超过 2MB，建议分辨率为 120 x 120
+      仅支持 PNG 格式文件，图片大小不超过 2MB，建议分辨率为 120 x 120
     </p>
   </div>
 </template>
@@ -46,6 +46,7 @@ export default {
   },
   methods: {
     uploadSuccess(res) {
+      // 服务器是否返回空信息
       if (res.code === undefined) {
         ElMessage.error("登录已过期，请重新登录后再试");
         this.$router.push('/')

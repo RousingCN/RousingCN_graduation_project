@@ -23,8 +23,8 @@ public class ArticleService {
         return articleMapper.selectArticleList(map);
     }
 
-    public int getAllCount() {
-        return articleMapper.selectAllCount();
+    public int getAllCount(Integer moduleId) {
+        return articleMapper.selectAllCount(moduleId);
     }
 
     public boolean addArticle(Article article) {

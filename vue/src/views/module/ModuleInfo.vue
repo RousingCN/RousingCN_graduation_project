@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 20px auto;border: 1px solid var(--el-border-color);padding: 50px;border-radius: 20px;width: 80%;">
+  <div style="margin: 80px auto;border: 1px solid var(--el-border-color);padding: 50px;border-radius: 20px;width: 80%;">
     <el-page-header @back="this.$router.back()" style="margin-bottom: 30px;" :icon="ArrowLeft">
       <template #content>
         <span class="text-large font-600 mr-3" style="font-weight: bold"> {{ module.moduleName }} </span>
@@ -12,7 +12,7 @@
       <el-button type="primary" @click="createArticle">发帖</el-button>
     </div>
     <div style="padding: 20px">
-      <el-table :data="articles" :table-layout="'fixed'" @cell-click="click" :stripe="true"
+      <el-table :data="articles" :table-layout="'fixed'" @cell-click="click" :stripe="true" v-loading="loadingData"
                 :default-sort="{ prop: 'artCreate', order: 'descending' }">
         <el-table-column prop="artTitle" label="标题" sortable/>
         <el-table-column prop="artAuthor.username" label="作者" :align="'center'" sortable>
@@ -41,14 +41,12 @@
         </el-table-column>
         <el-table-column prop="artCreate" label="创建时间" :align="'right'" sortable>
           <template #default="scope">
-            {{scope.row.artCreate.substring(0,10) + " " + scope.row.artCreate.substring(11, 19)}}
+            {{ scope.row.artCreate.substring(0, 10) + " " + scope.row.artCreate.substring(11, 19) }}
           </template>
         </el-table-column>
       </el-table>
-      <div>
-        <el-pagination style="margin-top: 20px" background hide-on-single-page layout="prev, pager, next"
-                       :total="articleCount" @current-change="changPage"/>
-      </div>
+      <el-pagination style="margin-top: 20px" background hide-on-single-page layout="prev, pager, next"
+                     :total="articleCount" @current-change="changPage"/>
     </div>
   </div>
 </template>
@@ -66,9 +64,10 @@ export default {
       module: {},
       articles: [],
       articleCount: 0,
+      loadingData:true
     };
   },
-  created() {
+  mounted() {
     this.load(1);
   },
   methods: {
@@ -81,6 +80,7 @@ export default {
       request.post("/module/articles/" + pageNum, {
         moduleId: module_id
       }).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
@@ -90,6 +90,7 @@ export default {
         } else {
           ElMessage.error(res.data);
         }
+        this.loadingData = false;
       });
     },
     click(data) {

@@ -12,7 +12,7 @@
     </el-menu-item>
     <el-menu-item index="/randomModule">
       <el-icon><StarFilled /></el-icon>
-      <template #title>推荐板块</template>
+      <template #title>发现板块</template>
     </el-menu-item>
     <el-menu-item index="/allModule">
       <el-icon><Menu /></el-icon>

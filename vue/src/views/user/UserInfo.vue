@@ -81,6 +81,7 @@ export default {
     },
     onSubmit() {
       request.put("/user/update", this.form).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')

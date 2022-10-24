@@ -287,6 +287,7 @@ export default {
       request.post("/Achievement/article", {
         artId: this.articleData.artId
       }).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
@@ -309,6 +310,7 @@ export default {
     },
     updateArtComment() {
       request.post("/comment/all", {artId: this.articleData.artId}).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
@@ -332,6 +334,7 @@ export default {
         articleId: this.articleData.artId,
         like_it: this.userLikeIt
       }).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
@@ -359,6 +362,7 @@ export default {
         articleId: this.articleData.artId,
         collect_it: this.userCollectIt
       }).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
@@ -388,6 +392,7 @@ export default {
           artId: this.articleData.artId
         }
       }).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
@@ -409,6 +414,7 @@ export default {
       request.post('Achievement/userViewArticle', {
         articleId: this.articleData.artId
       }).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')

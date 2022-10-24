@@ -19,7 +19,11 @@ public class AdminController {
     AdminService adminService;
 
     @PostMapping("/selectUser")
-    public Result<?> selectUser(@RequestBody User user) {
+    public Result<?> selectUser(@RequestBody User user, HttpSession session) {
+        User requestUser = (User) session.getAttribute("user");
+        if (requestUser.getUserStatus() != 3) {
+            return Result.error("-2", "该操作需要管理员权限");
+        }
         List<User> userList = adminService.selectUser(user);
         if (userList != null) {
             return Result.success(userList);
@@ -45,7 +49,11 @@ public class AdminController {
     }
 
     @PostMapping("/selectModule")
-    public Result<?> selectModule(@RequestBody Module module) {
+    public Result<?> selectModule(@RequestBody Module module, HttpSession session) {
+        User requestUser = (User) session.getAttribute("user");
+        if (requestUser.getUserStatus() != 3) {
+            return Result.error("-3", "该操作需要管理员权限");
+        }
         List<Module> moduleList = adminService.selectModule(module);
         if (moduleList != null) {
             return Result.success(moduleList);
@@ -71,7 +79,11 @@ public class AdminController {
     }
 
     @PostMapping("/selectArticle")
-    public Result<?> selectArticle(@RequestBody Article article) {
+    public Result<?> selectArticle(@RequestBody Article article, HttpSession session) {
+        User requestUser = (User) session.getAttribute("user");
+        if (requestUser.getUserStatus() != 3) {
+            return Result.error("-3", "该操作需要管理员权限");
+        }
         List<Article> moduleList = adminService.selectArticle(article);
         if (moduleList != null) {
             return Result.success(moduleList);
@@ -97,7 +109,11 @@ public class AdminController {
     }
 
     @PostMapping("/selectComment")
-    public Result<?> selectComment(@RequestBody Comment comment) {
+    public Result<?> selectComment(@RequestBody Comment comment, HttpSession session) {
+        User requestUser = (User) session.getAttribute("user");
+        if (requestUser.getUserStatus() != 3) {
+            return Result.error("-3", "该操作需要管理员权限");
+        }
         List<Comment> commentList = adminService.selectComment(comment);
         if (commentList != null) {
             return Result.success(commentList);

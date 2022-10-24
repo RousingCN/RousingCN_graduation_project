@@ -13,8 +13,9 @@
     <div class="flex-grow"/>
     <el-menu-item index="/index" style="width: 8%">首页</el-menu-item>
     <el-menu-item index="/module" style="width: 8%">板块</el-menu-item>
-    <el-menu-item index="/article" style="width: 8%">娱乐</el-menu-item>
-    <el-menu-item index="/about" style="width: 8%">关于</el-menu-item>
+<!--    <el-menu-item index="/article" style="width: 8%">娱乐</el-menu-item>-->
+<!--    <el-menu-item index="/about" style="width: 8%">关于</el-menu-item>-->
+    <div style="width: 10%;"/>
     <el-sub-menu index="/userAvatar">
       <template #title>
         <el-avatar v-if="user.userAvatar===null"> user</el-avatar>
@@ -43,6 +44,7 @@ const user = JSON.parse(sessionStorage.getItem("user"))
 
 const loginOut = function () {
   request.delete("/user/loginOut").then(res => {
+    // 服务器是否返回空信息
     if (res.code === undefined) {
       ElMessage.error("登录已过期，请重新登录后再试");
       this.$router.push('/')

@@ -86,11 +86,15 @@ export default {
   methods: {
     register() {
       this.$refs.formRef.validate((valid) => {
+        // 表单验证是否全部通过
         if (!valid) {
+          // 提示消息并取消注册
           this.$message.warning('验证不通过，请重新填写数据')
           return false
         }
+        // 发送请求
         request.post("/user/register", this.form).then(res => {
+          // 服务器是否返回空信息
           if (res.code === undefined) {
             ElMessage.error("页面停留时间过长，请刷新页面后再试");
             this.$router.push('/register')
@@ -99,6 +103,7 @@ export default {
               message: '注册成功',
               type: 'success',
             })
+            // 注册完成跳转至登录
             this.$router.push("/");
           } else {
             ElMessage.error(res.msg);

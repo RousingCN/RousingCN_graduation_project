@@ -96,6 +96,7 @@ export default {
         },
         artStatus: this.formInline.artStatus
       }).then(res => {
+        // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
@@ -133,6 +134,7 @@ export default {
               artTitle: selectRowData.artTitle,
               artStatus: parseInt({value}.value)
             }).then(res => {
+              // 服务器是否返回空信息
               if (res.code === undefined) {
                 ElMessage.error("登录已过期，请重新登录后再试");
                 this.$router.push('/')

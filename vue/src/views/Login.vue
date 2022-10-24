@@ -35,38 +35,26 @@ export default {
   },
   methods: {
     login() {
+      // 发送post请求
       request.post("/user/login", this.form).then(res => {
+        // 接收数据后进行处理
         if (res.code === "1") {
+          // 判断用户状态
           if (res.data.userStatus === 1) {
+            // 保存用户信息
             sessionStorage.setItem("user", JSON.stringify(res.data));
-
-            // request.post("/Achievement/user", {userid: res.data.userid}).then(re => {
-            //   if (res.code === undefined) {
-            //     ElMessage.error("登录已过期，请重新登录后再试");
-            //     this.$router.push('/')
-            //   } else if (re.code === "1") {
-            //     sessionStorage.setItem("userAchievement", JSON.stringify(re.data));
-            //   } else {
-            //     sessionStorage.setItem("userAchievement", JSON.stringify({
-            //       fans: 0,
-            //       attention: 0,
-            //       collect: 0,
-            //       like: 0,
-            //       view: 0,
-            //       userid: -1
-            //     }))
-            //   }
-            // })
-
+            // 提示
             ElMessage({
               message: '登录成功',
               type: 'success',
             })
+            // 跳转至首页
             this.$router.push("/index");
           } else if (res.data.userStatus === 2) {
             ElMessage.error("该用户不可用");
           } else if (res.data.userStatus === 3) {
             sessionStorage.setItem("user", JSON.stringify(res.data));
+            // 跳转至管理员首页
             this.$router.push("/admin/userManagement");
           } else {
             ElMessage.error("该账户状态异常，请尝试联系管理员");
@@ -77,6 +65,7 @@ export default {
       })
     },
     toRegister() {
+      // 跳转到注册
       this.$router.push("/register");
     }
   }

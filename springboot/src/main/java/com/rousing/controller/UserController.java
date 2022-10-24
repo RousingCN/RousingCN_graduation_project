@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/register")
     public Result<?> add(@RequestBody User user) {
-        //md5加密
+        // 将密码进行md5加密
         user.setUserPassword(MD5Utils.inputPassToFromPass(user.getUserPassword()));
         //添加用户
         if (userService.addUser(user)) {
@@ -42,8 +42,9 @@ public class UserController {
 
     @PostMapping("/login")
     public Result<?> login(@RequestBody User user, HttpSession session) {
-        //md5加密
+        // md5加密用户密码
         user.setUserPassword(MD5Utils.inputPassToFromPass(user.getUserPassword()));
+        // 根据前端发送的用用户名和密码查询数据库里是否有该用户
         User one = userService.getOne(user);
         if (one != null) {
             // 隐藏重要信息后发送

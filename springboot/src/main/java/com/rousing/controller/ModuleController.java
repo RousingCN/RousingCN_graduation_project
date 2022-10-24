@@ -37,11 +37,15 @@ public class ModuleController {
     @GetMapping("/page/{page}")
     public Result<?> getPageModules(@PathVariable Integer page) {
         try {
+            // 获取板块总数量
             int count = moduleService.getCount();
+            // 用于动态SQL
             HashMap<String, Object> map = new HashMap<>();
             map.put("startLimit", (page - 1) * 10);
             map.put("endLimit", page * 10);
+            // 获取一页的板块数据
             List<Module> pageData = moduleService.getPage(map);
+            // 封装返回给前端的数据
             map = new HashMap<>();
             map.put("count", count);
             map.put("pageData", pageData);
@@ -51,15 +55,17 @@ public class ModuleController {
         }
     }
 
-
     @PostMapping("/add")
     public Result<?> addModule(@RequestBody Module module, HttpSession session) {
+        // 检验用户信息是否一致
         if (!module.getModuleAuthor().getUserid().equals(((User) session.getAttribute("user")).getUserid())) {
             return Result.error("-2", "用户信息异常，请重新登录后重试");
         }
+        // 判断是否存在同名板块
         if (moduleService.moduleExist(module.getModuleName())) {
             return Result.error("-1", "板块已存在");
         }
+        // 添加板块
         if (moduleService.addModule(module)) {
             return Result.success();
         } else {
@@ -70,7 +76,7 @@ public class ModuleController {
     @PostMapping("/articles/{pageNum}")
     public Result<?> getAllArticle(@RequestBody Module module, @PathVariable Integer pageNum) {
         HashMap<String, Object> map = new HashMap<>();
-        int count=articleService.getAllCount();
+        int count = articleService.getAllCount(module.getModuleId());
         List<Article> list = articleService.getPageArticle(module.getModuleId(), pageNum);
         map.put("count", count);
         map.put("list", list);

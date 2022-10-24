@@ -21,8 +21,11 @@ public class ModuleService {
     }
 
     public List<Module> getRandom() {
+        // 储存随机板块数据
         HashSet<Module> set = new HashSet<>();
+        // 获取全部板块数据
         List<Module> modules = moduleMapper.selectModule(new Module());
+        // 如果随机获取的板块数量不够10条则随机获取一条添加其中
         while (set.size() < 10 && set.size() != modules.size()) {
             int i = new Random().nextInt(modules.size());
             if (!modules.get(i).getModuleStatus().equals(Integer.getInteger(i + ""))) {
