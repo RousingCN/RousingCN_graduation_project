@@ -89,14 +89,17 @@ export default {
   },
   methods: {
     create() {
+      // 简单验证输入内容
       if (this.artTitle === '' || this.artTitle === undefined || this.artContext === '' || this.artContext === undefined) {
         ElMessage.error('帖子标题和帖子内容不能为空')
         return;
       }
+      // 帖子内容占用过大时发出警告
       if (this.artContext.length > 20000) {
         ElMessage.error('帖子内容占用空间太大，请减少帖子内容')
         return;
       }
+      // 发送请求
       request.post("/article/createArticle", {
         artTitle: this.artTitle,
         artContext: this.artContext,
@@ -112,6 +115,7 @@ export default {
             message: '发帖成功',
             type: 'success',
           });
+          // 返回上一个页面
           this.$router.back();
         } else {
           ElMessage.error(res.msg);

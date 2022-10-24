@@ -20,8 +20,10 @@ public class AchievementController {
 
     @PostMapping("/article")
     public Result<?> articleAchievement(@RequestBody Article article, HttpSession session) {
+        // 获取当前用户的信息
         User user = (User) session.getAttribute("user");
         try {
+            // 获取帖子的更多数据
             return Result.success(achievementService.getArticleAchievement(article.getArtId(), user.getUserid()));
         } catch (Exception err) {
             log.error(err.getMessage());

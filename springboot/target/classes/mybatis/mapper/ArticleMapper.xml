@@ -33,10 +33,11 @@
         limit #{startNum},#{endNum}
     </select>
 
-    <select id="selectAllCount" resultType="Integer">
+    <select id="selectAllCount" parameterType="Integer" resultType="Integer">
         select count(*)
         from article
-        where art_status != 2;
+        where art_status != 2
+          and art_module = #{moduleId}
     </select>
 
     <insert id="insertArticle" parameterType="com.rousing.pojo.Article">

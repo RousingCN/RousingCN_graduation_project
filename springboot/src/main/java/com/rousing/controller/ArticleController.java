@@ -18,12 +18,15 @@ public class ArticleController {
     @PostMapping("/createArticle")
     public Result<?> newArticle(@RequestBody Article article, HttpSession session) {
         User user = (User) session.getAttribute("user");
+        // 如果普通用户试图在官方板块内发帖则拒绝
         if (article.getArtModule() == 1 && user.getUserStatus() != 3) {
             return Result.error("-3", "普通用户无法在官方板块内发帖");
         }
+        // 验证用户身份
         if (!article.getArtAuthor().getUserid().equals(user.getUserid())) {
             return Result.error("-2", "用户信息异常，请重新登录后重试");
         }
+        // 创建帖子
         if (articleService.addArticle(article)) {
             return Result.success();
         } else {

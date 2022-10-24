@@ -80,7 +80,7 @@
               <el-link target="_blank"
                        style="margin-left: 6px;margin-top: -6px;font-size: 16px" :icon="icon.Timer" :underline="false"
                        disabled>
-              {{ articleData.artCreate }}
+              {{ articleData.artCreate.substring(0, 10) + " " + articleData.artCreate.substring(11, 19) }}
             </el-link>
             </span>
           </div>
@@ -278,12 +278,13 @@ export default {
   },
   methods: {
     updateArtAchievement() {
+      // 获取当前帖子的信息
       this.articleData = JSON.parse(sessionStorage.getItem('article'))
+      // 更新标题
       document.getElementsByTagName("h2")[0].innerText = this.articleData.artTitle;
+      // 更新内容
       this.editorRef.setHtml(this.articleData.artContext)
-
-      this.articleData.artCreate = this.articleData.artCreate.substring(0, 10) + " " + this.articleData.artCreate.substring(11, 19)
-
+      // 发送请求
       request.post("/Achievement/article", {
         artId: this.articleData.artId
       }).then(res => {
@@ -292,6 +293,7 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
+          // 保存信息
           this.count_view = res.data.view;
           this.count_like = res.data.like;
           this.count_comment = res.data.comment;
@@ -302,10 +304,12 @@ export default {
         } else {
           ElMessage.error(res.msg);
         }
+        // 锁定编辑区，只读模式
         this.editorRef.disable();
+        // 取消加载中状态
         this.pageLoading = false;
       })
-
+      // 添加当前用户的浏览记录
       this.userViewArticle()
     },
     updateArtComment() {

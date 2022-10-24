@@ -75,9 +75,12 @@ public class ModuleController {
 
     @PostMapping("/articles/{pageNum}")
     public Result<?> getAllArticle(@RequestBody Module module, @PathVariable Integer pageNum) {
-        HashMap<String, Object> map = new HashMap<>();
+        // 获取板块内帖子的总数量
         int count = articleService.getAllCount(module.getModuleId());
+        // 获取一页的贴子数据
         List<Article> list = articleService.getPageArticle(module.getModuleId(), pageNum);
+        // 封装返回给前端的数据
+        HashMap<String, Object> map = new HashMap<>();
         map.put("count", count);
         map.put("list", list);
         return Result.success(map);

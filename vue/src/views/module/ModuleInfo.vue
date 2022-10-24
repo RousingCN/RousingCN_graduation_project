@@ -72,11 +72,14 @@ export default {
   },
   methods: {
     changPage(pageNum) {
+      this.loadingData = true;
       this.load(pageNum)
     },
     load(pageNum) {
+      // 获取当前的板块id，用作请求参数
       this.module = JSON.parse(sessionStorage.getItem("module"));
       let module_id = this.module.moduleId
+      // 发送请求
       request.post("/module/articles/" + pageNum, {
         moduleId: module_id
       }).then(res => {
@@ -85,11 +88,13 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
+          // 保存信息
           this.articles = res.data.list;
           this.articleCount = res.data.count
         } else {
           ElMessage.error(res.data);
         }
+        // 取消加载中状态
         this.loadingData = false;
       });
     },
