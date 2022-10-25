@@ -29,8 +29,11 @@ public class FileController {
 
     @PostMapping("/avatar/save")
     public Result<?> saveAvatar(MultipartFile file, HttpSession session) {
+        // 获取前端传来的文件名
         String originalFilename = file.getOriginalFilename();
+        // 生成UUID
         String uuid = IdUtil.fastSimpleUUID();
+        // 拼接保存路径
         String rootFilePath = System.getProperty("user.dir") + "/springboot/src/main/resources/static/avatar/" + uuid + "_" + originalFilename;
         try {
             //写入文件
@@ -38,8 +41,9 @@ public class FileController {
         } catch (IOException e) {
             return Result.error("-1", "更新头像失败");
         }
-        //更新保存的信息
+        // 获取当前用户
         User user = (User) session.getAttribute("user");
+        // 更新头像的路径信息
         user.setUserAvatar(IP + ":" + port + "/avatar/" + uuid + "_" + originalFilename);
         if (userService.updateUser(user)) {
             return Result.success();
@@ -50,20 +54,25 @@ public class FileController {
     @GetMapping("/avatar/{fileName}")
     public void loadAvatar(@PathVariable String fileName, HttpServletResponse response) {
         OutputStream os;
+        // 获取头像所在的文件夹路径
         String basePath = System.getProperty("user.dir") + "/springboot/src/main/resources/static/avatar/";
+        // 获取该路径下的所有文件名称
         List<String> fileNames = FileUtil.listFileNames(basePath);
+        // 查找符合名称的头像文件路径
         String file = fileNames.stream().filter(Name -> Name.contains(fileName)).findAny().orElse("");
         try {
+            // 判断是否找到了头像文件路径
             if (StrUtil.isNotEmpty(file)) {
+                // 设置响应头
                 response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(file, "UTF-8"));
-                if (file.endsWith(".jpeg")) {
-                    response.setContentType("image/jpeg");
-                } else if (file.endsWith(".jpg")) {
-                    response.setContentType("image/jpg");
-                } else if (file.endsWith(".png")) {
+                // 判断该路径的文件是否为PNG格式
+                if (file.endsWith(".png")) {
+                    // 设置文件类型
                     response.setContentType("image/png");
                 }
+                // 获取文件字节流
                 byte[] bytes = FileUtil.readBytes(basePath + file);
+                // 输出字节流
                 os = response.getOutputStream();
                 os.write(bytes);
                 os.flush();

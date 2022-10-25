@@ -12,7 +12,7 @@
           <el-input v-model="formInline.comUserId" placeholder="0"/>
         </el-form-item>
         <el-form-item label="帖子id">
-          <el-input v-model="formInline.comArticle" placeholder="0"/>
+          <el-input v-model="formInline.comArtId" placeholder="0"/>
         </el-form-item>
         <el-form-item label="评论状态">
           <el-select v-model="formInline.comStatus" clearable placeholder="所有类型">
@@ -41,7 +41,7 @@
                   <el-avatar :size="60" :src="scope.row.comUser.userAvatar"
                              style="margin: 0 auto 8px"/>
                   <div>
-                    <p style="margin: 0; font-weight: bold">{{scope.row.comUser.username}}</p>
+                    <p style="margin: 0; font-weight: bold">{{ scope.row.comUser.username }}</p>
                     <p style="margin: 0; font-size: 14px; color: var(--el-color-info)">
                       #{{ scope.row.comUser.userid }}</p>
                   </div>
@@ -53,8 +53,32 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="comArticle" label="帖子" sortable/>
-        <el-table-column prop="comCreate" label="评论时间" sortable/>
+        <el-table-column prop="" label="评论内容">
+          <template #default="scope">
+            <el-popover :width="250" placement="top"
+                        popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
+              <template #reference>
+                <el-link :underline="false" type="primary">
+                  预览
+                </el-link>
+              </template>
+              <template #default>
+                <div style="display: flex; gap: 16px; flex-direction: column;text-align: center">
+                  <p style="font-weight: bold">评论内容：</p>
+                  <div style="margin-top: 10px">
+                    {{ scope.row.comContext }}
+                  </div>
+                </div>
+              </template>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <el-table-column prop="comArticle.artId" label="帖子" sortable/>
+        <el-table-column prop="comCreate" label="评论时间" sortable>
+          <template #default="scope">
+            {{ scope.row.comCreate.substring(0, 10) + " " + scope.row.comCreate.substring(11, 19) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="comStatus" label="评论状态" sortable/>
         <el-table-column fixed="right" label="操作">
           <template #default>
@@ -91,7 +115,9 @@ export default {
       request.post("/api/admin/selectComment", {
         comId: this.formInline.comId,
         comUser: {userid: this.formInline.comUserId},
-        comArticle: this.formInline.comArticle,
+        comArticle: {
+          artId: this.formInline.comArtId
+        },
         comStatus: this.formInline.comStatus
       }).then(res => {
         // 服务器是否返回空信息
@@ -99,11 +125,7 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
-          const resData = res.data;
-          for (let i = 0; i < resData.length; i++) {
-            resData[i].comCreate = resData[i].comCreate.substring(0, 10) + " " + resData[i].comCreate.substring(11, 19)
-          }
-          this.tableData = resData;
+          this.tableData = res.data;
 
           ElMessage({
             message: '评论列表已更新',
@@ -119,6 +141,7 @@ export default {
       selectRowData = rowData;
     },
     updateCommentStatus: function () {
+      // 显示修改评论状态弹窗
       ElMessageBox.prompt('1：正常   2：禁用', selectRowData.comId + '号评论状态修改', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -127,6 +150,7 @@ export default {
         inputErrorMessage: '请输入数字1、2',
       })
           .then(({value}) => {
+            // 发送请求
             request.put("/api/admin/updateComment", {
               comId: selectRowData.comId,
               comUser: selectRowData.comUser,
@@ -142,14 +166,15 @@ export default {
                   type: 'success',
                   message: selectRowData.comId + `号评论的状态已经修改成功`,
                 });
+                // 重新查询数据
                 this.queryComment()
               } else {
                 ElMessage.error(res.msg)
               }
             })
-
           })
           .catch(() => {
+            // 捕获异常并发出提醒
             ElMessage({
               type: 'info',
               message: '取消',

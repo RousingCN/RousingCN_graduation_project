@@ -5,7 +5,7 @@
     <el-divider/>
     <div>
       <el-table :data="likeList" stripe style="width: 100%"
-                :default-sort="{ prop: 'likeArticle.artId', order: 'descending' }" v-loading="loadingData" @cell-click="click">
+                v-loading="loadingData" @cell-click="click">
         <el-table-column prop="likeArticle.artId" label="帖子id" sortable/>
         <el-table-column prop="likeArticle.artTitle" label="帖子标题" :align="'center'" sortable>
           <template #default="scope">
@@ -64,6 +64,7 @@ export default {
   },
   methods: {
     load() {
+      // 发送请求
       request.post('/history/like', {
         startIndex: this.likeList.length,
         endIndex: this.likeList.length + 10
@@ -73,12 +74,12 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
-          for (let i = 0; i < res.data.length; i++) {
-            this.likeList.push(res.data[i]);
-          }
+          // 保存数据
+          this.likeList = res.data
         } else {
           ElMessage.error(res.msg)
         }
+        // 取消加载状态
         this.loadingData = false;
       })
     },

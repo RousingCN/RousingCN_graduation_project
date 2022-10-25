@@ -64,10 +64,12 @@ public class UserController {
 
     @PutMapping("/update")
     public Result<?> update(@RequestBody User user) {
+        // 更新用户信息
         if (userService.updateUser(user)) {
-            User new_user = new User();
-            new_user.setUserid(user.getUserid());
-            return Result.success(userService.getOne(new_user));
+            // 创建新的User类型对象保存更新过后的信息并返回
+            User newUser = new User();
+            newUser.setUserid(user.getUserid());
+            return Result.success(userService.getOne(newUser));
         } else {
             return Result.error("-1", "更新数据失败");
         }
@@ -75,19 +77,22 @@ public class UserController {
 
     @PutMapping("/update/password")
     public Result<?> updatePwd(@RequestBody Pwd pwd, HttpSession session) {
-        //查询提交信息的账号是否正确
+        // 查询提交信息的账号是否正确
         User user = (User) session.getAttribute("user");
+        // 用户信息是否一致
         if (!user.getUserid().equals(pwd.getUserid())) {
             return Result.error("-2", "请重新登录账号后重试");
         }
-        //查询旧密码是否符合
+        // 查询旧密码是否符合
         user.setUserPassword(MD5Utils.inputPassToFromPass(pwd.getOldPassword()));
+        // 查询是否存在该用户
         if (userService.getOne(user) == null) {
             return Result.error("-1", "旧密码不正确");
         }
-        //开始修改密码
+        // 开始修改密码
         user.setUserPassword(MD5Utils.inputPassToFromPass(pwd.getNewPassword()));
         if (userService.updateUser(user)) {
+            // 初始化session对象
             session.invalidate();
             return Result.success();
         }

@@ -11,11 +11,10 @@
 <script>
 import Header from "@/components/Header";
 import ModuleAside from "@/components/ModuleAside";
-import UserShow from "@/components/UserShow";
 
 export default {
   name: "ModuleLayout",
-  components: {UserShow, Header, ModuleAside}
+  components: {Header, ModuleAside}
 }
 </script>
 

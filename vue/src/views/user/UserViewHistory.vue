@@ -50,7 +50,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="viewTime" label="评论日期" :align="'right'" sortable>
+        <el-table-column prop="viewTime" label="浏览日期" :align="'right'" sortable>
           <template #default="scope">
             {{ scope.row.viewTime.substring(0, 10) + " " + scope.row.viewTime.substring(11, 19) }}
           </template>
@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     load() {
+      // 发送请求
       request.post('/history/view', {
         viewContext: this.formInline.context,
         viewCreate: this.formInline.date
@@ -94,6 +95,7 @@ export default {
         } else {
           ElMessage.error(res.msg)
         }
+        // 取消加载中状态
         this.loadingData = false;
       })
     },

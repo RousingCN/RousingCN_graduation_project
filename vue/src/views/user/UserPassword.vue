@@ -93,7 +93,9 @@ export default {
   },
   methods: {
     onSubmit() {
+      // 三个验证全部通过才允许发起请求
       if (input1 && input2 && input3) {
+        // 发送请求
         request.put("/user/update/password", {
           oldPassword: this.form.password,
           newPassword: this.form.newPassword,
@@ -108,6 +110,7 @@ export default {
               message: '密码修改成功,请重新登录',
               type: 'success',
             });
+            // 修改密码后会清除前端里所有保存的数据，并需要重新登陆
             sessionStorage.clear()
             this.$router.push("/")
           } else {

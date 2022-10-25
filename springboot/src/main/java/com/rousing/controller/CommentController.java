@@ -24,14 +24,17 @@ public class CommentController {
 
     @PostMapping("/all")
     public Result<?> allArtComment(@RequestBody Article article) {
+        // 获取某一个帖子下的有效评论
         List<Comment> commentList = commentService.allCommentByArticle(article.getArtId());
         return Result.success(commentList);
     }
 
     @PostMapping("/add")
     public Result<?> addArtComment(@RequestBody Comment comment, HttpSession session) {
+        // 获取用户信息
         User user = (User) session.getAttribute("user");
         comment.setComUser(user);
+        // 添加评论
         if (commentService.addComment(comment)) {
             return Result.success();
         } else {

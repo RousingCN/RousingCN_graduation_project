@@ -18,7 +18,7 @@
     </div>
     <div>
       <el-table :data="commentList" stripe style="width: 100%"
-                :default-sort="{ prop: 'comArticle.artId', order: 'descending' }" v-loading="loadingData"
+                :default-sort="{ prop: 'comCreate', order: 'descending' }" v-loading="loadingData"
                 @cell-click="click">
         <el-table-column prop="comArticle.artTitle" label="帖子标题" sortable>
           <template #default="scope">

@@ -80,6 +80,7 @@ export default {
       this.form.userinfo = user.userinfo === null ? "" : user.userinfo;
     },
     onSubmit() {
+      // 发送请求
       request.put("/user/update", this.form).then(res => {
         // 服务器是否返回空信息
         if (res.code === undefined) {
@@ -90,14 +91,15 @@ export default {
             message: '信息修改成功',
             type: 'success',
           });
-          sessionStorage.setItem("user", JSON.stringify(res.data));
+          // 保存跟新后的用户信息
+          // sessionStorage.setItem("user", JSON.stringify(res.data));
         } else {
           ElMessage.error(res.msg);
         }
       })
     },
   },
-  created() {
+  mounted() {
     this.load();
   }
 }

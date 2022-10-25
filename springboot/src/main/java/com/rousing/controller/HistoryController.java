@@ -20,9 +20,11 @@ public class HistoryController {
 
     @PostMapping("/like")
     public Result<?> likeHistory(@RequestBody Like like, HttpSession session) {
+        // 获取用户信息
         User user = (User) session.getAttribute("user");
         like.setLikeUser(user);
         try {
+            // 查询点赞记录
             return Result.success(historyService.selectLikeHistory(like));
         } catch (Exception e) {
             e.printStackTrace();
@@ -32,9 +34,11 @@ public class HistoryController {
 
     @PostMapping("/comment")
     public Result<?> commentHistory(@RequestBody Comment comment,HttpSession session) {
+        // 获取用户信息
         User user = (User) session.getAttribute("user");
         comment.setComUser(user);
         try {
+            // 查询评论记录
             return Result.success(historyService.selectCommentHistory(comment));
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,9 +48,11 @@ public class HistoryController {
 
     @PostMapping("/collect")
     public Result<?> collectHistory(@RequestBody Collect collect,HttpSession session) {
+        // 获取用户信息
         User user = (User) session.getAttribute("user");
         collect.setColUser(user);
         try {
+            // 查询收藏记录
             return Result.success(historyService.selectCollectHistory(collect));
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,9 +62,11 @@ public class HistoryController {
 
     @PostMapping("/view")
     public Result<?> viewHistory(@RequestBody View view,HttpSession session) {
+        // 获取用户信息
         User user = (User) session.getAttribute("user");
         view.setViewUser(user);
         try {
+            // 查询浏览记录
             return Result.success(historyService.selectViewHistory(view));
         } catch (Exception e) {
             e.printStackTrace();

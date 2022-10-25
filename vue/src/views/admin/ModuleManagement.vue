@@ -55,7 +55,11 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column prop="moduleCreate" label="创建时间" sortable/>
+        <el-table-column prop="moduleCreate" label="创建时间" sortable>
+          <template #default="scope">
+            {{ scope.row.moduleCreate.substring(0, 10) + " " + scope.row.moduleCreate.substring(11, 19) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="moduleStatus" label="板块状态" sortable/>
         <el-table-column fixed="right" label="操作" width="120">
           <template #default>
@@ -101,11 +105,7 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
-          const resData = res.data;
-          for (let i = 0; i < resData.length; i++) {
-            resData[i].moduleCreate = resData[i].moduleCreate.substring(0, 10) + " " + resData[i].moduleCreate.substring(11, 19)
-          }
-          this.tableData = resData;
+          this.tableData = res.data;
 
           ElMessage({
             message: '板块列表已更新',
@@ -121,6 +121,7 @@ export default {
       selectRowData = rowData;
     },
     updateModuleStatus: function () {
+      // 显示修改板块状态弹窗
       ElMessageBox.prompt('1：正常   2：禁用   3：官方', selectRowData.moduleId + '号板块状态修改', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -129,6 +130,7 @@ export default {
         inputErrorMessage: '请输入数字1、2、3',
       })
           .then(({value}) => {
+            // 发送请求
             request.put("/api/admin/updateModule", {
               moduleId: selectRowData.moduleId,
               moduleName: selectRowData.moduleName,
@@ -143,14 +145,15 @@ export default {
                   type: 'success',
                   message: selectRowData.moduleId + `号板块的状态已经修改成功`,
                 });
+                // 重新查询数据
                 this.queryModule()
               } else {
                 ElMessage.error(res.msg)
               }
             })
-
           })
           .catch(() => {
+            // 捕获异常并发出提醒
             ElMessage({
               type: 'info',
               message: '取消',

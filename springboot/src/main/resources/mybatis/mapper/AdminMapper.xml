@@ -33,9 +33,16 @@
     <resultMap id="CommentResultMap" type="com.rousing.pojo.Comment">
         <result property="comId" column="com_id"/>
         <result property="comContext" column="com_context"/>
-        <result property="comArticle.artId" column="com_article"/>
         <result property="comCreate" column="com_create"/>
         <result property="comStatus" column="com_status"/>
+        <association property="comArticle" javaType="com.rousing.pojo.Article">
+            <result property="artId" column="art_id"/>
+            <result property="artTitle" column="art_title"/>
+            <result property="artContext" column="art_context"/>
+            <result property="artModule" column="art_module"/>
+            <result property="artCreate" column="art_create"/>
+            <result property="artStatus" column="art_status"/>
+        </association>
         <association property="comUser" javaType="com.rousing.pojo.User">
             <result property="userid" column="userid"/>
             <result property="username" column="username"/>
@@ -162,8 +169,9 @@
     </update>
 
     <select id="selectComment" parameterType="Comment" resultMap="CommentResultMap">
-        select c.*,u.* from comment c,user u
+        select c.*,u.*,a.* from comment c,user u,article a
         where c.com_user=u.userid
+        and c.com_article=a.art_id
         <if test="comId!=null">
             and c.com_id=#{comId}
         </if>
@@ -182,7 +190,6 @@
         <if test="comStatus!=null">
             and c.com_status=#{comStatus}
         </if>
-
     </select>
 
     <update id="updateComment" parameterType="Comment">

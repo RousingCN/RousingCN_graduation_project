@@ -34,13 +34,17 @@ public class AdminController {
 
     @PutMapping("/updateUser")
     public Result<?> updateUser(@RequestBody User user, HttpSession session) {
+        // 获取用户信息
         User requestUser = (User) session.getAttribute("user");
+        // 判断用户身份是否是管理员
         if (requestUser.getUserStatus() != 3) {
             return Result.error("-3", "该操作需要管理员权限");
         }
+        // 检验数据有效性
         if (user.getUsername() == null || user.getUserid() == null || user.getUserStatus() == null) {
             return Result.error("-2", "无修改目标，请刷新页面后尝试");
         }
+        // 修改用户信息
         if (adminService.updateUserStatus(user)) {
             return Result.success();
         } else {
@@ -64,13 +68,17 @@ public class AdminController {
 
     @PutMapping("/updateModule")
     public Result<?> updateModule(@RequestBody Module module, HttpSession session) {
+        // 获取用户信息
         User requestUser = (User) session.getAttribute("user");
+        // 判断用户身份是否是管理员
         if (requestUser.getUserStatus() != 3) {
             return Result.error("-3", "该操作需要管理员权限");
         }
+        // 检验数据有效性
         if (module.getModuleName() == null || module.getModuleId() == null || module.getModuleStatus() == null) {
             return Result.error("-2", "无修改目标，请刷新页面后尝试");
         }
+        // 修改板块信息
         if (adminService.updateModuleStatus(module)) {
             return Result.success();
         } else {
@@ -94,13 +102,17 @@ public class AdminController {
 
     @PutMapping("/updateArticle")
     public Result<?> updateArticle(@RequestBody Article article, HttpSession session) {
+        // 获取用户信息
         User requestUser = (User) session.getAttribute("user");
+        // 判断用户身份是否是管理员
         if (requestUser.getUserStatus() != 3) {
             return Result.error("-3", "该操作需要管理员权限");
         }
+        // 检验数据有效性
         if (article.getArtTitle() == null || article.getArtId() == null || article.getArtStatus() == null) {
             return Result.error("-2", "无修改目标，请刷新页面后尝试");
         }
+        // 修改帖子信息
         if (adminService.updateArticleStatus(article)) {
             return Result.success();
         } else {
@@ -124,13 +136,17 @@ public class AdminController {
 
     @PutMapping("/updateComment")
     public Result<?> updateComment(@RequestBody Comment comment, HttpSession session) {
+        // 获取用户信息
         User requestUser = (User) session.getAttribute("user");
+        // 判断用户身份是否是管理员
         if (requestUser.getUserStatus() != 3) {
             return Result.error("-3", "该操作需要管理员权限");
         }
+        // 检验数据有效性
         if (comment.getComUser() == null || comment.getComId() == null || comment.getComArticle() == null || comment.getComStatus() == null) {
             return Result.error("-2", "无修改目标，请刷新页面后尝试");
         }
+        // 修改评论信息
         if (adminService.updateCommentStatus(comment)) {
             return Result.success();
         } else {

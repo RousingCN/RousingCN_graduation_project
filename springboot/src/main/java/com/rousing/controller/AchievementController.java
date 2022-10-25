@@ -33,7 +33,9 @@ public class AchievementController {
 
     @PostMapping("/userLikeArticle")
     public Result<?> userLikeArticle(@RequestBody ArticleAchievement achievement, HttpSession session) {
+        // 获取当前用户信息
         User user = (User) session.getAttribute("user");
+        // 传递数据，点赞与取消点赞逻辑交由service层处理
         if (achievementService.likeChange(achievement.isLike_it(), achievement.getArticleId(), user.getUserid())) {
             return Result.success(!achievement.isLike_it());
         } else {
@@ -43,7 +45,9 @@ public class AchievementController {
 
     @PostMapping("/userCollectArticle")
     public Result<?> userCollectArticle(@RequestBody ArticleAchievement achievement, HttpSession session) {
+        // 获取当前用户信息
         User user = (User) session.getAttribute("user");
+        // 传递数据，点赞与取消点赞逻辑交由service层处理
         if (achievementService.collectChange(achievement.isCollect_it(), achievement.getArticleId(), user.getUserid())) {
             return Result.success(!achievement.isCollect_it());
         } else {

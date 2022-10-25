@@ -5,7 +5,7 @@
     <el-divider/>
     <div>
       <el-table :data="collectList" stripe style="width: 100%"
-                :default-sort="{ prop: 'colArticle.artId', order: 'descending' }" v-loading="loadingData" @cell-click="click">
+                v-loading="loadingData" @cell-click="click">
         <el-table-column prop="colArticle.artId" label="帖子id" sortable/>
         <el-table-column prop="colArticle.artTitle" label="帖子标题" :align="'center'" sortable>
           <template #default="scope">
@@ -64,6 +64,7 @@ export default {
   },
   methods: {
     load() {
+      // 发送请求
       request.post('/history/collect', {
         startIndex: this.collectList.length,
         endIndex: this.collectList.length + 10
@@ -73,12 +74,12 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
-          for (let i = 0; i < res.data.length; i++) {
-            this.collectList.push(res.data[i]);
-          }
+          // 保存数据
+          this.collectList = res.data;
         } else {
           ElMessage.error(res.msg)
         }
+        // 取消加载中状态
         this.loadingData = false;
       })
     },

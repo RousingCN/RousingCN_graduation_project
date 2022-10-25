@@ -186,7 +186,7 @@
                   </el-col>
                   <el-col :span="9">
                     <span style="position: absolute;right: 10px;font-size: 12px;line-height: 20px">
-                      {{ comData.comCreate }}
+                      {{ comData.comCreate.substring(0, 10) + " " + comData.comCreate.substring(11, 19) }}
                     </span>
                   </el-col>
                 </el-row>
@@ -313,6 +313,7 @@ export default {
       this.userViewArticle()
     },
     updateArtComment() {
+      // 发送请求
       request.post("/comment/all", {artId: this.articleData.artId}).then(res => {
         // 服务器是否返回空信息
         if (res.code === undefined) {
@@ -320,20 +321,21 @@ export default {
           this.$router.push('/')
         }
         if (res.code === '1') {
-          for (let i = 0; i < res.data.length; i++) {
-            res.data[i].comCreate = res.data[i].comCreate.substring(0, 10) + " " + res.data[i].comCreate.substring(11, 19)
-          }
+          // 保存评论列表数据
           this.commentList = res.data;
         } else {
           ElMessage.error(res.msg);
         }
+        // 取消加载中状态
         this.commentLoading = false;
+        // 显示评论面板
         this.commentVisible = true;
       })
     },
     clickLike() {
+      // 将按钮设置为加载状态，阻止短时间内重复操作
       this.likeLoading = true
-      //取消点赞
+      // 点赞或取消点赞
       request.post('/Achievement/userLikeArticle', {
         articleId: this.articleData.artId,
         like_it: this.userLikeIt
@@ -343,15 +345,19 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
+          // 保存用户对当前贴的点赞情况
           this.userLikeIt = res.data;
+          // 如用户本次操作的结果是点赞则增加点赞总数
           if (this.userLikeIt) {
             this.count_like++;
           } else {
+            // 否则则减少点赞总数
             this.count_like--;
           }
         } else {
           ElMessage.error(res.msg)
         }
+        // 取消按钮加载状态
         this.likeLoading = false
       })
     },
@@ -360,8 +366,9 @@ export default {
       this.updateArtComment()
     },
     clickCollect() {
+      // 将按钮设置为加载状态，阻止短时间内重复操作
       this.collectLoading = true;
-      //取消收藏
+      // 收藏或取消收藏
       request.post('/Achievement/userCollectArticle', {
         articleId: this.articleData.artId,
         collect_it: this.userCollectIt
@@ -371,15 +378,19 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
+          // 保存用户对当前贴的收藏情况
           this.userCollectIt = res.data;
+          // 如用户本次操作的结果是点赞则增加收藏总数
           if (this.userCollectIt) {
             this.count_collect++;
           } else {
+            // 否则则减少收藏总数
             this.count_collect--;
           }
         } else {
           ElMessage.error(res.msg)
         }
+        // 取消按钮加载状态
         this.collectLoading = false;
       })
     },
@@ -389,6 +400,7 @@ export default {
         ElMessage.error("有效评论内容不能少于4个字")
         return;
       }
+      // 进入加载中状态，阻止重复提交
       this.commentLoading = true;
       request.post('/comment/add', {
         comContext: this.loginUserCommentContext,
@@ -401,9 +413,13 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
+          // 清空输入区
           this.loginUserCommentContext = '';
+          // 重新获取评论列表
           this.updateArtComment();
+          // 评论总数加一
           this.count_comment++;
+          // 用户评论状态
           this.userCommentIt = true;
           ElMessage({
             message: '发布成功',
@@ -415,6 +431,7 @@ export default {
       })
     },
     userViewArticle() {
+      // 发送请求
       request.post('Achievement/userViewArticle', {
         articleId: this.articleData.artId
       }).then(res => {
@@ -423,6 +440,7 @@ export default {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
+          // 仅在控制台打印信息，不影响用户正常阅读帖子内容
           console.log('已记录浏览历史,当前帖子id：' + this.articleData.artId);
         } else {
           ElMessage.error(res.msg)

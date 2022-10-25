@@ -19,7 +19,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="queryUser">查询用户</el-button>
+          <el-button type="primary" @click="queryUser" :loading="tableLoading">查询用户</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -28,7 +28,11 @@
                 @cell-mouse-enter="getRowData" :default-sort="{ prop: 'userid', order: 'ascending' }">
         <el-table-column prop="userid" label="用户id" sortable/>
         <el-table-column prop="username" label="用户名" sortable/>
-        <el-table-column prop="userCreate" label="用户注册时间" sortable/>
+        <el-table-column prop="userCreate" label="用户注册时间" sortable>
+          <template #default="scope">
+            {{ scope.row.userCreate.substring(0, 10) + " " + scope.row.userCreate.substring(11, 19) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="userStatus" label="用户状态" sortable/>
         <el-table-column fixed="right" label="操作" width="120">
           <template #default>
@@ -60,18 +64,17 @@ export default {
   },
   methods: {
     queryUser() {
+      // 使表格与查询按钮处于加载状态
       this.tableLoading = ref(true);
+      // 发送请求
       request.post("/api/admin/selectUser", this.formInline).then(res => {
         // 服务器是否返回空信息
         if (res.code === undefined) {
           ElMessage.error("登录已过期，请重新登录后再试");
           this.$router.push('/')
         } else if (res.code === '1') {
-          const resData = res.data;
-          for (let i = 0; i < resData.length; i++) {
-            resData[i].userCreate = resData[i].userCreate.substring(0, 10) + " " + resData[i].userCreate.substring(11, 19)
-          }
-          this.tableData = resData;
+          // 保存数据
+          this.tableData = res.data;
 
           ElMessage({
             message: '用户列表已更新',
@@ -80,6 +83,7 @@ export default {
         } else {
           ElMessage.error(res.msg);
         }
+        // 取消加载中状态
         this.tableLoading = ref(false)
       })
     },
@@ -87,6 +91,7 @@ export default {
       selectRowData = rowData;
     },
     updateUserStatus: function () {
+      // 显示修改用户状态弹窗
       ElMessageBox.prompt('1：普通用户   2：封禁用户   3：管理员', selectRowData.userid + '号用户状态修改', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -95,6 +100,7 @@ export default {
         inputErrorMessage: '请输入数字1、2、3',
       })
           .then(({value}) => {
+            // 发送请求
             request.put("/api/admin/updateUser", {
               userid: selectRowData.userid,
               username: selectRowData.username,
@@ -109,14 +115,15 @@ export default {
                   type: 'success',
                   message: selectRowData.userid + `号用户的状态已经修改成功`,
                 });
+                // 重新查询数据
                 this.queryUser()
               } else {
                 ElMessage.error(res.msg)
               }
             })
-
           })
           .catch(() => {
+            // 捕获异常并发出提醒
             ElMessage({
               type: 'info',
               message: '取消',

@@ -31,33 +31,38 @@ public class AchievementService {
     }
 
     public Boolean likeChange(boolean type, Integer artId, Integer userid) {
+        // 判断用户在这次操作前的点赞状态
         if (type) {
-            //取消
+            //取消点赞
             return articleAchievementMapper.userUnlikeIt(artId, userid) > 0;
         } else {
             //判断是否曾经点赞过
             if (articleAchievementMapper.userLikeIt(artId, userid) > 0) {
                 return true;
             } else {
+                // 若用户第一次点赞该贴，则修改点赞状态
                 return articleAchievementMapper.newUserLikeIt(artId, userid) > 0;
             }
         }
     }
 
     public Boolean collectChange(boolean type, Integer artId, Integer userid) {
+        // 判断用户在这次操作前的收藏状态
         if (type) {
-            //取消
+            //取消收藏
             return articleAchievementMapper.userUnCollectIt(artId, userid) > 0;
         } else {
+            //判断是否曾经收藏过
             if (articleAchievementMapper.userCollectIt(artId, userid) > 0) {
                 return true;
             } else {
+                // 若用户第一次收藏该贴，则修改收藏状态
                 return articleAchievementMapper.newUserCollectIt(artId, userid) > 0;
             }
         }
     }
 
-    public Boolean viewArticle(Integer artId,Integer userid) {
+    public Boolean viewArticle(Integer artId, Integer userid) {
         if (articleAchievementMapper.userViewIt(artId, userid) > 0) {
             return true;
         } else {
