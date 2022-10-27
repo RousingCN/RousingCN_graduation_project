@@ -30,6 +30,10 @@ public class UserController {
 
     @PostMapping("/register")
     public Result<?> add(@RequestBody User user) {
+        //检查用户名是否被使用
+        if (userService.userExist(user.getUsername())) {
+            return Result.error("-1", "用户名已被占用");
+        }
         // 将密码进行md5加密
         user.setUserPassword(MD5Utils.inputPassToFromPass(user.getUserPassword()));
         //添加用户

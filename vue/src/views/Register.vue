@@ -4,7 +4,7 @@
     <el-divider/>
     <el-form :model="form" label-width="70px" style="margin-top: 50px" :rules="rule" ref="formRef" status-icon>
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="form.username" maxlength="16"/>
+        <el-input v-model="form.username" maxlength="16" autofocus/>
       </el-form-item>
       <el-form-item label="密码" prop="userPassword">
         <el-input v-model="form.userPassword" maxlength="20" show-password/>
@@ -26,6 +26,7 @@
 <script>
 import request from "@/utils/request";
 import {ElMessage} from 'element-plus'
+import {reactive} from "vue";
 
 
 export default {
@@ -38,25 +39,20 @@ export default {
         userMail: '',
         userPhone: ''
       },
-      rule: {
+      rule: reactive({
         username: [
-          {
-            type: 'string', message: '用户名格式不正确', trigger: 'change'
-          },
           {
             required: true, message: '用户名不能为空', trigger: 'blur'
           },
           {
             min: 4, max: 16, message: '用户名的长度为4-16位', trigger: 'change'
           },
-          {
-            asyncValidator: this.checkUsername, trigger: 'blur'
-          }
+          // 如果出现自动跳转至登陆界面问题，则取消验证用户名环节注释下面这三行
+          // {
+          //   asyncValidator: this.checkUsername, trigger: 'blur'
+          // }
         ],
         userPassword: [
-          {
-            type: 'string', message: '密码格式不正确', trigger: 'change'
-          },
           {
             required: true, message: '密码不能为空', trigger: 'blur'
           },
@@ -74,13 +70,10 @@ export default {
         ],
         userPhone: [
           {
-            type: 'number', message: '手机号格式不正确', trigger: 'change'
-          },
-          {
             required: true, message: '手机号不能为空', trigger: 'blur'
           }
         ]
-      }
+      })
     }
   },
   methods: {
@@ -116,10 +109,11 @@ export default {
     },
     async checkUsername(rule, value, callback) {
       await request.post('/user/checkUsername', {username: value}).then(res => {
+        ElMessage.error(res.code)
         if (res.code === '1') {
           callback();
         } else {
-          callback(new Error(res.msg))
+          callback(new Error('用户名已被使用'))
         }
       })
     }

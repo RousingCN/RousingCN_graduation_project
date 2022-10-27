@@ -15,6 +15,9 @@ const routes = [
         path: '/admin',
         name: 'Admin',
         component: AdminLayout,
+        meta: {
+            needLogin: true
+        },
         children: [
             {
                 path: '/admin/userManagement',
@@ -42,6 +45,9 @@ const routes = [
         path: "/index",
         name: 'Layout',
         component: IndexLayout,
+        meta: {
+            needLogin: true
+        },
         children: [
             {
                 path: '/index',
@@ -70,6 +76,9 @@ const routes = [
         name: 'UserLayout',
         redirect: '/likeHistory',
         component: UserLayout,
+        meta: {
+            needLogin: true
+        },
         children: [
             {
                 path: '/likeHistory',
@@ -118,6 +127,9 @@ const routes = [
         name: 'Module',
         redirect: '/randomModule',
         component: ModuleLayout,
+        meta: {
+            needLogin: true
+        },
         children: [
             {
                 path: '/createModule',
@@ -144,6 +156,9 @@ const routes = [
         path: '/article',
         name: 'Article',
         component: ArticleLayout,
+        meta: {
+            needLogin: true
+        },
         children: [
             {
                 path: '/articleInfo',
